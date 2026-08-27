@@ -17,6 +17,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['super_admin', 'guru', 'siswa'])->default('siswa');
+            $table->string('avatar')->nullable();
+            $table->integer('xp')->default(0);
+            $table->integer('level')->default(1);
+            $table->integer('hearts')->default(5);
+            $table->timestamp('last_heart_refill_at')->nullable();
+            $table->integer('streak_count')->default(0);
+            $table->date('last_active_date')->nullable();
+            $table->integer('gems')->default(50);
             $table->rememberToken();
             $table->timestamps();
         });

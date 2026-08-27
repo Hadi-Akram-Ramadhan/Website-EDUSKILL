@@ -1,0 +1,366 @@
+openapi: 3.0.3
+info:
+  title: Gamified Coding Learning Platform API (Duolingo for SMP/SMA)
+  version: 1.0.0
+  description: |
+    REST API backend untuk platform pembelajaran pemrograman dasar berbasis gamifikasi ala Duolingo.
+    Digunakan oleh aplikasi Web (Laravel) dan Mobile Android (Flutter).
+    
+    ### Fitur Utama:
+    - **Autentikasi**: Laravel Sanctum Bearer Token
+    - **Gamifikasi**: XP, Level, Hati (Hearts), Streak harian, Lencana (Badges), Leaderboard
+    - **Kurikulum Interaktif**: Course, Unit, Lesson, Tantangan Kode (Parsons Problem, Multiple Choice, Fill in Blank, Output Prediction, Match Pairs)
+    - **Sertifikasi Valid**: Penerbitan & Verifikasi Sertifikat Kriptografis dengan QR Code
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Local Development Server
+
+paths:
+  /auth/register:
+    post:
+      summary: Pendaftaran Akun Baru (Siswa / Guru)
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+                - password_confirmation
+              properties:
+                name:
+                  type: string
+                  example: Budi Santoso
+                email:
+                  type: string
+                  format: email
+                  example: budi@smp.sch.id
+                password:
+                  type: string
+                  format: password
+                  example: rahasia123
+                password_confirmation:
+                  type: string
+                  example: rahasia123
+                role:
+                  type: string
+                  enum: [siswa, guru]
+                  default: siswa
+      responses:
+        '201':
+          description: Akun berhasil didaftarkan
+        '422':
+          description: Validasi gagal
+
+  /auth/login:
+    post:
+      summary: Login Akun dan Dapatkan Sanctum Token
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: budi@smp.sch.id
+                password:
+                  type: string
+                  example: rahasia123
+      responses:
+        '200':
+          description: Login berhasil, mengembalikan token dan data user
+        '401':
+          description: Email atau password salah
+
+  /auth/me:
+    get:
+      summary: Dapatkan Profil User yang Sedang Login
+      tags:
+        - Authentication
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Data user lengkap beserta statistik & badge
+        '401':
+          description: Unauthenticated
+
+  /auth/logout:
+    post:
+      summary: Logout dan Cabut Token Akses
+      tags:
+        - Authentication
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Logout berhasil
+
+  /profile:
+    put:
+      summary: Update Profil Pengguna
+      tags:
+        - Gamification & Profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                avatar:
+                  type: string
+      responses:
+        '200':
+          description: Profil berhasil diperbarui
+
+  /profile/refill-hearts:
+    post:
+      summary: Isi Penuh Hati (Hearts) Menggunakan 20 Gems
+      tags:
+        - Gamification & Profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Hati berhasil diisi kembali ke 5/5
+        '400':
+          description: Gems tidak mencukupi atau hati sudah penuh
+
+  /profile/badges:
+    get:
+      summary: Daftar Lencana / Pencapaian Siswa
+      tags:
+        - Gamification & Profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Daftar badge yang sudah terbuka
+
+  /courses:
+    get:
+      summary: Ambil Semua Daftar Kursus & Progress Siswa
+      tags:
+        - Courses & Roadmap
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Daftar course beserta persentase progres
+
+  /courses/{id}:
+    get:
+      summary: Ambil Roadmap Lengkap (Unit, Lesson, Locked/Unlocked State)
+      tags:
+        - Courses & Roadmap
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Pohon roadmap materi ala Duolingo
+
+  /lessons/{id}:
+    get:
+      summary: Ambil Konten Materi & Tantangan Kuis Interaktif
+      tags:
+        - Lessons & Exercises
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Konten lesson dan bank soal interaktif
+
+  /lessons/{id}/submit:
+    post:
+      summary: Submit Jawaban Kuis / Tantangan Kode
+      description: Mengevaluasi jawaban kuis, mengurangi hati jika salah, memberikan reward XP, update streak harian, dan membuka lencana baru.
+      tags:
+        - Lessons & Exercises
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - answers
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - exercise_id
+                      - answer
+                    properties:
+                      exercise_id:
+                        type: integer
+                        example: 1
+                      answer:
+                        description: Jawaban sesuai tipe soal (string, array untuk code_ordering, object untuk matching)
+                        example: "print"
+      responses:
+        '200':
+          description: Hasil evaluasi, skor, perolehan XP, dan status kelulusan
+        '403':
+          description: Kehabisan hati (0/5 hearts)
+
+  /leaderboard:
+    get:
+      summary: Papan Peringkat (Leaderboard) Siswa
+      tags:
+        - Leaderboard
+      parameters:
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [global, streak]
+            default: global
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Peringkat siswa berdasar XP atau Streak
+
+  /certificates:
+    get:
+      summary: Daftar Sertifikat Milik Siswa
+      tags:
+        - Certificates
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Daftar sertifikat yang telah diklaim
+
+  /certificates/eligibility/{course_id}:
+    get:
+      summary: Cek Kelayakan Klaim Sertifikat Kursus
+      tags:
+        - Certificates
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Status progres kelulusan seluruh modul
+
+  /certificates/claim/{course_id}:
+    post:
+      summary: Klaim & Terbitkan Sertifikat Resmi
+      tags:
+        - Certificates
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Sertifikat berhasil diterbitkan dengan Hash dan QR Code
+        '400':
+          description: Belum memenuhi syarat kelulusan
+
+  /certificates/verify/{cert_code}:
+    get:
+      summary: Verifikasi Data Sertifikat Berdasarkan Kode Unik
+      tags:
+        - Certificates
+      parameters:
+        - name: cert_code
+          in: path
+          required: true
+          schema:
+            type: string
+            example: CERT-PYDASAR-202608-8X9A21
+      responses:
+        '200':
+          description: Data validitas sertifikat resmi
+        '404':
+          description: Sertifikat tidak ditemukan atau tidak valid
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: SanctumToken
+      description: Masukkan Token Sanctum yang didapat saat login (Format `Bearer {token}`)
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum: [super_admin, guru, siswa]
+        avatar:
+          type: string
+        xp:
+          type: integer
+        level:
+          type: integer
+        hearts:
+          type: integer
+        gems:
+          type: integer
+        streak_count:
+          type: integer
