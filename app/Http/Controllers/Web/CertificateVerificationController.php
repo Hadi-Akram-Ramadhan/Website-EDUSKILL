@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Services\CertificateService;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CertificateVerificationController extends Controller
@@ -25,8 +24,8 @@ class CertificateVerificationController extends Controller
 
         return view('certificate.verify', [
             'certificate' => $certificate,
-            'certCode'    => $certCode,
-            'isValid'     => (bool) $certificate,
+            'certCode' => $certCode,
+            'isValid' => (bool) $certificate,
         ]);
     }
 }

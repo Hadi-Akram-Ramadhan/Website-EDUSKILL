@@ -39,7 +39,7 @@ class CertificateApiController extends BaseApiController
         $user = $request->user();
         $course = Course::find($courseId);
 
-        if (!$course) {
+        if (! $course) {
             return $this->sendError('Course not found', [], 404);
         }
 
@@ -61,7 +61,7 @@ class CertificateApiController extends BaseApiController
         $user = $request->user();
         $course = Course::find($courseId);
 
-        if (!$course) {
+        if (! $course) {
             return $this->sendError('Course not found', [], 404);
         }
 
@@ -81,7 +81,7 @@ class CertificateApiController extends BaseApiController
     {
         $certificate = $this->certificateService->verifyCertificate($certCode);
 
-        if (!$certificate) {
+        if (! $certificate) {
             return $this->sendError('Sertifikat tidak ditemukan atau tidak valid.', [], 404);
         }
 

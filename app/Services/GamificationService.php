@@ -14,8 +14,11 @@ use Illuminate\Support\Collection;
 class GamificationService
 {
     const MAX_HEARTS = 5;
+
     const HEART_REFILL_MINUTES = 30;
+
     const XP_PER_LEVEL = 100;
+
     const REFILL_GEM_COST = 20;
 
     /**
@@ -27,7 +30,7 @@ class GamificationService
             return $user;
         }
 
-        if (!$user->last_heart_refill_at) {
+        if (! $user->last_heart_refill_at) {
             return $user;
         }
 
@@ -40,7 +43,7 @@ class GamificationService
         if ($heartsToAdd > 0) {
             $newHearts = min(self::MAX_HEARTS, $user->hearts + $heartsToAdd);
             $user->hearts = $newHearts;
-            
+
             if ($newHearts >= self::MAX_HEARTS) {
                 $user->last_heart_refill_at = null;
             } else {
@@ -61,7 +64,7 @@ class GamificationService
 
         if ($user->hearts > 0) {
             $user->hearts -= 1;
-            if (!$user->last_heart_refill_at) {
+            if (! $user->last_heart_refill_at) {
                 $user->last_heart_refill_at = Carbon::now();
             }
             $user->save();
@@ -118,7 +121,7 @@ class GamificationService
         $today = Carbon::today();
         $lastActive = $user->last_active_date ? Carbon::parse($user->last_active_date)->startOfDay() : null;
 
-        if (!$lastActive) {
+        if (! $lastActive) {
             $user->streak_count = 1;
             $user->last_active_date = $today;
             $user->save();
@@ -160,27 +163,30 @@ class GamificationService
                 } else {
                     $expected = $correctAnswer;
                 }
-                return trim(strtolower((string)$userAnswer)) === trim(strtolower((string)$expected));
+
+                return trim(strtolower((string) $userAnswer)) === trim(strtolower((string) $expected));
 
             case 'code_ordering':
                 // $correctAnswer should be an ordered array of strings or indices: e.g. ["1", "2", "3"]
-                if (!is_array($userAnswer) || !is_array($correctAnswer)) {
+                if (! is_array($userAnswer) || ! is_array($correctAnswer)) {
                     return false;
                 }
                 $expected = $correctAnswer['order'] ?? $correctAnswer;
+
                 return array_values($userAnswer) == array_values($expected);
 
             case 'matching_pair':
                 // $correctAnswer should be key-value pairs: e.g. {"int": "Angka Bulat", "str": "Teks"}
-                if (!is_array($userAnswer) || !is_array($correctAnswer)) {
+                if (! is_array($userAnswer) || ! is_array($correctAnswer)) {
                     return false;
                 }
                 $expectedPairs = $correctAnswer['pairs'] ?? $correctAnswer;
                 foreach ($expectedPairs as $k => $v) {
-                    if (!isset($userAnswer[$k]) || $userAnswer[$k] !== $v) {
+                    if (! isset($userAnswer[$k]) || $userAnswer[$k] !== $v) {
                         return false;
                     }
                 }
+
                 return true;
 
             default:
@@ -305,19 +311,25 @@ class GamificationService
         $completedCount = UserProgress::where('user_id', $user->id)->where('is_completed', true)->count();
         if ($completedCount >= 1) {
             $b = $this->grantBadge($user, 'first_lesson', 'Langkah Pertama', 'Menyelesaikan modul pemrograman pertama 🎉', 'rocket');
-            if ($b) $newBadges[] = $b;
+            if ($b) {
+                $newBadges[] = $b;
+            }
         }
 
         // Perfect score badge
         if ($score === 100) {
             $b = $this->grantBadge($user, 'perfect_score', 'Bug Hunter Handal', 'Menjawab 100% benar semua soal dalam satu lesson 🎯', 'target');
-            if ($b) $newBadges[] = $b;
+            if ($b) {
+                $newBadges[] = $b;
+            }
         }
 
         // 5 lessons completed
         if ($completedCount >= 5) {
             $b = $this->grantBadge($user, 'coder_level_5', 'Calon Programmer', 'Telah menyelesaikan 5 modul belajar 💻', 'code');
-            if ($b) $newBadges[] = $b;
+            if ($b) {
+                $newBadges[] = $b;
+            }
         }
 
         return $newBadges;

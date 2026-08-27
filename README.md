@@ -122,13 +122,34 @@ Aplikasi backend dan web akan berjalan di `http://localhost:8000`.
 
 ---
 
-## 🧪 Menjalankan Automated Unit & Feature Tests
-
-Projek ini dilengkapi dengan test suite lengkap untuk memvalidasi auth, logika gamifikasi, pengurangan hati, evaluasi kuis, klaim sertifikat, dan route dokumentasi:
-
 ```bash
 php artisan test
 ```
+
+---
+
+## 🐳 Menjalankan Menggunakan Docker
+
+Projek ini telah dilengkapi konfigurasi **Docker Compose** lengkap dengan PHP 8.2-FPM, Nginx, dan MySQL 8.0:
+
+```bash
+# 1. Build dan jalankan container di background
+docker compose up -d --build
+
+# 2. Masuk ke container app untuk setup awal (jika pertama kali)
+docker compose exec app composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate:fresh --seed
+```
+Aplikasi dapat langsung diakses pada `http://localhost:8000`.
+
+---
+
+## 🔄 CI / CD Pipeline (GitHub Actions)
+
+Workflow otomatis diatur pada [.github/workflows/ci.yml](file:///.github/workflows/ci.yml) yang akan otomatis berjalan setiap kali ada `push` atau `pull_request`:
+* **Linting & Code Style:** Pengecekan otomatis standar format kode menggunakan **Laravel Pint** (`pint --test`).
+* **Automated Testing:** Menjalankan seluruh test suite fitur & unit test secara paralel di environment Linux Ubuntu.
 
 ---
 

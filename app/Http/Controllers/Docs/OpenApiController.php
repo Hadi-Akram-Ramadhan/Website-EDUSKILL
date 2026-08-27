@@ -22,7 +22,7 @@ class OpenApiController extends Controller
     public function yaml(): Response
     {
         $path = resource_path('docs/openapi.yaml');
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             abort(404, 'OpenAPI specification not found.');
         }
 

@@ -18,7 +18,7 @@ class CertificateService
     {
         // Get all lessons in this course
         $courseLessonIds = $course->units()->with('lessons')->get()
-            ->flatMap(fn($unit) => $unit->lessons->pluck('id'))
+            ->flatMap(fn ($unit) => $unit->lessons->pluck('id'))
             ->toArray();
 
         $totalLessons = count($courseLessonIds);
@@ -47,8 +47,8 @@ class CertificateService
             'completed_lessons' => $completedCount,
             'total_lessons' => $totalLessons,
             'average_score' => $averageScore,
-            'message' => $isEligible 
-                ? 'Selamat! Kamu telah menyelesaikan seluruh modul kursus ini.' 
+            'message' => $isEligible
+                ? 'Selamat! Kamu telah menyelesaikan seluruh modul kursus ini.'
                 : "Selesaikan semua ($completedCount/$totalLessons) materi untuk mendapatkan sertifikat.",
         ];
     }
@@ -65,7 +65,7 @@ class CertificateService
         }
 
         $eligibility = $this->isEligibleForCertificate($user, $course);
-        if (!$eligibility['eligible']) {
+        if (! $eligibility['eligible']) {
             throw new \Exception($eligibility['message']);
         }
 
@@ -91,7 +91,7 @@ class CertificateService
             'mentor_name' => $mentorName,
             'score_average' => $eligibility['average_score'],
             'issue_date' => $now->toDateString(),
-            'qr_code_url' => "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($verificationUrl),
+            'qr_code_url' => 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data='.urlencode($verificationUrl),
             'is_valid' => true,
         ]);
 

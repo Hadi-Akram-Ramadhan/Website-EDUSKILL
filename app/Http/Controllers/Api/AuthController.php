@@ -24,10 +24,10 @@ class AuthController extends BaseApiController
     public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'role'     => 'sometimes|string|in:siswa,guru',
+            'role' => 'sometimes|string|in:siswa,guru',
         ]);
 
         if ($validator->fails()) {
@@ -35,20 +35,20 @@ class AuthController extends BaseApiController
         }
 
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => $request->role ?? 'siswa',
-            'xp'       => 0,
-            'level'    => 1,
-            'hearts'   => 5,
-            'gems'     => 50,
+            'role' => $request->role ?? 'siswa',
+            'xp' => 0,
+            'level' => 1,
+            'hearts' => 5,
+            'gems' => 50,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return $this->sendResponse([
-            'user'  => $user,
+            'user' => $user,
             'token' => $token,
             'token_type' => 'Bearer',
         ], 'User registered successfully', 201);
@@ -60,7 +60,7 @@ class AuthController extends BaseApiController
     public function login(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|string|email',
+            'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
@@ -70,7 +70,7 @@ class AuthController extends BaseApiController
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             return $this->sendError('Invalid email or password', [], 401);
         }
 
@@ -81,7 +81,7 @@ class AuthController extends BaseApiController
         $token = $user->createToken('flutter_mobile_token')->plainTextToken;
 
         return $this->sendResponse([
-            'user'  => $user,
+            'user' => $user,
             'token' => $token,
             'token_type' => 'Bearer',
         ], 'Login successful');

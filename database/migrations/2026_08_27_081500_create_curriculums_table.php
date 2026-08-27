@@ -56,7 +56,7 @@ return new class extends Migration
                 'fill_blank',
                 'code_ordering',
                 'output_prediction',
-                'matching_pair'
+                'matching_pair',
             ])->default('multiple_choice');
             $table->text('prompt');
             $table->text('code_snippet')->nullable();

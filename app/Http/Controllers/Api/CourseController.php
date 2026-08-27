@@ -63,7 +63,7 @@ class CourseController extends BaseApiController
             'units.lessons',
         ])->find($id);
 
-        if (!$course) {
+        if (! $course) {
             return $this->sendError('Course not found', [], 404);
         }
 
@@ -76,8 +76,8 @@ class CourseController extends BaseApiController
         $unitsData = $course->units->map(function ($unit) use ($userProgress, &$previousLessonCompleted) {
             $lessonsData = $unit->lessons->map(function ($lesson) use ($userProgress, &$previousLessonCompleted) {
                 $prog = $userProgress->get($lesson->id);
-                $isCompleted = $prog ? (bool)$prog->is_completed : false;
-                $score = $prog ? (int)$prog->score : 0;
+                $isCompleted = $prog ? (bool) $prog->is_completed : false;
+                $score = $prog ? (int) $prog->score : 0;
 
                 // A lesson is unlocked if it's already completed or if the preceding lesson was completed
                 $isUnlocked = $isCompleted || $previousLessonCompleted;

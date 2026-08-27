@@ -24,7 +24,7 @@ class ProfileController extends BaseApiController
         $user = $request->user();
 
         $validator = Validator::make($request->all(), [
-            'name'   => 'sometimes|string|max:255',
+            'name' => 'sometimes|string|max:255',
             'avatar' => 'sometimes|nullable|string',
         ]);
 
@@ -54,7 +54,7 @@ class ProfileController extends BaseApiController
 
         $success = $this->gamificationService->refillHeartsWithGems($user);
 
-        if (!$success) {
+        if (! $success) {
             return $this->sendError('Tidak dapat mengisi hati. Pastikan gems kamu cukup (min. 20 gems) atau hati kamu belum penuh.', [], 400);
         }
 

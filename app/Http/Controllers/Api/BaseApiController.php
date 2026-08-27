@@ -15,7 +15,7 @@ class BaseApiController extends Controller
         return response()->json([
             'success' => true,
             'message' => $message,
-            'data'    => $result,
+            'data' => $result,
         ], $code);
     }
 
@@ -29,7 +29,7 @@ class BaseApiController extends Controller
             'message' => $error,
         ];
 
-        if (!empty($errorMessages)) {
+        if (! empty($errorMessages)) {
             $response['errors'] = $errorMessages;
         }
 

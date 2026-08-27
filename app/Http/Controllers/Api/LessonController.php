@@ -29,7 +29,7 @@ class LessonController extends BaseApiController
 
         $lesson = Lesson::with(['unit.course', 'exercises'])->find($id);
 
-        if (!$lesson) {
+        if (! $lesson) {
             return $this->sendError('Lesson not found', [], 404);
         }
 
@@ -82,7 +82,7 @@ class LessonController extends BaseApiController
 
         $lesson = Lesson::with('exercises')->find($id);
 
-        if (!$lesson) {
+        if (! $lesson) {
             return $this->sendError('Lesson not found', [], 404);
         }
 

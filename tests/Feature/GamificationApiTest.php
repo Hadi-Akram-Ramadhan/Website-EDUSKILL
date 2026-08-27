@@ -3,9 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Course;
-use App\Models\Exercise;
 use App\Models\Lesson;
-use App\Models\Unit;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -39,11 +37,11 @@ class GamificationApiTest extends TestCase
                             'id',
                             'title',
                             'lessons' => [
-                                '*' => ['id', 'title', 'is_unlocked', 'is_completed']
-                            ]
-                        ]
-                    ]
-                ]
+                                '*' => ['id', 'title', 'is_unlocked', 'is_completed'],
+                            ],
+                        ],
+                    ],
+                ],
             ]);
     }
 

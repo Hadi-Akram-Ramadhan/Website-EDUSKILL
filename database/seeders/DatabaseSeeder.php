@@ -183,14 +183,14 @@ class DatabaseSeeder extends Seeder
                     'int' => '17',
                     'str' => '"Belajar"',
                     'bool' => 'True',
-                    'float' => '3.14'
-                ]
+                    'float' => '3.14',
+                ],
             ],
             'answer_json' => [
                 'int' => '17',
                 'str' => '"Belajar"',
                 'bool' => 'True',
-                'float' => '3.14'
+                'float' => '3.14',
             ],
             'explanation' => 'int adalah angka bulat, str adalah teks, bool adalah nilai logika (True/False), dan float adalah angka pecahan.',
             'order_index' => 1,
@@ -210,7 +210,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'logika-keputusan-if-else',
             'description' => 'Mengecek syarat kondisi benar atau salah.',
             'type' => 'quiz',
-            'theory_content' => "Struktur `if` mengevaluasi kondisi. Jika kondisi bernilai True, blok kode di dalamnya dijalankan. Jika tidak, blok `else` yang akan dijalankan.",
+            'theory_content' => 'Struktur `if` mengevaluasi kondisi. Jika kondisi bernilai True, blok kode di dalamnya dijalankan. Jika tidak, blok `else` yang akan dijalankan.',
             'xp_reward' => 30,
             'order_index' => 1,
         ]);
