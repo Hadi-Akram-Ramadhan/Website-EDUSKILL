@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Docs\OpenApiController;
+use App\Http\Controllers\Web\AdminDashboardController;
 use App\Http\Controllers\Web\CertificateVerificationController;
 use App\Http\Controllers\Web\CertificateWebController;
 use App\Http\Controllers\Web\LeaderboardWebController;
 use App\Http\Controllers\Web\LearnController;
+use App\Http\Controllers\Web\MentorDashboardController;
 use App\Http\Controllers\Web\ProfileWebController;
 use App\Http\Controllers\Web\WebAuthController;
 use Illuminate\Support\Facades\Route;
@@ -24,10 +26,19 @@ Route::middleware('guest')->group(function () {
 
 // Quick 1-Click login for instant demo testing
 Route::get('/auth/quick-login/{id}', [WebAuthController::class, 'quickLogin'])->name('auth.quick-login');
-Route::post('/logout', [WebAuthController::class, 'logout'])->name('auth.logout');
 Route::post('/logout', [WebAuthController::class, 'logout'])->name('logout');
 
-// Protected Student Web Portal
+// Super Admin Area
+Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+});
+
+// Mentor / Guru Area
+Route::middleware(['auth', 'role:guru,super_admin'])->prefix('mentor')->name('mentor.')->group(function () {
+    Route::get('/dashboard', [MentorDashboardController::class, 'index'])->name('dashboard');
+});
+
+// Protected Student / Shared Web Portal
 Route::middleware('auth')->group(function () {
     // Learning Path / Roadmap & Quiz Player
     Route::get('/learn', [LearnController::class, 'index'])->name('learn.index');

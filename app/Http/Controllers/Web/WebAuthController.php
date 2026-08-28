@@ -21,12 +21,24 @@ class WebAuthController extends Controller
     }
 
     /**
+     * Determine redirect route based on user role.
+     */
+    protected function redirectPathForUser(User $user): string
+    {
+        return match ($user->role) {
+            'super_admin' => route('admin.dashboard'),
+            'guru' => route('mentor.dashboard'),
+            default => route('learn.index'),
+        };
+    }
+
+    /**
      * Show Web Login Page.
      */
     public function showLogin(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('learn.index');
+            return redirect($this->redirectPathForUser(Auth::user()));
         }
 
         $demoUsers = User::orderBy('id')->get();
@@ -46,9 +58,10 @@ class WebAuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            $this->gamificationService->syncHearts(Auth::user());
+            $user = Auth::user();
+            $this->gamificationService->syncHearts($user);
 
-            return redirect()->intended(route('learn.index'));
+            return redirect($this->redirectPathForUser($user));
         }
 
         return back()->withErrors([
@@ -66,7 +79,7 @@ class WebAuthController extends Controller
         request()->session()->regenerate();
         $this->gamificationService->syncHearts($user);
 
-        return redirect()->route('learn.index')->with('success', "Halo {$user->name}! Selamat datang di Kodein.");
+        return redirect($this->redirectPathForUser($user))->with('success', "Halo {$user->name}! Selamat datang di Kodein.");
     }
 
     /**
@@ -75,7 +88,7 @@ class WebAuthController extends Controller
     public function showRegister(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('learn.index');
+            return redirect($this->redirectPathForUser(Auth::user()));
         }
 
         return view('auth.register');
@@ -108,7 +121,7 @@ class WebAuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('learn.index')->with('success', 'Akun berhasil dibuat! Mulai petualangan coding-mu sekarang 🚀');
+        return redirect($this->redirectPathForUser($user))->with('success', 'Akun berhasil dibuat! Selamat datang di Kodein.');
     }
 
     /**
