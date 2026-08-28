@@ -3,6 +3,19 @@
 @endphp
 
 <x-app-layout :title="$title">
+    <style>
+        @media (max-width: 640px) {
+            .cert-card-box {
+                padding: 20px 16px !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            .cert-card-box .btn-3d {
+                width: 100% !important;
+            }
+        }
+    </style>
+
     <div style="max-width: 860px; margin: 0 auto; width: 100%;">
         
         <!-- Header Banner (Blue Theme) -->
@@ -31,7 +44,7 @@
         <!-- Courses Progress & Claim List -->
         <div style="display: flex; flex-direction: column; gap: 20px;">
             @foreach ($coursesData as $card)
-                <div class="card-3d" style="padding: 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+                <div class="card-3d cert-card-box" style="padding: 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 280px;">
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
                             <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--primary-blue); background: var(--primary-blue-light); padding: 4px 10px; border-radius: 8px; border: 1px solid #bfdbfe;">

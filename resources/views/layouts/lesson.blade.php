@@ -2,25 +2,26 @@
 <html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Sesi Belajar Kuis - Kodein' }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{ $title ?? 'Kuis Pemrograman - Kodein' }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
             --primary-blue: #2563eb;
+            --primary-blue-hover: #1d4ed8;
             --primary-blue-shadow: #1e40af;
+            --primary-blue-light: #eff6ff;
             --accent-green: #10b981;
             --accent-green-shadow: #059669;
             --accent-green-bg: #ecfdf5;
             --accent-red: #ef4444;
             --accent-red-shadow: #dc2626;
             --accent-red-bg: #fef2f2;
-            --accent-orange: #f59e0b;
-            --accent-orange-shadow: #d97706;
             --bg-page: #f8fafc;
             --bg-card: #ffffff;
             --border-color: #e2e8f0;
@@ -66,7 +67,7 @@
             user-select: none;
             text-decoration: none;
             padding: 14px 28px;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .btn-3d:active {
@@ -100,28 +101,40 @@
             box-shadow: 0 0 0 var(--accent-red-shadow);
         }
 
-        .btn-disabled {
-            background: #e2e8f0 !important;
-            color: #94a3b8 !important;
-            box-shadow: 0 4px 0 #cbd5e1 !important;
-            cursor: not-allowed !important;
-            transform: none !important;
+        .btn-outline {
+            background: #ffffff;
+            color: var(--primary-blue);
+            border: 2px solid #cbd5e1;
+            box-shadow: 0 4px 0 #cbd5e1;
+        }
+        .btn-outline:active {
+            box-shadow: 0 0 0 #cbd5e1;
         }
 
-        /* Top Progress Bar */
+        /* Card Utility */
+        .card-3d {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 4px 0 #e2e8f0;
+        }
+
+        /* Header Navigation in Lesson */
         .lesson-header {
             max-width: 860px;
-            width: 100%;
             margin: 0 auto;
-            padding: 24px 20px 12px 20px;
+            width: 100%;
+            height: 72px;
+            padding: 16px 24px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 20px;
         }
 
         .progress-track {
             flex: 1;
-            height: 16px;
+            height: 14px;
             background: #e2e8f0;
             border-radius: 9999px;
             overflow: hidden;
@@ -133,19 +146,7 @@
             width: 0%;
             background: linear-gradient(90deg, #3b82f6, #2563eb);
             border-radius: 9999px;
-            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 8px;
-            right: 8px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 9999px;
+            transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .heart-badge {
@@ -153,7 +154,7 @@
             align-items: center;
             gap: 6px;
             color: var(--accent-red);
-            font-weight: 800;
+            font-weight: 900;
             font-size: 16px;
         }
 
@@ -194,9 +195,9 @@
             right: 0;
             border-top: 2px solid var(--border-color);
             background: #ffffff;
-            padding: 24px 20px;
+            padding: 20px 24px;
             z-index: 50;
-            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
             transition: background-color 0.25s ease, border-color 0.25s ease;
         }
 
@@ -219,10 +220,32 @@
             gap: 20px;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
+            .lesson-header {
+                padding: 12px 16px;
+                height: 60px;
+                gap: 12px;
+            }
+
+            .quiz-arena {
+                padding: 12px 16px 150px 16px;
+                justify-content: flex-start;
+            }
+
             .drawer-content {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 14px;
+            }
+
+            .action-drawer {
+                padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px)) 16px;
+            }
+
+            .action-drawer .btn-3d {
+                width: 100%;
+                padding: 14px;
+                font-size: 15px;
             }
         }
     </style>
@@ -311,7 +334,7 @@
                     const gain = this.ctx.createGain();
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(n.f, now + n.t);
-                    gain.gain.setValueAtTime(0.2, now + n.t);
+                    gain.gain.setValueAtTime(0.25, now + n.t);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);

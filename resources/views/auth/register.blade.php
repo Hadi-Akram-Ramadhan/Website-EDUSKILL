@@ -47,6 +47,13 @@
             box-shadow: 0 4px 0 #e2e8f0;
         }
 
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 24px 18px;
+                border-radius: 22px;
+            }
+        }
+
         .btn-3d {
             width: 100%;
             display: inline-flex;

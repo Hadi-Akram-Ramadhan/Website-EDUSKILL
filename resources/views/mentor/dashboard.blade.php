@@ -3,6 +3,14 @@
 @endphp
 
 <x-app-layout :title="$title">
+    <style>
+        @media (max-width: 640px) {
+            .mentor-card-pad {
+                padding: 18px 16px !important;
+            }
+        }
+    </style>
+
     <div style="max-width: 1040px; margin: 0 auto; width: 100%;">
         
         <!-- Header Banner -->

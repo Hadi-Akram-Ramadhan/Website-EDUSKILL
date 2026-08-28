@@ -2,11 +2,78 @@
     $title = 'Roadmap Belajar - Kodein';
 @endphp
 
-<x-app-layout>
+<x-app-layout :title="$title">
+    <style>
+        .mobile-hud-bar {
+            display: none;
+        }
+
+        .roadmap-node-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-hud-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                background: #ffffff;
+                border: 2px solid var(--border-color);
+                border-radius: 18px;
+                padding: 12px 16px;
+                margin-bottom: 20px;
+                box-shadow: 0 4px 0 #e2e8f0;
+            }
+
+            .unit-banner {
+                padding: 18px 16px !important;
+                border-radius: 18px !important;
+                margin-bottom: 28px !important;
+            }
+
+            .unit-title {
+                font-size: 16px !important;
+            }
+
+            .roadmap-node-container {
+                transform: translateX(calc(var(--offset) * 0.5)) !important;
+            }
+        }
+    </style>
+
     <div class="content-container">
         
         <!-- Left Column: Snake / Zigzag Learning Roadmap -->
-        <div>
+        <div style="width: 100%;">
+            
+            <!-- Mobile Sticky Top HUD Bar -->
+            <div class="mobile-hud-bar">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="color: var(--accent-orange);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+                    </div>
+                    <span style="font-size: 15px; font-weight: 900; color: var(--accent-orange);">{{ $user->streak_count }}</span>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="color: var(--primary-blue);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"></path><path d="M11 3 8 9l4 13 4-13-3-6"></path><path d="M2 9h20"></path></svg>
+                    </div>
+                    <span style="font-size: 15px; font-weight: 900; color: var(--primary-blue);">{{ $user->gems }}</span>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="color: var(--accent-red);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                    </div>
+                    <span style="font-size: 15px; font-weight: 900; color: var(--accent-red);">{{ $user->hearts }}/5</span>
+                </div>
+            </div>
+
             @if (session('success'))
                 <div style="background: #ecfdf5; border: 2px solid #a7f3d0; border-radius: 18px; padding: 14px 20px; margin-bottom: 24px; font-weight: 700; color: #065f46; display: flex; align-items: center; gap: 12px;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
@@ -23,18 +90,18 @@
 
             @foreach ($units as $unitIndex => $unit)
                 <!-- Unit Header Banner (Blue Theme) -->
-                <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 24px; padding: 24px; margin-bottom: 36px; box-shadow: 0 6px 0 #1e40af; position: relative;">
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="unit-banner" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 24px; padding: 24px; margin-bottom: 36px; box-shadow: 0 6px 0 #1e40af; position: relative;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                         <div>
-                            <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: #bfdbfe; letter-spacing: 0.8px;">
+                            <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #bfdbfe; letter-spacing: 0.8px;">
                                 {{ $unit['title'] }}
                             </div>
-                            <h2 style="font-size: 20px; font-weight: 900; color: #fff; margin-top: 4px;">
+                            <h2 class="unit-title" style="font-size: 19px; font-weight: 900; color: #fff; margin-top: 4px; line-height: 1.3;">
                                 {{ $unit['description'] ?? 'Pelajari konsep dasar algoritma' }}
                             </h2>
                         </div>
-                        <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+                        <div style="width: 44px; height: 44px; background: rgba(255, 255, 255, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
                         </div>
                     </div>
                 </div>
@@ -42,7 +109,7 @@
                 <!-- Zigzag Nodes Path -->
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 28px; margin-bottom: 50px;">
                     @php
-                        $offsets = [0, 45, 0, -45];
+                        $offsets = [0, 40, 0, -40];
                     @endphp
 
                     @foreach ($unit['lessons'] as $lessonIndex => $lesson)
@@ -50,7 +117,7 @@
                             $offset = $offsets[$lessonIndex % count($offsets)];
                         @endphp
 
-                        <div style="transform: translateX({{ $offset }}px); position: relative; display: flex; flex-direction: column; align-items: center;">
+                        <div class="roadmap-node-container" style="--offset: {{ $offset }}px; transform: translateX({{ $offset }}px);">
                             
                             @if ($lesson['is_unlocked'])
                                 <a href="{{ route('learn.lesson', $lesson['id']) }}" 
@@ -66,25 +133,25 @@
 
                                     <!-- Circular Node Button -->
                                     <div class="btn-3d {{ $lesson['is_completed'] ? 'btn-green' : ($lesson['is_current'] ? 'btn-blue pulse-active-node' : 'btn-blue') }}"
-                                         style="width: 76px; height: 76px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                         style="width: 74px; height: 74px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center;">
                                         @if ($lesson['is_completed'])
                                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                         @elseif ($lesson['is_current'])
-                                            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                         @else
-                                            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                                         @endif
                                     </div>
                                 </a>
                             @else
                                 <!-- Locked Node Button -->
                                 <div class="btn-3d btn-gray"
-                                     style="width: 76px; height: 76px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; cursor: not-allowed;">
+                                     style="width: 74px; height: 74px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; cursor: not-allowed;">
                                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                 </div>
                             @endif
 
-                            <div style="font-size: 13px; font-weight: 800; color: {{ $lesson['is_unlocked'] ? '#0f172a' : '#94a3b8' }}; margin-top: 8px; text-align: center; max-width: 140px;">
+                            <div style="font-size: 13px; font-weight: 800; color: {{ $lesson['is_unlocked'] ? '#0f172a' : '#94a3b8' }}; margin-top: 8px; text-align: center; max-width: 140px; line-height: 1.3;">
                                 {{ $lesson['title'] }}
                             </div>
                         </div>
@@ -93,10 +160,10 @@
             @endforeach
         </div>
 
-        <!-- Right Column: Gamification HUD Widgets -->
-        <div style="display: flex; flex-direction: column; gap: 20px; position: sticky; top: 24px;">
+        <!-- Right Column: Gamification HUD Widgets (Desktop & Bottom Mobile) -->
+        <div style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
             
-            <!-- Top Stats Bar -->
+            <!-- Top Stats Bar (Hidden on Mobile since Mobile HUD Bar is at top) -->
             <div class="card-3d" style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
                 <!-- Streak -->
                 <div style="display: flex; align-items: center; gap: 8px;">

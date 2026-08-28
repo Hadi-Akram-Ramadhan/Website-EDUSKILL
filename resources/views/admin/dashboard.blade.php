@@ -3,6 +3,21 @@
 @endphp
 
 <x-app-layout :title="$title">
+    <style>
+        .admin-two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        @media (max-width: 768px) {
+            .admin-two-cols {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+        }
+    </style>
+
     <div style="max-width: 1040px; margin: 0 auto; width: 100%;">
         
         <!-- Header Banner -->
@@ -16,7 +31,7 @@
                 <p style="color: #64748b; font-size: 14px; margin-top: 2px;">Ringkasan metrik pengguna, kurikulum aktif, dan sertifikat yang diterbitkan di platform Kodein.</p>
             </div>
 
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                 <a href="{{ route('docs.api') }}" target="_blank" class="btn-3d btn-outline" style="font-size: 13px; padding: 10px 18px;">
                     OpenAPI Docs
                 </a>
@@ -27,56 +42,56 @@
         </div>
 
         <!-- 4 Key Stat Cards -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 32px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
             
-            <div class="card-3d" style="padding: 22px;">
+            <div class="card-3d" style="padding: 20px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                    <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Total Pengguna</span>
+                    <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Total Pengguna</span>
                     <div style="width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     </div>
                 </div>
-                <div style="font-size: 28px; font-weight: 900; color: #0f172a;">{{ $stats['total_users'] }}</div>
+                <div style="font-size: 26px; font-weight: 900; color: #0f172a;">{{ $stats['total_users'] }}</div>
                 <div style="font-size: 12px; color: #64748b; margin-top: 4px;">{{ $stats['total_students'] }} Siswa &bull; {{ $stats['total_mentors'] }} Mentor</div>
             </div>
 
-            <div class="card-3d" style="padding: 22px;">
+            <div class="card-3d" style="padding: 20px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                    <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Kursus &amp; Modul</span>
+                    <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Kursus &amp; Modul</span>
                     <div style="width: 36px; height: 36px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
                     </div>
                 </div>
-                <div style="font-size: 28px; font-weight: 900; color: #0f172a;">{{ $stats['total_courses'] }} Kursus</div>
-                <div style="font-size: 12px; color: #64748b; margin-top: 4px;">{{ $stats['total_units'] }} Unit &bull; {{ $stats['total_lessons'] }} Modul Belajar</div>
+                <div style="font-size: 26px; font-weight: 900; color: #0f172a;">{{ $stats['total_courses'] }} Kursus</div>
+                <div style="font-size: 12px; color: #64748b; margin-top: 4px;">{{ $stats['total_units'] }} Unit &bull; {{ $stats['total_lessons'] }} Modul</div>
             </div>
 
-            <div class="card-3d" style="padding: 22px;">
+            <div class="card-3d" style="padding: 20px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                    <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Sertifikat Terbit</span>
+                    <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Sertifikat Terbit</span>
                     <div style="width: 36px; height: 36px; border-radius: 10px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
                     </div>
                 </div>
-                <div style="font-size: 28px; font-weight: 900; color: #0f172a;">{{ $stats['total_certificates'] }}</div>
+                <div style="font-size: 26px; font-weight: 900; color: #0f172a;">{{ $stats['total_certificates'] }}</div>
                 <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Tanda Tangan SHA-256 Valid</div>
             </div>
 
-            <div class="card-3d" style="padding: 22px;">
+            <div class="card-3d" style="padding: 20px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                    <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Akumulasi XP</span>
+                    <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Akumulasi XP</span>
                     <div style="width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                     </div>
                 </div>
-                <div style="font-size: 28px; font-weight: 900; color: var(--primary-blue);">{{ number_format($stats['total_xp']) }}</div>
+                <div style="font-size: 26px; font-weight: 900; color: var(--primary-blue);">{{ number_format($stats['total_xp']) }}</div>
                 <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Poin Belajar Seluruh Siswa</div>
             </div>
 
         </div>
 
         <!-- 2 Column Section: Users & Courses -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+        <div class="admin-two-cols">
             
             <!-- Users Table Card -->
             <div class="card-3d" style="padding: 24px;">

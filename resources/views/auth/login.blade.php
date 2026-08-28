@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Masuk ke Kodein - Platform Belajar Coding</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +25,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -45,6 +46,13 @@
             border-radius: 28px;
             padding: 40px 32px;
             box-shadow: 0 4px 0 #e2e8f0;
+        }
+
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 28px 20px;
+                border-radius: 22px;
+            }
         }
 
         .logo-header {
@@ -196,9 +204,9 @@
             @foreach ($demoUsers as $user)
                 <a href="{{ route('auth.quick-login', $user->id) }}" class="account-chip">
                     <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 34px; height: 34px; border-radius: 50%; background: #e2e8f0;" alt="">
-                    <div style="flex: 1;">
-                        <div style="font-size: 13px; font-weight: 800;">{{ $user->name }}</div>
-                        <div style="font-size: 11px; color: var(--text-muted);">{{ $user->email }}</div>
+                    <div style="flex: 1; overflow: hidden;">
+                        <div style="font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $user->name }}</div>
+                        <div style="font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $user->email }}</div>
                     </div>
                     <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; padding: 4px 8px; border-radius: 8px; background: {{ $user->role === 'guru' ? '#dbeafe' : ($user->role === 'super_admin' ? '#f3e8ff' : '#ecfdf5') }}; color: {{ $user->role === 'guru' ? '#1d4ed8' : ($user->role === 'super_admin' ? '#7e22ce' : '#047857') }};">
                         {{ $user->role }}
