@@ -94,7 +94,7 @@ class LearnController extends Controller
         $this->gamificationService->syncHearts($user);
 
         if ($user->hearts <= 0) {
-            return redirect()->route('learn.index')->with('error', 'Hati kamu habis (0/5) ❤️. Isi ulang dengan gems atau tunggu sebentar!');
+            return redirect()->route('learn.index')->with('error', 'Nyawa kamu habis (0/5). Isi ulang dengan gems atau tunggu sebentar!');
         }
 
         $lesson = Lesson::with(['unit.course', 'exercises'])->findOrFail($id);
@@ -106,7 +106,10 @@ class LearnController extends Controller
                 'question_type' => $ex->question_type,
                 'prompt' => $ex->prompt,
                 'code_snippet' => $ex->code_snippet,
+                'options_json' => $ex->options_json,
                 'options' => $ex->options_json,
+                'answer_json' => $ex->answer_json,
+                'explanation' => $ex->explanation,
                 'order_index' => $ex->order_index,
             ];
         });
@@ -125,7 +128,7 @@ class LearnController extends Controller
         if ($user->hearts <= 0) {
             return response()->json([
                 'success' => false,
-                'message' => 'Hati kamu habis (0/5) ❤️',
+                'message' => 'Nyawa kamu habis (0/5)',
             ], 403);
         }
 
@@ -149,9 +152,9 @@ class LearnController extends Controller
         $success = $this->gamificationService->refillHeartsWithGems($user);
 
         if (! $success) {
-            return back()->with('error', 'Gems tidak cukup atau hati sudah penuh.');
+            return back()->with('error', 'Gems tidak cukup atau nyawa sudah penuh.');
         }
 
-        return back()->with('success', 'Hati berhasil diisi penuh (5/5)! ❤️');
+        return back()->with('success', 'Nyawa berhasil diisi penuh (5/5)!');
     }
 }

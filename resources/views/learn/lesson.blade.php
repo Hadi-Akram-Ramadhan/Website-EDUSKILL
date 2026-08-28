@@ -84,6 +84,17 @@
             renderCurrentQuestion();
         });
 
+        function parseOptions(raw) {
+            if (!raw) return [];
+            if (Array.isArray(raw)) return raw;
+            if (typeof raw === 'object') return raw;
+            try {
+                return JSON.parse(raw);
+            } catch (e) {
+                return [];
+            }
+        }
+
         function renderCurrentQuestion() {
             isDrawerAnswerChecked = false;
             selectedAnswer = null;
@@ -120,64 +131,78 @@
             if (ex.code_snippet) {
                 html += `
                     <div style="background: #ffffff; border: 2px solid #cbd5e1; border-radius: 18px; padding: 20px; margin-bottom: 24px; box-shadow: 0 4px 0 #e2e8f0;">
-                        <pre class="code-font" style="font-size: 15px; color: #1e293b; line-height: 1.6; overflow-x: auto;"><code>${escapeHtml(ex.code_snippet)}</code></pre>
+                        <pre class="code-font" style="font-size: 16px; font-weight: 600; color: #0f172a; line-height: 1.6; overflow-x: auto; margin: 0;"><code>${escapeHtml(ex.code_snippet)}</code></pre>
                     </div>
                 `;
             }
 
-            // Question Type Rendering
+            const rawOpts = ex.options_json || ex.options;
+            const parsedOpts = parseOptions(rawOpts);
+
+            // Question Type: Fill Blank / Multiple Choice / Output Prediction
             if (ex.question_type === 'fill_blank' || ex.question_type === 'multiple_choice' || ex.question_type === 'output_prediction') {
-                html += `<div style="display: grid; grid-template-columns: 1fr; gap: 12px;">`;
-                (ex.options_json || []).forEach(opt => {
+                html += `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 8px;">`;
+                
+                const optList = Array.isArray(parsedOpts) ? parsedOpts : [];
+                optList.forEach((opt, idx) => {
                     const optText = typeof opt === 'object' ? (opt.text || JSON.stringify(opt)) : opt;
                     html += `
                         <button type="button" class="btn-3d btn-outline opt-chip" 
                                 onclick="selectSingleOption('${escapeJs(optText)}', this)" 
-                                style="justify-content: flex-start; text-align: left; text-transform: none; font-size: 15px; padding: 16px 20px;">
-                            ${escapeHtml(optText)}
+                                style="justify-content: flex-start; text-align: left; text-transform: none; font-size: 15px; font-weight: 700; padding: 18px 20px; width: 100%; border-radius: 18px;">
+                            <span style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #64748b; font-weight: 800; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0;">
+                                ${String.fromCharCode(65 + idx)}
+                            </span>
+                            <span class="code-font" style="flex: 1;">${escapeHtml(optText)}</span>
                         </button>
                     `;
                 });
                 html += `</div>`;
             } 
+            // Question Type: Code Ordering (Parsons Problem)
             else if (ex.question_type === 'code_ordering') {
                 html += `
-                    <div style="margin-bottom: 16px; font-size: 13px; font-weight: 700; color: #64748b;">
-                        Ketuk baris kode di bawah untuk menyusun urutan yang benar:
+                    <div style="margin-bottom: 12px; font-size: 13px; font-weight: 800; color: #64748b;">
+                        Susun urutan baris kode di kotak atas dengan mengetuk potongan kode di bawah:
                     </div>
-                    <div id="ordering-bucket" style="min-height: 80px; background: #ffffff; border: 2px dashed #94a3b8; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                    <div id="ordering-bucket" style="min-height: 84px; background: #ffffff; border: 2px dashed var(--primary-blue); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
                     </div>
                     <div id="ordering-pool" style="display: flex; flex-direction: column; gap: 10px;">
                 `;
-                (ex.options_json || []).forEach(item => {
+                const poolList = Array.isArray(parsedOpts) ? parsedOpts : [];
+                poolList.forEach(item => {
                     html += `
                         <button type="button" class="btn-3d btn-outline ordering-chip code-font" 
                                 data-id="${item.id}"
                                 onclick="moveOrderingChip(this)" 
-                                style="justify-content: flex-start; text-align: left; text-transform: none; font-size: 14px; padding: 14px 18px;">
+                                style="justify-content: flex-start; text-align: left; text-transform: none; font-size: 15px; font-weight: 600; padding: 14px 18px; border-radius: 14px;">
                             ${escapeHtml(item.text)}
                         </button>
                     `;
                 });
                 html += `</div>`;
             }
+            // Question Type: Matching Pair
             else if (ex.question_type === 'matching_pair') {
-                const pairs = (ex.options_json && ex.options_json.pairs) ? ex.options_json.pairs : {};
-                const leftKeys = Object.keys(pairs);
-                const rightVals = Object.values(pairs).sort(() => Math.random() - 0.5);
+                const pairs = (parsedOpts && parsedOpts.pairs) ? parsedOpts.pairs : parsedOpts;
+                const leftKeys = typeof pairs === 'object' && !Array.isArray(pairs) ? Object.keys(pairs) : [];
+                const rightVals = typeof pairs === 'object' && !Array.isArray(pairs) ? Object.values(pairs).sort(() => Math.random() - 0.5) : [];
 
                 html += `
+                    <div style="margin-bottom: 14px; font-size: 13px; font-weight: 800; color: #64748b;">
+                        Pilih satu item di kiri, lalu pilih pasangannya di kanan:
+                    </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                             ${leftKeys.map(k => `
-                                <button type="button" class="btn-3d btn-outline match-left code-font" data-key="${escapeJs(k)}" onclick="selectMatchPair('left', '${escapeJs(k)}', this)" style="text-transform: none;">
+                                <button type="button" class="btn-3d btn-outline match-left code-font" data-key="${escapeJs(k)}" onclick="selectMatchPair('left', '${escapeJs(k)}', this)" style="text-transform: none; font-size: 14px; padding: 14px 16px; border-radius: 14px;">
                                     ${escapeHtml(k)}
                                 </button>
                             `).join('')}
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                             ${rightVals.map(v => `
-                                <button type="button" class="btn-3d btn-outline match-right code-font" data-val="${escapeJs(v)}" onclick="selectMatchPair('right', '${escapeJs(v)}', this)" style="text-transform: none;">
+                                <button type="button" class="btn-3d btn-outline match-right code-font" data-val="${escapeJs(v)}" onclick="selectMatchPair('right', '${escapeJs(v)}', this)" style="text-transform: none; font-size: 14px; padding: 14px 16px; border-radius: 14px;">
                                     ${escapeHtml(v)}
                                 </button>
                             `).join('')}
@@ -230,11 +255,15 @@
         function selectMatchPair(side, val, btn) {
             window.SoundEngine.playTap();
             if (side === 'left') {
-                document.querySelectorAll('.match-left').forEach(b => b.style.background = '#ffffff');
+                document.querySelectorAll('.match-left').forEach(b => {
+                    if (!b.getAttribute('data-paired')) b.style.background = '#ffffff';
+                });
                 btn.style.background = '#eff6ff';
                 window._currentMatchLeft = { val, btn };
             } else {
-                document.querySelectorAll('.match-right').forEach(b => b.style.background = '#ffffff');
+                document.querySelectorAll('.match-right').forEach(b => {
+                    if (!b.getAttribute('data-paired')) b.style.background = '#ffffff';
+                });
                 btn.style.background = '#eff6ff';
                 window._currentMatchRight = { val, btn };
             }
@@ -243,8 +272,11 @@
                 window._matchedPairs[window._currentMatchLeft.val] = window._currentMatchRight.val;
                 window._currentMatchLeft.btn.style.background = '#ecfdf5';
                 window._currentMatchLeft.btn.style.borderColor = '#10b981';
+                window._currentMatchLeft.btn.setAttribute('data-paired', 'true');
+                
                 window._currentMatchRight.btn.style.background = '#ecfdf5';
                 window._currentMatchRight.btn.style.borderColor = '#10b981';
+                window._currentMatchRight.btn.setAttribute('data-paired', 'true');
 
                 window._currentMatchLeft = null;
                 window._currentMatchRight = null;
@@ -270,15 +302,17 @@
             const ex = exercises[currentIndex];
             let isCorrect = false;
 
+            const rawAnswer = ex.answer_json || ex.answer;
+
             // Client-side quick validation for sound & feedback
             if (ex.question_type === 'code_ordering') {
-                const target = Array.isArray(ex.answer_json) ? ex.answer_json : JSON.parse(ex.answer_json);
+                const target = Array.isArray(rawAnswer) ? rawAnswer : parseOptions(rawAnswer);
                 isCorrect = JSON.stringify(selectedAnswer) === JSON.stringify(target);
             } else if (ex.question_type === 'matching_pair') {
-                const target = typeof ex.answer_json === 'object' ? ex.answer_json : JSON.parse(ex.answer_json);
+                const target = typeof rawAnswer === 'object' ? rawAnswer : parseOptions(rawAnswer);
                 isCorrect = JSON.stringify(selectedAnswer) === JSON.stringify(target);
             } else {
-                isCorrect = String(selectedAnswer).trim().toLowerCase() === String(ex.answer_json).trim().toLowerCase();
+                isCorrect = String(selectedAnswer).trim().toLowerCase() === String(rawAnswer).trim().toLowerCase();
             }
 
             currentAnswers.push({
