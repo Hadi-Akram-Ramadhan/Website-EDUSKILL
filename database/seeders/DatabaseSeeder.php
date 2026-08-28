@@ -2,15 +2,19 @@
 
 namespace Database\Seeders;
 
+use App\Models\Certificate;
 use App\Models\Course;
 use App\Models\Exercise;
 use App\Models\Lesson;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\UserBadge;
+use App\Models\UserProgress;
+use App\Models\UserStreak;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,12 +23,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Users
+        // 1. Users (Super Admin, Mentors/Teachers, Students)
         $admin = User::create([
             'name' => 'Super Admin',
             'email' => 'admin@kodein.id',
             'password' => Hash::make('password'),
             'role' => 'super_admin',
+            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=admin_kodein',
             'xp' => 1500,
             'level' => 16,
             'hearts' => 5,
@@ -32,17 +37,30 @@ class DatabaseSeeder extends Seeder
             'streak_count' => 15,
         ]);
 
-        $guru = User::create([
+        $guru1 = User::create([
             'name' => 'Pak Hendra, S.Kom',
             'email' => 'guru@kodein.id',
             'password' => Hash::make('password'),
             'role' => 'guru',
-            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=guru1',
-            'xp' => 800,
+            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=hendra_guru',
+            'xp' => 950,
+            'level' => 10,
+            'hearts' => 5,
+            'gems' => 250,
+            'streak_count' => 8,
+        ]);
+
+        $guru2 = User::create([
+            'name' => 'Ibu Maya Lestari, M.Kom',
+            'email' => 'maya@kodein.id',
+            'password' => Hash::make('password'),
+            'role' => 'guru',
+            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=maya_guru',
+            'xp' => 820,
             'level' => 9,
             'hearts' => 5,
             'gems' => 200,
-            'streak_count' => 8,
+            'streak_count' => 6,
         ]);
 
         $siswa1 = User::create([
@@ -50,12 +68,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'budi@smp.sch.id',
             'password' => Hash::make('password'),
             'role' => 'siswa',
-            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=budi',
-            'xp' => 340,
-            'level' => 4,
+            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=budi_smp',
+            'xp' => 480,
+            'level' => 5,
             'hearts' => 5,
-            'gems' => 70,
-            'streak_count' => 5,
+            'gems' => 90,
+            'streak_count' => 7,
             'last_active_date' => Carbon::today(),
         ]);
 
@@ -64,64 +82,116 @@ class DatabaseSeeder extends Seeder
             'email' => 'siti@sma.sch.id',
             'password' => Hash::make('password'),
             'role' => 'siswa',
-            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=siti',
-            'xp' => 520,
-            'level' => 6,
+            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=siti_sma',
+            'xp' => 620,
+            'level' => 7,
             'hearts' => 4,
-            'gems' => 120,
-            'streak_count' => 12,
+            'gems' => 140,
+            'streak_count' => 14,
             'last_active_date' => Carbon::today(),
         ]);
 
-        // 2. Badges for siswa
-        UserBadge::create([
-            'user_id' => $siswa1->id,
-            'badge_code' => 'first_lesson',
-            'badge_name' => 'Langkah Pertama',
-            'badge_description' => 'Menyelesaikan modul pemrograman pertama 🎉',
-            'icon' => 'rocket',
-            'unlocked_at' => Carbon::now()->subDays(3),
+        $siswa3 = User::create([
+            'name' => 'Reza Pratama',
+            'email' => 'reza@smp.sch.id',
+            'password' => Hash::make('password'),
+            'role' => 'siswa',
+            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=reza_smp',
+            'xp' => 380,
+            'level' => 4,
+            'hearts' => 5,
+            'gems' => 60,
+            'streak_count' => 4,
+            'last_active_date' => Carbon::today(),
         ]);
 
-        UserBadge::create([
-            'user_id' => $siswa1->id,
-            'badge_code' => 'streak_3',
-            'badge_name' => '3 Hari Beruntun!',
-            'badge_description' => 'Belajar 3 hari berturut-turut tanpa putus 🔥',
-            'icon' => 'fire',
-            'unlocked_at' => Carbon::now()->subDays(2),
+        $siswa4 = User::create([
+            'name' => 'Anisa Rahma',
+            'email' => 'anisa@sma.sch.id',
+            'password' => Hash::make('password'),
+            'role' => 'siswa',
+            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=anisa_sma',
+            'xp' => 290,
+            'level' => 3,
+            'hearts' => 3,
+            'gems' => 40,
+            'streak_count' => 3,
+            'last_active_date' => Carbon::today(),
         ]);
 
-        // 3. Course: Pemrograman Python Dasar
-        $course = Course::create([
-            'mentor_id' => $guru->id,
+        $siswa5 = User::create([
+            'name' => 'Dimas Setiawan',
+            'email' => 'dimas@smp.sch.id',
+            'password' => Hash::make('password'),
+            'role' => 'siswa',
+            'avatar' => 'https://api.dicebear.com/7.x/bottts/svg?seed=dimas_smp',
+            'xp' => 150,
+            'level' => 2,
+            'hearts' => 5,
+            'gems' => 50,
+            'streak_count' => 1,
+            'last_active_date' => Carbon::today(),
+        ]);
+
+        // 2. Badges for students
+        $badgesCatalog = [
+            ['code' => 'first_lesson', 'name' => 'Langkah Pertama', 'desc' => 'Menyelesaikan modul pemrograman pertama kamu', 'icon' => 'code'],
+            ['code' => 'streak_3', 'name' => '3 Hari Beruntun', 'desc' => 'Belajar 3 hari berturut-turut tanpa putus', 'icon' => 'flame'],
+            ['code' => 'streak_7', 'name' => 'Pejuang 1 Minggu', 'desc' => 'Menjaga streak belajar selama 7 hari penuh', 'icon' => 'trophy'],
+            ['code' => 'perfect_score', 'name' => 'Bug Hunter Handal', 'desc' => 'Menjawab 100% benar semua soal dalam satu modul', 'icon' => 'target'],
+        ];
+
+        foreach ([$siswa1, $siswa2] as $student) {
+            foreach ($badgesCatalog as $badge) {
+                UserBadge::create([
+                    'user_id' => $student->id,
+                    'badge_code' => $badge['code'],
+                    'badge_name' => $badge['name'],
+                    'badge_description' => $badge['desc'],
+                    'icon' => $badge['icon'],
+                    'unlocked_at' => Carbon::now()->subDays(rand(1, 5)),
+                ]);
+            }
+        }
+
+        // 3. Streaks
+        for ($i = 0; $i < 7; $i++) {
+            UserStreak::create([
+                'user_id' => $siswa1->id,
+                'active_date' => Carbon::today()->subDays($i)->toDateString(),
+            ]);
+        }
+
+        // 4. Course 1: Pemrograman Python Dasar
+        $course1 = Course::create([
+            'mentor_id' => $guru1->id,
             'title' => 'Dasar Pemrograman Python untuk SMP & SMA',
             'slug' => 'dasar-pemrograman-python',
-            'description' => 'Pelajari logika algoritma dan sintaks dasar bahasa Python dengan metode interaktif & gamifikasi seru.',
+            'description' => 'Pelajari logika algoritma dan sintaks dasar bahasa Python dengan metode interaktif terstruktur.',
             'category' => 'Python Dasar',
-            'target_audience' => 'Siswa SMP / SMA Pemula',
+            'target_audience' => 'Siswa SMP & SMA',
             'thumbnail' => 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80',
             'level' => 'beginner',
-            'total_xp' => 120,
+            'total_xp' => 160,
             'is_published' => true,
         ]);
 
-        // 4. Unit 1: Perkenalan & Variabel
+        // Unit 1
         $unit1 = Unit::create([
-            'course_id' => $course->id,
+            'course_id' => $course1->id,
             'title' => 'Unit 1: Perintah Cetak & Variabel',
             'description' => 'Mengenal instruksi print() dan cara menyimpan data dalam variabel.',
             'order_index' => 1,
         ]);
 
-        // Lesson 1: Perintah Print
+        // Lesson 1
         $lesson1 = Lesson::create([
             'unit_id' => $unit1->id,
             'title' => 'Instruksi print() dan Teks',
             'slug' => 'instruksi-print-dan-teks',
             'description' => 'Pelajari cara komputer menampilkan teks ke layar menggunakan print().',
             'type' => 'quiz',
-            'theory_content' => "Dalam Python, fungsi `print()` digunakan untuk menampilkan pesan atau teks ke layar komputer. Teks harus diapit oleh tanda petik dua `\"...\"` atau petik satu `'...'`.",
+            'theory_content' => "Fungsi print() dalam Python digunakan untuk menampilkan teks ke layar komputer. Teks harus diapit tanda petik dua atau petik satu.",
             'xp_reward' => 20,
             'order_index' => 1,
         ]);
@@ -162,14 +232,14 @@ class DatabaseSeeder extends Seeder
             'order_index' => 3,
         ]);
 
-        // Lesson 2: Tipe Data Dasar
+        // Lesson 2
         $lesson2 = Lesson::create([
             'unit_id' => $unit1->id,
             'title' => 'Tipe Data: Angka, Teks, & Boolean',
             'slug' => 'tipe-data-dasar',
             'description' => 'Mengenal integer, float, string, dan boolean.',
             'type' => 'quiz',
-            'theory_content' => "Tipe data utama di Python:\n- `str` (String): Teks seperti 'Halo'\n- `int` (Integer): Angka bulat seperti 10, -5\n- `float`: Angka desimal seperti 3.14\n- `bool` (Boolean): Bernilai True atau False",
+            'theory_content' => "Tipe data utama di Python: str (String), int (Integer), float (Desimal), dan bool (Boolean).",
             'xp_reward' => 25,
             'order_index' => 2,
         ]);
@@ -183,22 +253,32 @@ class DatabaseSeeder extends Seeder
                     'int' => '17',
                     'str' => '"Belajar"',
                     'bool' => 'True',
-                    'float' => '3.14',
-                ],
+                    'float' => '3.14'
+                ]
             ],
             'answer_json' => [
                 'int' => '17',
                 'str' => '"Belajar"',
                 'bool' => 'True',
-                'float' => '3.14',
+                'float' => '3.14'
             ],
             'explanation' => 'int adalah angka bulat, str adalah teks, bool adalah nilai logika (True/False), dan float adalah angka pecahan.',
             'order_index' => 1,
         ]);
 
-        // 5. Unit 2: Percabangan Logika (If-Else)
+        Exercise::create([
+            'lesson_id' => $lesson2->id,
+            'question_type' => 'multiple_choice',
+            'prompt' => 'Tipe data manakah yang digunakan untuk menyimpan nilai True atau False?',
+            'options_json' => ['bool (Boolean)', 'int (Integer)', 'str (String)', 'float (Float)'],
+            'answer_json' => 'bool (Boolean)',
+            'explanation' => 'Tipe data boolean (bool) hanya memiliki dua nilai: True atau False.',
+            'order_index' => 2,
+        ]);
+
+        // Unit 2
         $unit2 = Unit::create([
-            'course_id' => $course->id,
+            'course_id' => $course1->id,
             'title' => 'Unit 2: Percabangan Logika (If-Else)',
             'description' => 'Mengajarkan komputer mengambil keputusan menggunakan percabangan if, elif, dan else.',
             'order_index' => 2,
@@ -210,7 +290,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'logika-keputusan-if-else',
             'description' => 'Mengecek syarat kondisi benar atau salah.',
             'type' => 'quiz',
-            'theory_content' => 'Struktur `if` mengevaluasi kondisi. Jika kondisi bernilai True, blok kode di dalamnya dijalankan. Jika tidak, blok `else` yang akan dijalankan.',
+            'theory_content' => "Struktur if mengevaluasi kondisi. Jika bernilai True, blok if dijalankan. Jika tidak, blok else yang dijalankan.",
             'xp_reward' => 30,
             'order_index' => 1,
         ]);
@@ -218,11 +298,81 @@ class DatabaseSeeder extends Seeder
         Exercise::create([
             'lesson_id' => $lesson3->id,
             'question_type' => 'multiple_choice',
-            'prompt' => 'Jika nilai `skor = 85`, apa hasil dari kondisi `if skor >= 75:` ?',
+            'prompt' => 'Jika nilai skor = 85, apa hasil dari kondisi if skor >= 75 ?',
             'options_json' => ['True (Kondisi Terpenuhi)', 'False (Kondisi Gagal)', 'Error', 'None'],
             'answer_json' => 'True (Kondisi Terpenuhi)',
             'explanation' => 'Karena 85 lebih besar dari atau sama dengan 75, maka kondisi bernilai True.',
             'order_index' => 1,
+        ]);
+
+        // Course 2: Web Dasar HTML & CSS
+        $course2 = Course::create([
+            'mentor_id' => $guru2->id,
+            'title' => 'Dasar Web HTML & CSS untuk Pemula',
+            'slug' => 'dasar-web-html-css',
+            'description' => 'Belajar membuat halaman web pertama kamu dengan tag HTML dan styling CSS modern.',
+            'category' => 'Web Dasar',
+            'target_audience' => 'Siswa SMP & SMA',
+            'thumbnail' => 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=80',
+            'level' => 'beginner',
+            'total_xp' => 100,
+            'is_published' => true,
+        ]);
+
+        $unitWeb1 = Unit::create([
+            'course_id' => $course2->id,
+            'title' => 'Unit 1: Tag Dasar HTML',
+            'description' => 'Mengenal struktur halaman web, tag judul h1, dan paragraf p.',
+            'order_index' => 1,
+        ]);
+
+        $lessonWeb1 = Lesson::create([
+            'unit_id' => $unitWeb1->id,
+            'title' => 'Heading dan Paragraf Web',
+            'slug' => 'heading-dan-paragraf-web',
+            'description' => 'Membuat judul utama dan paragraf pada halaman website.',
+            'type' => 'quiz',
+            'theory_content' => "Tag h1 digunakan untuk judul utama, dan tag p digunakan untuk paragraf.",
+            'xp_reward' => 20,
+            'order_index' => 1,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonWeb1->id,
+            'question_type' => 'fill_blank',
+            'prompt' => 'Lengkapi tag HTML berikut untuk membuat judul utama:',
+            'code_snippet' => '<____>Selamat Datang di Web Saya</____>',
+            'options_json' => ['h1', 'p', 'div', 'span'],
+            'answer_json' => 'h1',
+            'explanation' => 'Tag <h1> adalah tag standar HTML untuk judul utama halaman.',
+            'order_index' => 1,
+        ]);
+
+        // 5. Seed progress for Siti (Course 1 Completed -> Certificate Issued)
+        foreach ([$lesson1, $lesson2, $lesson3] as $l) {
+            UserProgress::create([
+                'user_id' => $siswa2->id,
+                'lesson_id' => $l->id,
+                'is_completed' => true,
+                'score' => 100,
+                'completed_at' => Carbon::now()->subDays(1),
+            ]);
+        }
+
+        // Certificate for Siti
+        $certCode = 'CERT-DASARP-202608-8AM0AQ';
+        Certificate::create([
+            'cert_code' => $certCode,
+            'cert_hash' => hash_hmac('sha256', "{$siswa2->id}|{$course1->id}|{$certCode}", config('app.key') ?: 'secret-key'),
+            'user_id' => $siswa2->id,
+            'course_id' => $course1->id,
+            'recipient_name' => $siswa2->name,
+            'course_title' => $course1->title,
+            'mentor_name' => $guru1->name,
+            'score_average' => 100.0,
+            'issue_date' => Carbon::now()->toDateString(),
+            'qr_code_url' => "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode(url("/verify/{$certCode}")),
+            'is_valid' => true,
         ]);
     }
 }
