@@ -11,21 +11,21 @@
 
     <style>
         :root {
-            --duo-green: #58cc02;
-            --duo-green-shadow: #46a302;
-            --duo-green-light: #d7ffb8;
-            --duo-blue: #1cb0f6;
-            --duo-blue-shadow: #1899d6;
-            --duo-orange: #ff9600;
-            --duo-orange-shadow: #e58700;
-            --duo-red: #ff4b4b;
-            --duo-red-shadow: #ea2b2b;
-            --duo-red-bg: #3c1418;
-            --duo-green-bg: #14351a;
-            --duo-gold: #ffc800;
-            --duo-dark: #0e161a;
-            --duo-card: #202f36;
-            --duo-border: #37464f;
+            --primary-blue: #2563eb;
+            --primary-blue-shadow: #1e40af;
+            --accent-green: #10b981;
+            --accent-green-shadow: #059669;
+            --accent-green-bg: #ecfdf5;
+            --accent-red: #ef4444;
+            --accent-red-shadow: #dc2626;
+            --accent-red-bg: #fef2f2;
+            --accent-orange: #f59e0b;
+            --accent-orange-shadow: #d97706;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
         }
 
         * {
@@ -37,8 +37,8 @@
         }
 
         body {
-            background-color: var(--duo-dark);
-            color: #ffffff;
+            background-color: var(--bg-page);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -58,7 +58,7 @@
             gap: 8px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
             border-radius: 16px;
             border: none;
             cursor: pointer;
@@ -66,44 +66,44 @@
             user-select: none;
             text-decoration: none;
             padding: 14px 28px;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .btn-3d:active {
             transform: translateY(4px);
         }
 
-        .btn-green {
-            background: var(--duo-green);
-            color: #ffffff;
-            box-shadow: 0 4px 0 var(--duo-green-shadow);
-        }
-        .btn-green:active {
-            box-shadow: 0 0 0 var(--duo-green-shadow);
-        }
-
         .btn-blue {
-            background: var(--duo-blue);
+            background: var(--primary-blue);
             color: #ffffff;
-            box-shadow: 0 4px 0 var(--duo-blue-shadow);
+            box-shadow: 0 4px 0 var(--primary-blue-shadow);
         }
         .btn-blue:active {
-            box-shadow: 0 0 0 var(--duo-blue-shadow);
+            box-shadow: 0 0 0 var(--primary-blue-shadow);
+        }
+
+        .btn-green {
+            background: var(--accent-green);
+            color: #ffffff;
+            box-shadow: 0 4px 0 var(--accent-green-shadow);
+        }
+        .btn-green:active {
+            box-shadow: 0 0 0 var(--accent-green-shadow);
         }
 
         .btn-red {
-            background: var(--duo-red);
+            background: var(--accent-red);
             color: #ffffff;
-            box-shadow: 0 4px 0 var(--duo-red-shadow);
+            box-shadow: 0 4px 0 var(--accent-red-shadow);
         }
         .btn-red:active {
-            box-shadow: 0 0 0 var(--duo-red-shadow);
+            box-shadow: 0 0 0 var(--accent-red-shadow);
         }
 
         .btn-disabled {
-            background: #2b3940 !important;
-            color: #64748b !important;
-            box-shadow: 0 4px 0 #1b262c !important;
+            background: #e2e8f0 !important;
+            color: #94a3b8 !important;
+            box-shadow: 0 4px 0 #cbd5e1 !important;
             cursor: not-allowed !important;
             transform: none !important;
         }
@@ -122,7 +122,7 @@
         .progress-track {
             flex: 1;
             height: 16px;
-            background: #2b3940;
+            background: #e2e8f0;
             border-radius: 9999px;
             overflow: hidden;
             position: relative;
@@ -131,7 +131,7 @@
         .progress-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #58cc02, #68e805);
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
             border-radius: 9999px;
             transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
@@ -152,16 +152,15 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            color: var(--duo-red);
+            color: var(--accent-red);
             font-weight: 800;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .btn-close {
             background: transparent;
             border: none;
             color: #64748b;
-            font-size: 22px;
             cursor: pointer;
             padding: 6px;
             display: flex;
@@ -171,8 +170,8 @@
             transition: all 0.15s;
         }
         .btn-close:hover {
-            color: #ffffff;
-            background: #202f36;
+            color: #0f172a;
+            background: #e2e8f0;
         }
 
         /* Main Quiz Arena */
@@ -193,21 +192,22 @@
             bottom: 0;
             left: 0;
             right: 0;
-            border-top: 2px solid var(--duo-border);
-            background: #131f24;
+            border-top: 2px solid var(--border-color);
+            background: #ffffff;
             padding: 24px 20px;
             z-index: 50;
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
             transition: background-color 0.25s ease, border-color 0.25s ease;
         }
 
         .action-drawer.correct-state {
-            background: var(--duo-green-bg);
-            border-color: var(--duo-green);
+            background: var(--accent-green-bg);
+            border-color: #6ee7b7;
         }
 
         .action-drawer.wrong-state {
-            background: var(--duo-red-bg);
-            border-color: var(--duo-red);
+            background: var(--accent-red-bg);
+            border-color: #fca5a5;
         }
 
         .drawer-content {
@@ -254,7 +254,7 @@
                     const gain = this.ctx.createGain();
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(freq, now + i * 0.08);
-                    gain.gain.setValueAtTime(0.25, now + i * 0.08);
+                    gain.gain.setValueAtTime(0.2, now + i * 0.08);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);
@@ -271,7 +271,7 @@
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(160, now);
                 osc.frequency.exponentialRampToValueAtTime(90, now + 0.3);
-                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.setValueAtTime(0.25, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
@@ -287,7 +287,7 @@
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(500, now);
                 osc.frequency.exponentialRampToValueAtTime(900, now + 0.04);
-                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.setValueAtTime(0.1, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
@@ -311,7 +311,7 @@
                     const gain = this.ctx.createGain();
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(n.f, now + n.t);
-                    gain.gain.setValueAtTime(0.25, now + n.t);
+                    gain.gain.setValueAtTime(0.2, now + n.t);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);

@@ -62,7 +62,7 @@ class WebLeaderboardAndProfileTest extends TestCase
 
         $response = $this->actingAs($user)->get('/certificates');
         $response->assertStatus(200)
-            ->assertSee('KLAIM SERTIFIKAT RESMI');
+            ->assertSee('Klaim Sertifikat Resmi');
 
         // Claim Certificate
         $claimResponse = $this->actingAs($user)->post("/certificates/claim/{$course->id}");

@@ -14,7 +14,6 @@ use App\Models\UserStreak;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -191,7 +190,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'instruksi-print-dan-teks',
             'description' => 'Pelajari cara komputer menampilkan teks ke layar menggunakan print().',
             'type' => 'quiz',
-            'theory_content' => "Fungsi print() dalam Python digunakan untuk menampilkan teks ke layar komputer. Teks harus diapit tanda petik dua atau petik satu.",
+            'theory_content' => 'Fungsi print() dalam Python digunakan untuk menampilkan teks ke layar komputer. Teks harus diapit tanda petik dua atau petik satu.',
             'xp_reward' => 20,
             'order_index' => 1,
         ]);
@@ -239,7 +238,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'tipe-data-dasar',
             'description' => 'Mengenal integer, float, string, dan boolean.',
             'type' => 'quiz',
-            'theory_content' => "Tipe data utama di Python: str (String), int (Integer), float (Desimal), dan bool (Boolean).",
+            'theory_content' => 'Tipe data utama di Python: str (String), int (Integer), float (Desimal), dan bool (Boolean).',
             'xp_reward' => 25,
             'order_index' => 2,
         ]);
@@ -253,14 +252,14 @@ class DatabaseSeeder extends Seeder
                     'int' => '17',
                     'str' => '"Belajar"',
                     'bool' => 'True',
-                    'float' => '3.14'
-                ]
+                    'float' => '3.14',
+                ],
             ],
             'answer_json' => [
                 'int' => '17',
                 'str' => '"Belajar"',
                 'bool' => 'True',
-                'float' => '3.14'
+                'float' => '3.14',
             ],
             'explanation' => 'int adalah angka bulat, str adalah teks, bool adalah nilai logika (True/False), dan float adalah angka pecahan.',
             'order_index' => 1,
@@ -290,7 +289,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'logika-keputusan-if-else',
             'description' => 'Mengecek syarat kondisi benar atau salah.',
             'type' => 'quiz',
-            'theory_content' => "Struktur if mengevaluasi kondisi. Jika bernilai True, blok if dijalankan. Jika tidak, blok else yang dijalankan.",
+            'theory_content' => 'Struktur if mengevaluasi kondisi. Jika bernilai True, blok if dijalankan. Jika tidak, blok else yang dijalankan.',
             'xp_reward' => 30,
             'order_index' => 1,
         ]);
@@ -332,7 +331,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'heading-dan-paragraf-web',
             'description' => 'Membuat judul utama dan paragraf pada halaman website.',
             'type' => 'quiz',
-            'theory_content' => "Tag h1 digunakan untuk judul utama, dan tag p digunakan untuk paragraf.",
+            'theory_content' => 'Tag h1 digunakan untuk judul utama, dan tag p digunakan untuk paragraf.',
             'xp_reward' => 20,
             'order_index' => 1,
         ]);
@@ -371,7 +370,7 @@ class DatabaseSeeder extends Seeder
             'mentor_name' => $guru1->name,
             'score_average' => 100.0,
             'issue_date' => Carbon::now()->toDateString(),
-            'qr_code_url' => "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode(url("/verify/{$certCode}")),
+            'qr_code_url' => 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data='.urlencode(url("/verify/{$certCode}")),
             'is_valid' => true,
         ]);
     }

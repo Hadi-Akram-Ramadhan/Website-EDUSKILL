@@ -45,7 +45,7 @@ class WebLearnTest extends TestCase
         $response = $this->actingAs($user)->get("/learn/lesson/{$lesson->id}");
 
         $response->assertStatus(200)
-            ->assertSee('PERIKSA')
+            ->assertSee('Periksa Jawaban')
             ->assertSee($lesson->title);
     }
 

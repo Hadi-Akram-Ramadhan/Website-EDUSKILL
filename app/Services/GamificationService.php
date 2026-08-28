@@ -290,13 +290,13 @@ class GamificationService
     protected function checkStreakBadges(User $user): void
     {
         if ($user->streak_count >= 3) {
-            $this->grantBadge($user, 'streak_3', '3 Hari Beruntun!', 'Belajar 3 hari berturut-turut tanpa putus 🔥', 'fire');
+            $this->grantBadge($user, 'streak_3', '3 Hari Beruntun', 'Belajar 3 hari berturut-turut tanpa putus', 'flame');
         }
         if ($user->streak_count >= 7) {
-            $this->grantBadge($user, 'streak_7', 'Pejuang 1 Minggu!', 'Menjaga streak belajar selama 7 hari penuh 🏆', 'trophy');
+            $this->grantBadge($user, 'streak_7', 'Pejuang 1 Minggu', 'Menjaga streak belajar selama 7 hari penuh', 'trophy');
         }
         if ($user->streak_count >= 30) {
-            $this->grantBadge($user, 'streak_30', 'Master Konsistensi!', 'Streak 30 hari berturut-turut 🌟', 'star');
+            $this->grantBadge($user, 'streak_30', 'Master Konsistensi', 'Streak 30 hari berturut-turut', 'star');
         }
     }
 
@@ -310,7 +310,7 @@ class GamificationService
         // First lesson badge
         $completedCount = UserProgress::where('user_id', $user->id)->where('is_completed', true)->count();
         if ($completedCount >= 1) {
-            $b = $this->grantBadge($user, 'first_lesson', 'Langkah Pertama', 'Menyelesaikan modul pemrograman pertama 🎉', 'rocket');
+            $b = $this->grantBadge($user, 'first_lesson', 'Langkah Pertama', 'Menyelesaikan modul pemrograman pertama kamu', 'code');
             if ($b) {
                 $newBadges[] = $b;
             }
@@ -318,7 +318,7 @@ class GamificationService
 
         // Perfect score badge
         if ($score === 100) {
-            $b = $this->grantBadge($user, 'perfect_score', 'Bug Hunter Handal', 'Menjawab 100% benar semua soal dalam satu lesson 🎯', 'target');
+            $b = $this->grantBadge($user, 'perfect_score', 'Bug Hunter Handal', 'Menjawab 100% benar semua soal dalam satu modul', 'target');
             if ($b) {
                 $newBadges[] = $b;
             }
@@ -326,7 +326,7 @@ class GamificationService
 
         // 5 lessons completed
         if ($completedCount >= 5) {
-            $b = $this->grantBadge($user, 'coder_level_5', 'Calon Programmer', 'Telah menyelesaikan 5 modul belajar 💻', 'code');
+            $b = $this->grantBadge($user, 'coder_level_5', 'Calon Programmer', 'Telah menyelesaikan 5 modul belajar pemrograman', 'code');
             if ($b) {
                 $newBadges[] = $b;
             }

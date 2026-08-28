@@ -64,7 +64,7 @@ class CertificateWebController extends Controller
         try {
             $cert = $this->certificateService->generateCertificate($user, $course);
 
-            return redirect()->route('certificate.verify', $cert->cert_code)->with('success', 'Selamat! Sertifikat resmi kamu berhasil diterbitkan 🎓');
+            return redirect()->route('certificate.verify', $cert->cert_code)->with('success', 'Selamat! Sertifikat resmi kamu berhasil diterbitkan.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

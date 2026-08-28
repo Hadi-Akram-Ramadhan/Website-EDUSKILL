@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kodein - Belajar Pemrograman Seru Ala Duolingo untuk SMP & SMA</title>
+    <title>Kodein - Platform Belajar Pemrograman untuk SMP & SMA</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --duo-green: #58cc02;
-            --duo-green-shadow: #46a302;
-            --duo-blue: #1cb0f6;
-            --duo-blue-shadow: #1899d6;
-            --duo-orange: #ff9600;
-            --duo-orange-shadow: #e58700;
-            --duo-gold: #ffc800;
-            --duo-gold-shadow: #e5b400;
-            --duo-dark: #0e161a;
-            --duo-card: #202f36;
-            --duo-border: #37464f;
+            --primary-blue: #2563eb;
+            --primary-blue-hover: #1d4ed8;
+            --primary-blue-shadow: #1e40af;
+            --primary-blue-light: #eff6ff;
+            --accent-green: #10b981;
+            --accent-green-shadow: #059669;
+            --accent-orange: #f59e0b;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
         }
 
         * {
@@ -30,8 +31,8 @@
         }
 
         body {
-            background-color: var(--duo-dark);
-            color: #ffffff;
+            background-color: var(--bg-page);
+            color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -52,38 +53,38 @@
             gap: 8px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
             border-radius: 16px;
             border: none;
             cursor: pointer;
             padding: 14px 28px;
-            font-size: 15px;
+            font-size: 14px;
             text-decoration: none;
             transition: transform 0.1s;
         }
         .btn-3d:active { transform: translateY(4px); }
 
-        .btn-green {
-            background: var(--duo-green);
-            color: #fff;
-            box-shadow: 0 4px 0 var(--duo-green-shadow);
-        }
-        .btn-green:active { box-shadow: 0 0 0 var(--duo-green-shadow); }
-
         .btn-blue {
-            background: var(--duo-blue);
+            background: var(--primary-blue);
             color: #fff;
-            box-shadow: 0 4px 0 var(--duo-blue-shadow);
+            box-shadow: 0 4px 0 var(--primary-blue-shadow);
         }
-        .btn-blue:active { box-shadow: 0 0 0 var(--duo-blue-shadow); }
+        .btn-blue:active { box-shadow: 0 0 0 var(--primary-blue-shadow); }
+
+        .btn-green {
+            background: var(--accent-green);
+            color: #fff;
+            box-shadow: 0 4px 0 var(--accent-green-shadow);
+        }
+        .btn-green:active { box-shadow: 0 0 0 var(--accent-green-shadow); }
 
         .btn-outline {
-            background: transparent;
-            color: #38bdf8;
-            border: 2px solid var(--duo-border);
-            box-shadow: 0 4px 0 var(--duo-border);
+            background: #ffffff;
+            color: var(--primary-blue);
+            border: 2px solid #cbd5e1;
+            box-shadow: 0 4px 0 #cbd5e1;
         }
-        .btn-outline:active { box-shadow: 0 0 0 var(--duo-border); }
+        .btn-outline:active { box-shadow: 0 0 0 #cbd5e1; }
 
         .hero {
             max-width: 1140px;
@@ -106,22 +107,21 @@
         }
 
         .hero-title {
-            font-size: 48px;
+            font-size: 46px;
             font-weight: 900;
-            line-height: 1.15;
+            line-height: 1.2;
             letter-spacing: -1px;
             margin-bottom: 20px;
+            color: #0f172a;
         }
 
         .hero-title span {
-            background: linear-gradient(135deg, #58cc02, #38bdf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary-blue);
         }
 
         .hero-subtitle {
-            font-size: 18px;
-            color: #94a3b8;
+            font-size: 17px;
+            color: var(--text-muted);
             line-height: 1.6;
             margin-bottom: 32px;
         }
@@ -134,25 +134,13 @@
         }
 
         .mascot-card {
-            background: var(--duo-card);
-            border: 2px solid var(--duo-border);
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
             border-radius: 32px;
             padding: 40px 32px;
-            box-shadow: 0 10px 0 var(--duo-border);
+            box-shadow: 0 8px 0 #e2e8f0;
             text-align: center;
             position: relative;
-        }
-
-        @keyframes float-soft {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        .mascot-avatar {
-            font-size: 88px;
-            display: inline-block;
-            animation: float-soft 3.5s ease-in-out infinite;
-            filter: drop-shadow(0 12px 20px rgba(88, 204, 2, 0.3));
         }
 
         .features-grid {
@@ -165,11 +153,11 @@
         }
 
         .feature-card {
-            background: var(--duo-card);
-            border: 2px solid var(--duo-border);
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
             border-radius: 24px;
             padding: 28px 24px;
-            box-shadow: 0 6px 0 var(--duo-border);
+            box-shadow: 0 4px 0 #e2e8f0;
             transition: transform 0.2s;
         }
 
@@ -177,9 +165,16 @@
             transform: translateY(-4px);
         }
 
-        .feature-icon {
-            font-size: 36px;
-            margin-bottom: 16px;
+        .feature-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: var(--primary-blue-light);
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
         }
     </style>
 </head>
@@ -187,26 +182,26 @@
     <!-- Navigation -->
     <header class="navbar">
         <a href="/" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-            <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #58cc02, #46a302); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 0 #3a8a00;">
-                ⚡
+            <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 0 #1e40af;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
             <div>
-                <span style="font-size: 26px; font-weight: 900; color: #58cc02; letter-spacing: -0.5px;">KODEIN</span>
-                <span style="font-size: 10px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">GAMIFIED LEARNING</span>
+                <span style="font-size: 24px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">KODEIN</span>
+                <span style="font-size: 10px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">LEARNING PLATFORM</span>
             </div>
         </a>
 
         <div style="display: flex; align-items: center; gap: 12px;">
             @auth
-                <a href="{{ route('learn.index') }}" class="btn-3d btn-green" style="padding: 10px 20px; font-size: 13px;">
-                    BUKA ROADMAP BELAJAR 🚀
+                <a href="{{ route('learn.index') }}" class="btn-3d btn-blue" style="padding: 10px 20px; font-size: 13px;">
+                    Roadmap Belajar
                 </a>
             @else
                 <a href="{{ route('login') }}" class="btn-3d btn-outline" style="padding: 10px 18px; font-size: 13px;">
-                    MASUK
+                    Masuk
                 </a>
-                <a href="{{ route('register') }}" class="btn-3d btn-green" style="padding: 10px 20px; font-size: 13px;">
-                    DAFTAR GRATIS
+                <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 10px 20px; font-size: 13px;">
+                    Daftar Gratis
                 </a>
             @endauth
         </div>
@@ -215,44 +210,47 @@
     <!-- Hero Section -->
     <section class="hero">
         <div>
-            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(88, 204, 2, 0.15); border: 1px solid rgba(88, 204, 2, 0.3); color: #86efac; padding: 6px 14px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-transform: uppercase; margin-bottom: 20px;">
-                <span>🎮</span> Belajar Coding Ala Main Game
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: var(--primary-blue-light); border: 1px solid #bfdbfe; color: var(--primary-blue); padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 20px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Platform Belajar Interaktif SMP & SMA
             </div>
             <h1 class="hero-title">
-                Cara Paling Seru Belajar <span>Pemrograman</span> untuk Siswa!
+                Cara Menyenangkan Belajar <span>Pemrograman</span> Sejak Dini
             </h1>
             <p class="hero-subtitle">
-                Tantangan kuis kilat, susun algoritma drag-and-drop, kumpulkan XP, jaga streak harian, dan raih sertifikat resmi bertanda tangan digital.
+                Tantangan kuis interaktif, susun urutan baris kode algoritma, raih poin pengalaman, pertahankan streak harian, dan dapatkan sertifikat resmi.
             </p>
             <div class="hero-actions">
-                <a href="{{ route('register') }}" class="btn-3d btn-green" style="font-size: 17px; padding: 16px 36px;">
-                    MULAI BELAJAR GRATIS 🚀
+                <a href="{{ route('register') }}" class="btn-3d btn-blue" style="font-size: 15px; padding: 16px 36px;">
+                    Mulai Belajar Sekarang
                 </a>
                 <a href="{{ route('login') }}" class="btn-3d btn-outline">
-                    ⚡ 1-Click Demo Login
+                    Demo Login
                 </a>
             </div>
         </div>
 
         <div class="mascot-card">
-            <div class="mascot-avatar">🤖</div>
-            <div style="margin-top: 16px;">
-                <div style="font-size: 20px; font-weight: 900; color: var(--duo-gold);">"Halo Calon Programmer!"</div>
-                <div style="color: #94a3b8; font-size: 14px; margin-top: 6px;">Selesaikan modul Python pertama & raih badge pertamamu hari ini!</div>
+            <div style="width: 100px; height: 100px; margin: 0 auto; background: var(--primary-blue-light); border-radius: 28px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); margin-bottom: 20px;">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
             </div>
-            <div style="margin-top: 24px; display: inline-flex; gap: 12px; background: #131f24; padding: 12px 20px; border-radius: 18px; border: 2px solid var(--duo-border);">
+            <div>
+                <div style="font-size: 20px; font-weight: 900; color: #0f172a;">Pemrograman Python & Web</div>
+                <div style="color: #64748b; font-size: 14px; margin-top: 6px;">Selesaikan modul pertama dan kembangkan logika berpikir komputasional.</div>
+            </div>
+            <div style="margin-top: 24px; display: inline-flex; gap: 16px; background: #f8fafc; padding: 12px 24px; border-radius: 18px; border: 2px solid var(--border-color);">
                 <div style="text-align: center;">
-                    <div style="font-size: 18px; font-weight: 900; color: var(--duo-orange);">🔥 5+</div>
+                    <div style="font-size: 18px; font-weight: 900; color: var(--primary-blue);">7+ Hari</div>
                     <div style="font-size: 10px; color: #64748b; font-weight: 800;">STREAK</div>
                 </div>
-                <div style="width: 1px; background: var(--duo-border);"></div>
+                <div style="width: 1px; background: var(--border-color);"></div>
                 <div style="text-align: center;">
-                    <div style="font-size: 18px; font-weight: 900; color: var(--duo-green);">⚡ 100%</div>
+                    <div style="font-size: 18px; font-weight: 900; color: var(--accent-green);">100%</div>
                     <div style="font-size: 10px; color: #64748b; font-weight: 800;">INTERAKTIF</div>
                 </div>
-                <div style="width: 1px; background: var(--duo-border);"></div>
+                <div style="width: 1px; background: var(--border-color);"></div>
                 <div style="text-align: center;">
-                    <div style="font-size: 18px; font-weight: 900; color: #38bdf8;">🎓 RESMI</div>
+                    <div style="font-size: 18px; font-weight: 900; color: var(--primary-blue);">VALID</div>
                     <div style="font-size: 10px; color: #64748b; font-weight: 800;">SERTIFIKAT</div>
                 </div>
             </div>
@@ -262,27 +260,35 @@
     <!-- Features -->
     <section class="features-grid">
         <div class="feature-card">
-            <div class="feature-icon">🧩</div>
+            <div class="feature-icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+            </div>
             <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Parsons Code Ordering</h3>
-            <p style="color: #94a3b8; font-size: 14px; line-height: 1.5;">Susun urutan baris kode dengan interaktif tanpa takut pusing sintaks di awal.</p>
+            <p style="color: #64748b; font-size: 14px; line-height: 1.5;">Menyusun potongan baris kode algoritma secara berurutan untuk melatih logika berpikir.</p>
         </div>
 
         <div class="feature-card">
-            <div class="feature-icon">❤️</div>
-            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Nyawa (Hearts) & Streak</h3>
-            <p style="color: #94a3b8; font-size: 14px; line-height: 1.5;">Membangun konsistensi belajar harian. Salah menjawab mengurangi nyawa!</p>
+            <div class="feature-icon-wrapper" style="background: #fef2f2; color: #ef4444;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Sistem Nyawa & Streak</h3>
+            <p style="color: #64748b; font-size: 14px; line-height: 1.5;">Membangun konsistensi belajar harian secara teratur dengan evaluasi otomatis.</p>
         </div>
 
         <div class="feature-card">
-            <div class="feature-icon">🏆</div>
-            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Klasemen Liga</h3>
-            <p style="color: #94a3b8; font-size: 14px; line-height: 1.5;">Bersaing dengan teman sekelas dan siswa lain untuk naik ke Liga Berlian.</p>
+            <div class="feature-icon-wrapper" style="background: #fef3c7; color: #d97706;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M6 2h12v7a6 6 0 0 1-12 0V2Z"></path></svg>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Papan Peringkat Liga</h3>
+            <p style="color: #64748b; font-size: 14px; line-height: 1.5;">Bersaing secara sehat dengan teman sekelas untuk mengumpulkan XP mingguan.</p>
         </div>
 
         <div class="feature-card">
-            <div class="feature-icon">📜</div>
-            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Sertifikat Kriptografis</h3>
-            <p style="color: #94a3b8; font-size: 14px; line-height: 1.5;">Sertifikat kelulusan valid yang dapat diverifikasi publik via QR Code resmi.</p>
+            <div class="feature-icon-wrapper" style="background: #ecfdf5; color: #059669;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Sertifikat Terverifikasi</h3>
+            <p style="color: #64748b; font-size: 14px; line-height: 1.5;">Menerbitkan sertifikat digital bertanda tangan kriptografis dengan QR Code verifikasi publik.</p>
         </div>
     </section>
 </body>

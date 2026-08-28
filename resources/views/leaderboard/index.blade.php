@@ -1,78 +1,92 @@
 @php
-    $title = 'Papan Peringkat Liga - Kodein';
+    $title = 'Papan Peringkat - Kodein';
 @endphp
 
-<x-app-layout>
-    <div style="width: 100%; max-width: 760px; margin: 0 auto;">
+<x-app-layout :title="$title">
+    <div style="max-width: 760px; margin: 0 auto; width: 100%;">
         
-        <!-- Header Banner -->
+        <!-- Header Banner (Blue Theme) -->
         <div style="text-align: center; margin-bottom: 32px;">
-            <div style="font-size: 48px; margin-bottom: 8px;" class="animate-float">🏆</div>
-            <h1 style="font-size: 28px; font-weight: 900; letter-spacing: -0.5px;">Liga Berlian</h1>
-            <p style="color: #94a3b8; font-size: 14px; margin-top: 4px;">10 besar teratas akan dipromosikan ke liga berikutnya tiap minggu!</p>
+            <div style="width: 64px; height: 64px; margin: 0 auto 16px auto; background: var(--primary-blue-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); box-shadow: 0 4px 0 #bfdbfe;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M6 2h12v7a6 6 0 0 1-12 0V2Z"></path></svg>
+            </div>
+            <h1 style="font-size: 28px; font-weight: 900; color: #0f172a; letter-spacing: -0.5px;">Liga Berlian</h1>
+            <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Peringkat mingguan siswa berdasarkan perolehan XP dan keaktifan belajar.</p>
+
+            <!-- Toggle Filter Tab -->
+            <div style="display: inline-flex; background: #f1f5f9; padding: 4px; border-radius: 16px; margin-top: 20px; border: 2px solid #e2e8f0;">
+                <a href="{{ route('leaderboard.web', ['type' => 'global']) }}" 
+                   style="padding: 10px 24px; border-radius: 12px; font-size: 13px; font-weight: 800; text-transform: uppercase; text-decoration: none; transition: all 0.15s; background: {{ $type === 'global' ? 'var(--primary-blue)' : 'transparent' }}; color: {{ $type === 'global' ? '#ffffff' : '#64748b' }};">
+                    Total XP
+                </a>
+                <a href="{{ route('leaderboard.web', ['type' => 'streak']) }}" 
+                   style="padding: 10px 24px; border-radius: 12px; font-size: 13px; font-weight: 800; text-transform: uppercase; text-decoration: none; transition: all 0.15s; background: {{ $type === 'streak' ? 'var(--primary-blue)' : 'transparent' }}; color: {{ $type === 'streak' ? '#ffffff' : '#64748b' }};">
+                    Hari Streak
+                </a>
+            </div>
         </div>
 
-        <!-- Filter Tabs -->
-        <div style="display: flex; gap: 12px; margin-bottom: 32px; justify-content: center;">
-            <a href="{{ route('leaderboard.web', ['type' => 'global']) }}" class="btn-3d {{ $type === 'global' ? 'btn-blue' : 'btn-outline' }}" style="padding: 10px 24px; font-size: 14px;">
-                ⚡ Total XP
-            </a>
-            <a href="{{ route('leaderboard.web', ['type' => 'streak']) }}" class="btn-3d {{ $type === 'streak' ? 'btn-orange' : 'btn-outline' }}" style="padding: 10px 24px; font-size: 14px;">
-                🔥 Hari Streak
-            </a>
-        </div>
-
-        <!-- Top 3 Podium -->
-        @if ($podium->count() >= 3)
-            <div style="display: flex; align-items: flex-end; justify-content: center; gap: 16px; margin-bottom: 40px; padding: 0 10px;">
+        <!-- Top 3 Podium Cards -->
+        @if ($students->count() >= 3)
+            <div style="display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 16px; align-items: flex-end; margin-bottom: 40px;">
                 
                 <!-- Rank 2: Silver -->
-                <div style="flex: 1; max-width: 160px; text-align: center;">
-                    <div style="font-size: 24px; margin-bottom: 4px;">🥈</div>
-                    <img src="{{ $podium[1]->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $podium[1]->id }}" style="width: 54px; height: 54px; border-radius: 50%; border: 3px solid #94a3b8; background: #131f24; margin-bottom: 8px;" alt="">
-                    <div style="font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $podium[1]->name }}</div>
-                    <div style="font-size: 12px; font-weight: 700; color: #38bdf8;">{{ $type === 'streak' ? $podium[1]->streak_count . ' Hari' : $podium[1]->xp . ' XP' }}</div>
-                    <div style="height: 90px; background: linear-gradient(180deg, #334155, #1e293b); border: 2px solid #64748b; border-radius: 16px 16px 0 0; margin-top: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; color: #cbd5e1;">2</div>
+                @php $s2 = $students[1]; @endphp
+                <div class="card-3d" style="padding: 24px 16px; text-align: center; border-color: #cbd5e1; background: #ffffff;">
+                    <div style="width: 32px; height: 32px; background: #94a3b8; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; margin: 0 auto 12px auto; font-size: 14px;">2</div>
+                    <img src="{{ $s2->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $s2->id }}" style="width: 60px; height: 60px; border-radius: 50%; background: #f8fafc; border: 3px solid #cbd5e1; margin-bottom: 10px;" alt="">
+                    <div style="font-size: 14px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $s2->name }}</div>
+                    <div style="font-size: 12px; font-weight: 800; color: var(--primary-blue); margin-top: 4px;">{{ $type === 'streak' ? $s2->streak_count . ' Hari' : $s2->xp . ' XP' }}</div>
                 </div>
 
-                <!-- Rank 1: Gold (Center & Taller) -->
-                <div style="flex: 1; max-width: 180px; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 4px;" class="animate-float">👑</div>
-                    <img src="{{ $podium[0]->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $podium[0]->id }}" style="width: 68px; height: 68px; border-radius: 50%; border: 4px solid var(--duo-gold); background: #131f24; margin-bottom: 8px; box-shadow: 0 0 20px rgba(255, 200, 0, 0.4);" alt="">
-                    <div style="font-size: 15px; font-weight: 900; color: var(--duo-gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $podium[0]->name }}</div>
-                    <div style="font-size: 13px; font-weight: 800; color: #fff;">{{ $type === 'streak' ? $podium[0]->streak_count . ' Hari' : $podium[0]->xp . ' XP' }}</div>
-                    <div style="height: 130px; background: linear-gradient(180deg, #d97706, #78350f); border: 2px solid var(--duo-gold); border-radius: 20px 20px 0 0; margin-top: 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--duo-gold);">1</div>
+                <!-- Rank 1: Gold (Center Elevated) -->
+                @php $s1 = $students[0]; @endphp
+                <div class="card-3d" style="padding: 32px 16px; text-align: center; border-color: #f59e0b; background: #fffbeb; transform: translateY(-10px); box-shadow: 0 6px 0 #d97706;">
+                    <div style="width: 36px; height: 36px; background: #f59e0b; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; margin: 0 auto 12px auto; font-size: 16px;">1</div>
+                    <img src="{{ $s1->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $s1->id }}" style="width: 76px; height: 76px; border-radius: 50%; background: #f8fafc; border: 4px solid #f59e0b; margin-bottom: 10px;" alt="">
+                    <div style="font-size: 16px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #78350f;">{{ $s1->name }}</div>
+                    <div style="font-size: 14px; font-weight: 900; color: #d97706; margin-top: 4px;">{{ $type === 'streak' ? $s1->streak_count . ' Hari' : $s1->xp . ' XP' }}</div>
                 </div>
 
                 <!-- Rank 3: Bronze -->
-                <div style="flex: 1; max-width: 160px; text-align: center;">
-                    <div style="font-size: 24px; margin-bottom: 4px;">🥉</div>
-                    <img src="{{ $podium[2]->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $podium[2]->id }}" style="width: 54px; height: 54px; border-radius: 50%; border: 3px solid #b45309; background: #131f24; margin-bottom: 8px;" alt="">
-                    <div style="font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $podium[2]->name }}</div>
-                    <div style="font-size: 12px; font-weight: 700; color: #38bdf8;">{{ $type === 'streak' ? $podium[2]->streak_count . ' Hari' : $podium[2]->xp . ' XP' }}</div>
-                    <div style="height: 70px; background: linear-gradient(180deg, #451a03, #1e293b); border: 2px solid #b45309; border-radius: 16px 16px 0 0; margin-top: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; color: #f59e0b;">3</div>
+                @php $s3 = $students[2]; @endphp
+                <div class="card-3d" style="padding: 20px 16px; text-align: center; border-color: #cbd5e1; background: #ffffff;">
+                    <div style="width: 32px; height: 32px; background: #b45309; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; margin: 0 auto 12px auto; font-size: 14px;">3</div>
+                    <img src="{{ $s3->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $s3->id }}" style="width: 56px; height: 56px; border-radius: 50%; background: #f8fafc; border: 3px solid #cbd5e1; margin-bottom: 10px;" alt="">
+                    <div style="font-size: 14px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $s3->name }}</div>
+                    <div style="font-size: 12px; font-weight: 800; color: var(--primary-blue); margin-top: 4px;">{{ $type === 'streak' ? $s3->streak_count . ' Hari' : $s3->xp . ' XP' }}</div>
                 </div>
 
             </div>
         @endif
 
-        <!-- Rest of Leaderboard List -->
-        <div class="card-3d" style="padding: 12px 16px;">
-            @foreach ($rankings as $idx => $student)
-                @php $rank = $idx + 4; @endphp
-                <div style="display: flex; align-items: center; gap: 16px; padding: 14px 12px; border-radius: 16px; margin-bottom: 4px; background: {{ $student->id === $currentUser->id ? 'rgba(28, 176, 246, 0.15)' : 'transparent' }}; border: 1px solid {{ $student->id === $currentUser->id ? 'var(--duo-blue)' : 'transparent' }};">
-                    <div style="font-size: 16px; font-weight: 900; width: 28px; color: #64748b;">
-                        {{ $rank }}
+        <!-- Full Ranking List -->
+        <div class="card-3d" style="padding: 8px 16px;">
+            @foreach ($students as $index => $student)
+                @php
+                    $isCurrentUser = $student->id === $user->id;
+                @endphp
+                <div style="display: flex; align-items: center; gap: 16px; padding: 14px 12px; border-radius: 16px; margin: 4px 0; background: {{ $isCurrentUser ? 'var(--primary-blue-light)' : 'transparent' }}; border: {{ $isCurrentUser ? '2px solid #bfdbfe' : 'none' }};">
+                    <div style="font-size: 15px; font-weight: 900; width: 28px; text-align: center; color: {{ $index < 3 ? 'var(--primary-blue)' : '#94a3b8' }};">
+                        {{ $index + 1 }}
                     </div>
-                    <img src="{{ $student->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $student->id }}" style="width: 40px; height: 40px; border-radius: 50%; background: #131f24;" alt="">
-                    <div style="flex: 1;">
-                        <div style="font-size: 15px; font-weight: 800; color: {{ $student->id === $currentUser->id ? 'var(--duo-blue)' : '#fff' }};">
-                            {{ $student->name }} {{ $student->id === $currentUser->id ? '(Kamu)' : '' }}
+
+                    <img src="{{ $student->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $student->id }}" style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; border: 2px solid #e2e8f0;" alt="">
+
+                    <div style="flex: 1; overflow: hidden;">
+                        <div style="font-size: 15px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                            <span>{{ $student->name }}</span>
+                            @if ($isCurrentUser)
+                                <span style="font-size: 10px; font-weight: 800; background: var(--primary-blue); color: #fff; padding: 2px 8px; border-radius: 6px; text-transform: uppercase;">Kamu</span>
+                            @endif
                         </div>
-                        <div style="font-size: 12px; color: #64748b;">Level {{ $student->level }}</div>
+                        <div style="font-size: 12px; color: #64748b; margin-top: 2px;">Level {{ $student->level }}</div>
                     </div>
-                    <div style="font-size: 15px; font-weight: 900; color: {{ $type === 'streak' ? 'var(--duo-orange)' : 'var(--duo-gold)' }};">
-                        {{ $type === 'streak' ? $student->streak_count . ' Hari 🔥' : $student->xp . ' XP ⚡' }}
+
+                    <div style="text-align: right;">
+                        <div style="font-size: 16px; font-weight: 900; color: var(--primary-blue);">
+                            {{ $type === 'streak' ? $student->streak_count . ' Hari' : $student->xp . ' XP' }}
+                        </div>
                     </div>
                 </div>
             @endforeach

@@ -22,7 +22,7 @@ class WebAuthTest extends TestCase
         $response = $this->get('/');
         $response->assertStatus(200)
             ->assertSee('KODEIN')
-            ->assertSee('Belajar Coding Ala Main Game');
+            ->assertSee('Platform Belajar Interaktif');
     }
 
     public function test_can_view_login_page_with_demo_accounts(): void
@@ -30,7 +30,7 @@ class WebAuthTest extends TestCase
         $response = $this->get('/login');
         $response->assertStatus(200)
             ->assertSee('Masuk ke Kodein')
-            ->assertSee('1-Click Demo Login')
+            ->assertSee('Demo Akun Uji Coba')
             ->assertSee('Budi Santoso');
     }
 

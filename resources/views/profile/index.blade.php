@@ -2,96 +2,120 @@
     $title = 'Profil & Lencana - Kodein';
 @endphp
 
-<x-app-layout>
-    <div style="width: 100%; max-width: 780px; margin: 0 auto;">
+<x-app-layout :title="$title">
+    <div style="max-width: 860px; margin: 0 auto; width: 100%;">
         
-        <!-- Profile Header Card -->
-        <div class="card-3d" style="padding: 32px 28px; margin-bottom: 28px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
-            <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 88px; height: 88px; border-radius: 50%; background: #131f24; border: 4px solid var(--duo-blue); box-shadow: 0 0 20px rgba(28, 176, 246, 0.3);" alt="Avatar">
-            
-            <div style="flex: 1;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <h1 style="font-size: 24px; font-weight: 900;">{{ $user->name }}</h1>
-                    <span style="font-size: 11px; font-weight: 900; text-transform: uppercase; background: var(--duo-blue); color: #fff; padding: 4px 10px; border-radius: 8px;">
-                        Level {{ $user->level }}
-                    </span>
+        <!-- Profile Header Card (Light Blue Theme) -->
+        <div class="card-3d" style="padding: 32px; margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 84px; height: 84px; border-radius: 50%; background: var(--primary-blue-light); border: 4px solid #bfdbfe;" alt="">
+                <div>
+                    <h1 style="font-size: 24px; font-weight: 900; color: #0f172a;">{{ $user->name }}</h1>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
+                        <span style="background: var(--primary-blue-light); color: var(--primary-blue); font-size: 11px; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 8px; border: 1px solid #bfdbfe;">
+                            {{ $user->role }}
+                        </span>
+                        <span style="color: #64748b; font-size: 13px; font-weight: 600;">
+                            Bergabung {{ $user->created_at->translatedFormat('F Y') }}
+                        </span>
+                    </div>
                 </div>
-                <div style="font-size: 14px; color: #94a3b8; margin-top: 4px;">{{ $user->email }} • Bergabung sejak {{ $user->created_at->translatedFormat('F Y') }}</div>
+            </div>
+
+            <div style="display: flex; gap: 16px;">
+                <div style="text-align: center; background: #f8fafc; border: 2px solid var(--border-color); border-radius: 18px; padding: 14px 20px;">
+                    <div style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Level</div>
+                    <div style="font-size: 22px; font-weight: 900; color: var(--primary-blue);">{{ $user->level }}</div>
+                </div>
+                <div style="text-align: center; background: #f8fafc; border: 2px solid var(--border-color); border-radius: 18px; padding: 14px 20px;">
+                    <div style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Total XP</div>
+                    <div style="font-size: 22px; font-weight: 900; color: var(--primary-blue);">{{ $user->xp }}</div>
+                </div>
             </div>
         </div>
 
-        <!-- Statistics Grid -->
-        <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-            <span>📊</span> Statistik Belajar
+        <!-- 4 Key Statistics Cards -->
+        <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+            Statistik Belajar
         </h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 36px;">
-            
-            <!-- Streak -->
-            <div class="card-3d" style="padding: 16px 20px;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                    <span class="animate-flame" style="font-size: 24px;">🔥</span>
-                    <span style="font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Streak</span>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 40px;">
+            <!-- Stat 1 -->
+            <div class="card-3d" style="padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Streak Aktif</span>
+                    <div style="color: var(--accent-orange);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+                    </div>
                 </div>
-                <div style="font-size: 24px; font-weight: 900; color: var(--duo-orange);">{{ $user->streak_count }} Hari</div>
+                <div style="font-size: 24px; font-weight: 900; color: var(--accent-orange);">{{ $user->streak_count }} Hari</div>
             </div>
 
-            <!-- Total XP -->
-            <div class="card-3d" style="padding: 16px 20px;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                    <span style="font-size: 24px;">⚡</span>
-                    <span style="font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Total XP</span>
+            <!-- Stat 2 -->
+            <div class="card-3d" style="padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Total Gems</span>
+                    <div style="color: var(--primary-blue);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"></path><path d="M11 3 8 9l4 13 4-13-3-6"></path><path d="M2 9h20"></path></svg>
+                    </div>
                 </div>
-                <div style="font-size: 24px; font-weight: 900; color: var(--duo-gold);">{{ $user->xp }} XP</div>
+                <div style="font-size: 24px; font-weight: 900; color: var(--primary-blue);">{{ $user->gems }}</div>
             </div>
 
-            <!-- Modul Selesai -->
-            <div class="card-3d" style="padding: 16px 20px;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                    <span style="font-size: 24px;">📚</span>
-                    <span style="font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Modul Selesai</span>
+            <!-- Stat 3 -->
+            <div class="card-3d" style="padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Modul Selesai</span>
+                    <div style="color: var(--accent-green);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
                 </div>
-                <div style="font-size: 24px; font-weight: 900; color: var(--duo-green);">{{ $completedLessonsCount }} Modul</div>
+                <div style="font-size: 24px; font-weight: 900; color: var(--accent-green);">{{ $completedLessonsCount }}</div>
             </div>
 
-            <!-- Sertifikat -->
-            <div class="card-3d" style="padding: 16px 20px;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                    <span style="font-size: 24px;">🎓</span>
-                    <span style="font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Sertifikat</span>
+            <!-- Stat 4 -->
+            <div class="card-3d" style="padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Lencana Terbuka</span>
+                    <div style="color: var(--primary-blue);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                    </div>
                 </div>
-                <div style="font-size: 24px; font-weight: 900; color: #38bdf8;">{{ $certificatesCount }} Diraih</div>
+                <div style="font-size: 24px; font-weight: 900; color: var(--primary-blue);">{{ $unlockedBadges->count() }}/{{ count($allBadges) }}</div>
             </div>
-
         </div>
 
-        <!-- Achievements / Badges Showcase -->
-        <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-            <span>🏅</span> Koleksi Lencana & Pencapaian
+        <!-- Badges Gallery Grid -->
+        <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+            Koleksi Lencana &amp; Pencapaian
         </h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-            @foreach ($allBadges as $badge)
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px;">
+            @foreach ($allBadges as $badgeItem)
                 @php
-                    $isUnlocked = $unlockedBadges->has($badge['code']);
+                    $isUnlocked = $unlockedBadges->has($badgeItem['code']);
                 @endphp
 
-                <div class="card-3d" style="padding: 20px; text-align: center; border-color: {{ $isUnlocked ? 'var(--duo-gold)' : 'var(--duo-dark-border)' }}; opacity: {{ $isUnlocked ? '1' : '0.45' }};">
-                    <div style="font-size: 48px; margin-bottom: 12px; filter: {{ $isUnlocked ? 'none' : 'grayscale(100%)' }};">
-                        {{ $badge['icon'] }}
+                <div class="card-3d" style="padding: 24px 20px; text-align: center; border-color: {{ $isUnlocked ? '#bfdbfe' : 'var(--border-color)' }}; opacity: {{ $isUnlocked ? '1' : '0.55' }}; background: {{ $isUnlocked ? '#ffffff' : '#f8fafc' }};">
+                    <div style="width: 56px; height: 56px; margin: 0 auto 14px auto; background: {{ $isUnlocked ? 'var(--primary-blue-light)' : '#e2e8f0' }}; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: {{ $isUnlocked ? 'var(--primary-blue)' : '#94a3b8' }};">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
                     </div>
-                    <div style="font-size: 16px; font-weight: 900; color: {{ $isUnlocked ? '#fff' : '#64748b' }}; margin-bottom: 6px;">
-                        {{ $badge['name'] }}
+                    <div style="font-size: 16px; font-weight: 900; color: #0f172a; margin-bottom: 6px;">
+                        {{ $badgeItem['name'] }}
                     </div>
-                    <div style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-                        {{ $badge['description'] }}
+                    <div style="font-size: 13px; color: #64748b; line-height: 1.4;">
+                        {{ $badgeItem['description'] }}
                     </div>
 
                     @if ($isUnlocked)
-                        <div style="margin-top: 12px; font-size: 11px; font-weight: 800; color: var(--duo-gold); text-transform: uppercase;">
-                            ✨ TERBUKA
+                        <div style="margin-top: 14px; font-size: 11px; font-weight: 800; color: #059669; text-transform: uppercase; background: #ecfdf5; padding: 4px 10px; border-radius: 8px; display: inline-block;">
+                            Terbuka
                         </div>
                     @else
-                        <div style="margin-top: 12px; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">
-                            🔒 TERKUNCI
+                        <div style="margin-top: 14px; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; background: #e2e8f0; padding: 4px 10px; border-radius: 8px; display: inline-block;">
+                            Terkunci
                         </div>
                     @endif
                 </div>

@@ -3,281 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Sertifikat Resmi - {{ $certificate ? $certificate->cert_code : 'Tidak Ditemukan' }}</title>
+    <title>Verifikasi Sertifikat: {{ $certificate->cert_code }} - Kodein</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.85);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.25);
-            --success: #10b981;
-            --success-glow: rgba(16, 185, 129, 0.2);
-            --danger: #ef4444;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --gold: #f59e0b;
+            --primary-blue: #2563eb;
+            --primary-blue-shadow: #1e40af;
+            --accent-green: #10b981;
+            --bg-page: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+            background-color: var(--bg-page);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px 16px;
+            padding: 40px 16px;
         }
 
-        .container {
+        .cert-card {
             width: 100%;
-            max-width: 680px;
-        }
-
-        .header-logo {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .header-logo .badge-platform {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
-            padding: 6px 14px;
-            border-radius: 9999px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 36px 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 820px;
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 28px;
+            padding: 48px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             position: relative;
             overflow: hidden;
         }
 
-        .card::before {
+        .cert-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #6366f1, #10b981, #f59e0b);
-        }
-
-        .status-header {
-            text-align: center;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 28px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 18px;
-            border-radius: 9999px;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .status-valid {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            color: #34d399;
-            box-shadow: 0 0 20px var(--success-glow);
-        }
-
-        .status-invalid {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            color: #f87171;
+            height: 8px;
+            background: linear-gradient(90deg, #2563eb, #3b82f6, #60a5fa);
         }
 
         .cert-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 6px;
-        }
-
-        .cert-code {
-            font-family: monospace;
-            font-size: 15px;
-            color: #94a3b8;
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
             letter-spacing: 1px;
+            color: #0f172a;
+            text-align: center;
+            margin-bottom: 8px;
         }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 28px;
-        }
-
-        @media (max-width: 540px) {
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            .card {
-                padding: 24px 20px;
-            }
-        }
-
-        .info-item {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 16px;
-            border-radius: 14px;
-        }
-
-        .info-label {
-            font-size: 12px;
-            font-weight: 600;
+        .cert-subtitle {
+            text-align: center;
             color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 32px;
+        }
+
+        .recipient-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--primary-blue);
+            text-align: center;
+            margin: 16px 0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 12px;
+            display: inline-block;
+        }
+
+        .btn-3d {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 6px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            padding: 12px 24px;
+            font-size: 13px;
+            text-decoration: none;
         }
 
-        .info-value {
-            font-size: 16px;
-            font-weight: 700;
-            color: #f8fafc;
-            word-break: break-word;
+        .btn-blue {
+            background: var(--primary-blue);
+            color: #fff;
+            box-shadow: 0 4px 0 var(--primary-blue-shadow);
         }
 
-        .info-value.highlight {
-            color: #a5b4fc;
-        }
-
-        .qr-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 18px;
-            border-radius: 14px;
-            margin-bottom: 24px;
-        }
-
-        .qr-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            background: white;
-            padding: 4px;
-        }
-
-        .hash-box {
-            font-size: 11px;
-            color: #64748b;
-            font-family: monospace;
-            word-break: break-all;
-            margin-top: 6px;
-        }
-
-        .footer-note {
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.6;
+        .code-font {
+            font-family: 'Fira Code', monospace;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-logo">
-            <div class="badge-platform">
-                <span>⚡</span> Gamified Code Learning Platform
+    <div class="cert-card">
+        
+        <!-- Status Verified Pill -->
+        <div style="text-align: center; margin-bottom: 24px;">
+            <span style="display: inline-flex; align-items: center; gap: 8px; background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #065f46; padding: 6px 16px; border-radius: 9999px; font-size: 12px; font-weight: 800; text-transform: uppercase;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Sertifikat Digital Terverifikasi
+            </span>
+        </div>
+
+        <div class="cert-title">SERTIFIKAT RESMI KELULUSAN</div>
+        <div class="cert-subtitle">KODEIN LEARNING PLATFORM</div>
+
+        <div style="text-align: center; margin: 32px 0;">
+            <p style="color: var(--text-muted); font-size: 15px;">Diberikan secara resmi kepada:</p>
+            <div class="recipient-name">{{ $certificate->recipient_name }}</div>
+            <p style="color: var(--text-muted); font-size: 15px; max-width: 580px; margin: 16px auto 0 auto; line-height: 1.6;">
+                Telah berhasil menyelesaikan seluruh materi kurikulum dan ujian evaluasi interaktif pada kursus:
+            </p>
+            <div style="font-size: 20px; font-weight: 900; color: #0f172a; margin-top: 8px;">
+                {{ $certificate->course_title }}
             </div>
         </div>
 
-        <div class="card">
-            @if ($isValid && $certificate)
-                <div class="status-header">
-                    <div class="status-badge status-valid">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                        SERTIFIKAT RESMI & TERVERIFIKASI
-                    </div>
-                    <h1 class="cert-title">{{ $certificate->course_title }}</h1>
-                    <div class="cert-code">{{ $certificate->cert_code }}</div>
-                </div>
-
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">Diberikan Kepada</div>
-                        <div class="info-value highlight">{{ $certificate->recipient_name }}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Tanggal Kelulusan</div>
-                        <div class="info-value">{{ \Carbon\Carbon::parse($certificate->issue_date)->translatedFormat('d F Y') }}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Instruktur / Mentor</div>
-                        <div class="info-value">{{ $certificate->mentor_name }}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Skor Kelulusan</div>
-                        <div class="info-value" style="color: #34d399;">{{ number_format($certificate->score_average, 1) }} / 100</div>
-                    </div>
-                </div>
-
-                <div class="qr-section">
+        <!-- Certificate Metadata Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 120px; gap: 24px; align-items: center; border-top: 2px dashed #e2e8f0; padding-top: 28px; margin-top: 32px;">
+            <div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
                     <div>
-                        <div class="info-label">Security Hash Verification</div>
-                        <div class="info-value" style="font-size: 13px; color: #cbd5e1;">Cryptographically Signed</div>
-                        <div class="hash-box">{{ $certificate->cert_hash }}</div>
+                        <span style="color: var(--text-muted);">Nomor Sertifikat:</span>
+                        <div class="code-font" style="font-weight: 800; color: var(--primary-blue);">{{ $certificate->cert_code }}</div>
                     </div>
-                    @if ($certificate->qr_code_url)
-                        <img src="{{ $certificate->qr_code_url }}" alt="QR Verification" class="qr-image">
-                    @endif
-                </div>
-            @else
-                <div class="status-header">
-                    <div class="status-badge status-invalid">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-                        SERTIFIKAT TIDAK DITEMUKAN
+                    <div>
+                        <span style="color: var(--text-muted);">Tanggal Terbit:</span>
+                        <div style="font-weight: 800;">{{ Carbon\Carbon::parse($certificate->issue_date)->translatedFormat('d F Y') }}</div>
                     </div>
-                    <h1 class="cert-title">Data Tidak Valid</h1>
-                    <div class="cert-code">{{ $certCode }}</div>
+                    <div>
+                        <span style="color: var(--text-muted);">Instruktur / Mentor:</span>
+                        <div style="font-weight: 800;">{{ $certificate->mentor_name }}</div>
+                    </div>
+                    <div>
+                        <span style="color: var(--text-muted);">Rata-rata Nilai:</span>
+                        <div style="font-weight: 800; color: #059669;">{{ number_format($certificate->score_average, 1) }} / 100</div>
+                    </div>
                 </div>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px;">
-                    Kode sertifikat yang dimasukkan tidak terdaftar dalam database kami atau telah dicabut.
-                </p>
-            @endif
 
-            <div class="footer-note">
-                Sertifikat ini diterbitkan secara otomatis setelah siswa menyelesaikan seluruh materi, evaluasi modul, dan tantangan kode interaktif.
+                <div style="margin-top: 14px; font-size: 10px; color: #94a3b8; word-break: break-all;">
+                    Digital Signature: <span class="code-font">{{ $certificate->cert_hash }}</span>
+                </div>
             </div>
+
+            <div style="text-align: center;">
+                <img src="{{ $certificate->qr_code_url }}" alt="QR Code" style="width: 100px; height: 100px; border-radius: 12px; border: 2px solid #e2e8f0; padding: 4px; background: #fff;">
+                <div style="font-size: 10px; font-weight: 800; color: #64748b; margin-top: 4px;">SCAN VERIFIKASI</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 32px;">
+            <a href="{{ route('learn.index') }}" class="btn-3d btn-blue">
+                Kembali ke Platform Belajar
+            </a>
         </div>
     </div>
 </body>

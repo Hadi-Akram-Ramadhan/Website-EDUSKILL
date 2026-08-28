@@ -9,12 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --duo-green: #58cc02;
-            --duo-green-shadow: #46a302;
-            --duo-blue: #1cb0f6;
-            --duo-dark: #0e161a;
-            --duo-card: #202f36;
-            --duo-border: #37464f;
+            --primary-blue: #2563eb;
+            --primary-blue-hover: #1d4ed8;
+            --primary-blue-shadow: #1e40af;
+            --primary-blue-light: #eff6ff;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
         }
 
         * {
@@ -25,8 +28,8 @@
         }
 
         body {
-            background-color: var(--duo-dark);
-            color: #ffffff;
+            background-color: var(--bg-page);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -37,11 +40,11 @@
         .auth-card {
             width: 100%;
             max-width: 480px;
-            background: var(--duo-card);
-            border: 2px solid var(--duo-border);
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
             border-radius: 28px;
             padding: 36px 32px;
-            box-shadow: 0 8px 0 var(--duo-border);
+            box-shadow: 0 4px 0 #e2e8f0;
         }
 
         .btn-3d {
@@ -52,22 +55,23 @@
             gap: 8px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
             border-radius: 16px;
             border: none;
             cursor: pointer;
             padding: 14px 20px;
-            font-size: 15px;
+            font-size: 14px;
             text-decoration: none;
             transition: transform 0.1s;
         }
         .btn-3d:active { transform: translateY(4px); }
 
-        .btn-green {
-            background: var(--duo-green);
+        .btn-blue {
+            background: var(--primary-blue);
             color: #fff;
-            box-shadow: 0 4px 0 var(--duo-green-shadow);
+            box-shadow: 0 4px 0 var(--primary-blue-shadow);
         }
+        .btn-blue:active { box-shadow: 0 0 0 var(--primary-blue-shadow); }
 
         .input-group {
             margin-bottom: 16px;
@@ -79,24 +83,25 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #94a3b8;
+            color: var(--text-muted);
             margin-bottom: 6px;
         }
 
         .input-field {
             width: 100%;
-            background: #131f24;
-            border: 2px solid var(--duo-border);
+            background: #ffffff;
+            border: 2px solid var(--border-color);
             border-radius: 16px;
             padding: 12px 16px;
-            color: #fff;
+            color: var(--text-main);
             font-size: 15px;
             font-weight: 600;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         .input-field:focus {
-            border-color: var(--duo-blue);
+            border-color: var(--primary-blue);
         }
 
         .role-selector {
@@ -107,33 +112,40 @@
         }
 
         .role-option {
-            background: #131f24;
-            border: 2px solid var(--duo-border);
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
             border-radius: 16px;
             padding: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
         }
 
         .role-option input { display: none; }
 
         .role-option:has(input:checked) {
-            border-color: var(--duo-green);
-            background: rgba(88, 204, 2, 0.1);
+            border-color: var(--primary-blue);
+            background: var(--primary-blue-light);
+            color: var(--primary-blue);
         }
     </style>
 </head>
 <body>
     <div class="auth-card">
         <div style="text-align: center; margin-bottom: 24px;">
-            <div style="font-size: 40px; margin-bottom: 8px;">🎮</div>
-            <h1 style="font-size: 24px; font-weight: 900;">Buat Akun Kodein</h1>
-            <p style="color: #94a3b8; font-size: 14px;">Belajar coding jadi seru dan menyenangkan!</p>
+            <div style="width: 52px; height: 52px; margin: 0 auto 12px auto; background: var(--primary-blue-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+            </div>
+            <h1 style="font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Buat Akun Kodein</h1>
+            <p style="color: var(--text-muted); font-size: 14px;">Mulai belajar pemrograman dasar dengan metode interaktif.</p>
         </div>
 
         @if ($errors->any())
-            <div style="background: rgba(239, 68, 68, 0.15); border: 2px solid #ef4444; border-radius: 14px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; color: #fca5a5;">
+            <div style="background: #fef2f2; border: 2px solid #ef4444; border-radius: 14px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; color: #dc2626;">
                 {{ $errors->first() }}
             </div>
         @endif
@@ -142,7 +154,7 @@
             @csrf
             <div class="input-group">
                 <label>Nama Lengkap</label>
-                <input type="text" name="name" value="{{ old('name') }}" class="input-field" placeholder="Nama kamu" required autofocus>
+                <input type="text" name="name" value="{{ old('name') }}" class="input-field" placeholder="Nama lengkap kamu" required autofocus>
             </div>
 
             <div class="input-group">
@@ -151,17 +163,17 @@
             </div>
 
             <div class="input-group">
-                <label>Peran Kamu</label>
+                <label>Peran Pengguna</label>
                 <div class="role-selector">
                     <label class="role-option">
                         <input type="radio" name="role" value="siswa" checked>
-                        <div style="font-size: 20px;">🎓</div>
-                        <div style="font-weight: 800; font-size: 13px; margin-top: 4px;">Siswa SMP/SMA</div>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                        <div style="font-weight: 800; font-size: 12px;">Siswa SMP / SMA</div>
                     </label>
                     <label class="role-option">
                         <input type="radio" name="role" value="guru">
-                        <div style="font-size: 20px;">👨‍🏫</div>
-                        <div style="font-weight: 800; font-size: 13px; margin-top: 4px;">Guru / Mentor</div>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+                        <div style="font-weight: 800; font-size: 12px;">Guru / Mentor</div>
                     </label>
                 </div>
             </div>
@@ -176,13 +188,13 @@
                 <input type="password" name="password_confirmation" class="input-field" placeholder="••••••••" required>
             </div>
 
-            <button type="submit" class="btn-3d btn-green" style="margin-top: 12px;">
-                DAFTAR GRATIS 🚀
+            <button type="submit" class="btn-3d btn-blue" style="margin-top: 12px;">
+                Daftar Sekarang
             </button>
         </form>
 
-        <div style="text-align: center; margin-top: 18px; font-size: 14px; color: #94a3b8;">
-            Sudah punya akun? <a href="{{ route('login') }}" style="color: #38bdf8; font-weight: 800; text-decoration: none;">Masuk di Sini</a>
+        <div style="text-align: center; margin-top: 18px; font-size: 14px; color: var(--text-muted);">
+            Sudah punya akun? <a href="{{ route('login') }}" style="color: var(--primary-blue); font-weight: 800; text-decoration: none;">Masuk di Sini</a>
         </div>
     </div>
 </body>

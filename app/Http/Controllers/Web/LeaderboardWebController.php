@@ -31,7 +31,8 @@ class LeaderboardWebController extends Controller
         // Top 3 Podium
         $podium = $students->take(3);
         $rankings = $students->skip(3);
+        $user = $currentUser;
 
-        return view('leaderboard.index', compact('podium', 'rankings', 'type', 'currentUser'));
+        return view('leaderboard.index', compact('podium', 'rankings', 'students', 'type', 'user', 'currentUser'));
     }
 }
