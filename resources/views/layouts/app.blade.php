@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>{{ $title ?? 'Kodein - Platform Belajar Coding untuk Siswa' }}</title>
+    <title>{{ $title ?? 'EduSkill - Platform Belajar Coding untuk Siswa' }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
@@ -342,7 +342,7 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 </div>
                 <div class="logo-text">
-                    <span style="font-size: 22px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">KODEIN</span>
+                    <span style="font-size: 22px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">EDUSKILL</span>
                     <span style="font-size: 10px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">LEARNING PLATFORM</span>
                 </div>
             </a>

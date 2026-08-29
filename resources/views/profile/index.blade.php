@@ -1,5 +1,5 @@
 @php
-    $title = 'Profil & Lencana - Kodein';
+    $title = 'Profil & Lencana - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">

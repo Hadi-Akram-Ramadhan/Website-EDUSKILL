@@ -1,5 +1,5 @@
 @php
-    $title = 'Roadmap Belajar - Kodein';
+    $title = 'Roadmap Belajar - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">

@@ -1,5 +1,5 @@
 @php
-    $title = 'Edit Kursus: ' . $course->title . ' - Mentor Kodein';
+    $title = 'Edit Kursus: ' . $course->title . ' - Mentor EduSkill';
 @endphp
 
 <x-app-layout :title="$title">

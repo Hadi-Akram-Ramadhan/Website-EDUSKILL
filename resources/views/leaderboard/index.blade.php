@@ -1,5 +1,5 @@
 @php
-    $title = 'Papan Peringkat - Kodein';
+    $title = 'Papan Peringkat - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">

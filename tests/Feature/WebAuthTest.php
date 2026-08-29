@@ -21,7 +21,7 @@ class WebAuthTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200)
-            ->assertSee('KODEIN')
+            ->assertSee('EDUSKILL')
             ->assertSee('Platform Belajar Interaktif');
     }
 
@@ -29,7 +29,7 @@ class WebAuthTest extends TestCase
     {
         $response = $this->get('/login');
         $response->assertStatus(200)
-            ->assertSee('Masuk ke Kodein')
+            ->assertSee('Masuk ke EduSkill')
             ->assertSee('Demo Akun Uji Coba')
             ->assertSee('Budi Santoso');
     }

@@ -13,7 +13,7 @@
                     Kembali ke Dashboard
                 </a>
                 <h1 style="font-size: 26px; font-weight: 900; color: #0f172a;">Master Kurikulum &amp; Kursus</h1>
-                <p style="color: #64748b; font-size: 14px;">Kelola semua topik kursus yang tersedia di platform Kodein.</p>
+                <p style="color: #64748b; font-size: 14px;">Kelola semua topik kursus yang tersedia di platform EduSkill.</p>
             </div>
 
             <a href="{{ route('admin.courses.create') }}" class="btn-3d btn-blue" style="font-size: 13px; padding: 12px 20px;">

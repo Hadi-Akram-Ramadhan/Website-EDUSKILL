@@ -1,5 +1,5 @@
 @php
-    $title = 'Tambah Pengguna Baru - Super Admin Kodein';
+    $title = 'Tambah Pengguna Baru - Super Admin EduSkill';
 @endphp
 
 <x-app-layout :title="$title">

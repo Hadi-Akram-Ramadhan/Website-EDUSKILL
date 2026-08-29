@@ -1,5 +1,5 @@
 @php
-    $title = 'Dashboard Mentor - Kodein';
+    $title = 'Dashboard Mentor - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">

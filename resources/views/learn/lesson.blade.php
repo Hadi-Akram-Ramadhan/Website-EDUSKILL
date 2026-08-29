@@ -1,5 +1,5 @@
 @php
-    $title = 'Kuis: ' . $lesson->title . ' - Kodein';
+    $title = 'Kuis: ' . $lesson->title . ' - EduSkill';
 @endphp
 
 <x-lesson-layout :title="$title">

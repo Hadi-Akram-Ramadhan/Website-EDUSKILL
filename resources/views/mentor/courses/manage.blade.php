@@ -1,5 +1,5 @@
 @php
-    $title = 'Kelola Kurikulum: ' . $course->title . ' - Kodein';
+    $title = 'Kelola Kurikulum: ' . $course->title . ' - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">

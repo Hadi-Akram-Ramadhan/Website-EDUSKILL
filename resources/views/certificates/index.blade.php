@@ -1,5 +1,5 @@
 @php
-    $title = 'Sertifikat Resmi - Kodein';
+    $title = 'Sertifikat Resmi - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">
@@ -23,7 +23,7 @@
             <div style="width: 64px; height: 64px; margin: 0 auto 16px auto; background: var(--primary-blue-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); box-shadow: 0 4px 0 #bfdbfe;">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
             </div>
-            <h1 style="font-size: 28px; font-weight: 900; color: #0f172a; letter-spacing: -0.5px;">Sertifikasi Resmi Kodein</h1>
+            <h1 style="font-size: 28px; font-weight: 900; color: #0f172a; letter-spacing: -0.5px;">Sertifikasi Resmi EduSkill</h1>
             <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Selesaikan seluruh modul pada kursus untuk mendapatkan sertifikat digital terverifikasi.</p>
         </div>
 
@@ -51,7 +51,7 @@
                                 {{ $card['course']->category }}
                             </span>
                             <span style="font-size: 12px; color: #64748b; font-weight: 700;">
-                                Mentor: {{ $card['course']->mentor->name ?? 'Tim Kodein' }}
+                                Mentor: {{ $card['course']->mentor->name ?? 'Tim EduSkill' }}
                             </span>
                         </div>
 

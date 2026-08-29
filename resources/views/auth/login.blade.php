@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Masuk ke Kodein - Platform Belajar Coding</title>
+    <title>Masuk ke EduSkill - Platform Belajar Coding</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -163,7 +163,7 @@
             <div class="logo-badge">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
-            <h1 style="font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Masuk ke Kodein</h1>
+            <h1 style="font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Masuk ke EduSkill</h1>
             <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Lanjutkan petualangan coding dan jaga streak belajar kamu.</p>
         </div>
 

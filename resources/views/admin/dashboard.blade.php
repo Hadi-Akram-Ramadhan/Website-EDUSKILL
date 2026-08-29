@@ -1,5 +1,5 @@
 @php
-    $title = 'Dashboard Super Admin - Kodein';
+    $title = 'Dashboard Super Admin - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">
@@ -28,7 +28,7 @@
                     Panel Kontrol Utama
                 </div>
                 <h1 style="font-size: 26px; font-weight: 900; color: #0f172a;">Dashboard Super Admin</h1>
-                <p style="color: #64748b; font-size: 14px; margin-top: 2px;">Ringkasan metrik pengguna, kurikulum aktif, dan sertifikat yang diterbitkan di platform Kodein.</p>
+                <p style="color: #64748b; font-size: 14px; margin-top: 2px;">Ringkasan metrik pengguna, kurikulum aktif, dan sertifikat yang diterbitkan di platform EduSkill.</p>
             </div>
 
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">

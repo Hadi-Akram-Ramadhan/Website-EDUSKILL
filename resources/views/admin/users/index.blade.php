@@ -1,5 +1,5 @@
 @php
-    $title = 'Manajemen Pengguna - Super Admin Kodein';
+    $title = 'Manajemen Pengguna - Super Admin EduSkill';
 @endphp
 
 <x-app-layout :title="$title">
@@ -13,7 +13,7 @@
                     Kembali ke Dashboard
                 </a>
                 <h1 style="font-size: 26px; font-weight: 900; color: #0f172a;">Manajemen Pengguna</h1>
-                <p style="color: #64748b; font-size: 14px;">Kelola akun Siswa, Guru/Mentor, dan Super Admin di platform Kodein.</p>
+                <p style="color: #64748b; font-size: 14px;">Kelola akun Siswa, Guru/Mentor, dan Super Admin di platform EduSkill.</p>
             </div>
 
             <a href="{{ route('admin.users.create') }}" class="btn-3d btn-blue" style="font-size: 13px; padding: 12px 20px;">

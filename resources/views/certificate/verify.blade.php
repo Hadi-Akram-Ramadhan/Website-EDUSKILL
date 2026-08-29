@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Sertifikat: {{ $certificate->cert_code }} - Kodein</title>
+    <title>Verifikasi Sertifikat: {{ $certificate->cert_code }} - EduSkill</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
@@ -129,7 +129,7 @@
         </div>
 
         <div class="cert-title">SERTIFIKAT RESMI KELULUSAN</div>
-        <div class="cert-subtitle">KODEIN LEARNING PLATFORM</div>
+        <div class="cert-subtitle">EDUSKILL LEARNING PLATFORM</div>
 
         <div style="text-align: center; margin: 32px 0;">
             <p style="color: var(--text-muted); font-size: 15px;">Diberikan secara resmi kepada:</p>

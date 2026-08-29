@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kodein - Platform Belajar Pemrograman Interaktif SMP & SMA</title>
+    <title>EduSkill - Platform Belajar Pemrograman Interaktif SMP & SMA</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -372,12 +372,12 @@
 
     <!-- Top Navigation Header -->
     <header class="navbar" id="navbar">
-        <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 0 #1e40af; flex-shrink: 0;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <a href="/" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
             <div>
-                <span style="font-size: 22px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">KODEIN</span>
+                <span style="font-size: 22px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">EDUSKILL</span>
                 <span class="logo-text" style="font-size: 9px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">LEARNING PLATFORM</span>
             </div>
         </a>
@@ -455,7 +455,7 @@
                     <!-- Code Snippet with Slot Placeholder -->
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 16px; margin-bottom: 14px; text-align: left;">
                         <div class="code-font" style="font-size: 13px; line-height: 1.7; color: #1e293b;">
-                            <span id="slot-placeholder" style="display: inline-block; min-width: 70px; padding: 2px 10px; background: #ffffff; border: 2px dashed #94a3b8; border-radius: 8px; color: var(--primary-blue); font-weight: 700; text-align: center;">...</span>(<span style="color: #d97706;">"Selamat Datang di Kodein!"</span>)
+                            <span id="slot-placeholder" style="display: inline-block; min-width: 70px; padding: 2px 10px; background: #ffffff; border: 2px dashed #94a3b8; border-radius: 8px; color: var(--primary-blue); font-weight: 700; text-align: center;">...</span>(<span style="color: #d97706;">"Selamat Datang di EduSkill!"</span>)
                         </div>
                     </div>
 
@@ -501,7 +501,7 @@
         <div class="features-header">
             <div style="display: inline-flex; align-items: center; gap: 6px; color: var(--primary-blue); font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                Mengapa Memilih Kodein
+                Mengapa Memilih EduSkill
             </div>
             <h2 style="font-size: 32px; font-weight: 900; color: #0f172a;">Dirancang Khusus untuk Siswa SMP &amp; SMA</h2>
         </div>
@@ -565,7 +565,7 @@
                 placeholder.style.background = '#ecfdf5';
 
                 feedbackText.style.color = '#4ade80';
-                feedbackText.innerText = 'Benar! Output: "Selamat Datang di Kodein!"';
+                feedbackText.innerText = 'Benar! Output: "Selamat Datang di EduSkill!"';
                 xpBadge.style.display = 'inline-block';
 
                 confetti({
