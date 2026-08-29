@@ -8,12 +8,28 @@
             display: none;
         }
 
+        .unit-roadmap-wrapper {
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .roadmap-svg-connector {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .roadmap-node-container {
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             transition: transform 0.2s;
+            z-index: 2;
         }
 
         @media (max-width: 768px) {
@@ -106,56 +122,62 @@
                     </div>
                 </div>
 
-                <!-- Zigzag Nodes Path -->
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 28px; margin-bottom: 50px;">
-                    @php
-                        $offsets = [0, 40, 0, -40];
-                    @endphp
+                <!-- Zigzag Nodes Path with SVG Connector -->
+                <div class="unit-roadmap-wrapper">
+                    <svg class="roadmap-svg-connector" id="svg-unit-{{ $unitIndex }}"></svg>
 
-                    @foreach ($unit['lessons'] as $lessonIndex => $lesson)
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 36px; position: relative; z-index: 2;">
                         @php
-                            $offset = $offsets[$lessonIndex % count($offsets)];
+                            $offsets = [0, 48, 0, -48];
                         @endphp
 
-                        <div class="roadmap-node-container" style="--offset: {{ $offset }}px; transform: translateX({{ $offset }}px);">
-                            
-                            @if ($lesson['is_unlocked'])
-                                <a href="{{ route('learn.lesson', $lesson['id']) }}" 
-                                   style="text-decoration: none; position: relative; display: inline-block;">
-                                    
-                                    @if ($lesson['is_current'])
-                                        <!-- Floating Start Tooltip -->
-                                        <div style="position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: #2563eb; color: #fff; font-size: 11px; font-weight: 900; text-transform: uppercase; padding: 6px 12px; border-radius: 12px; box-shadow: 0 4px 0 #1e40af; white-space: nowrap; z-index: 10;" class="animate-float">
-                                            Mulai +{{ $lesson['xp_reward'] }} XP
-                                            <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #2563eb;"></div>
+                        @foreach ($unit['lessons'] as $lessonIndex => $lesson)
+                            @php
+                                $offset = $offsets[$lessonIndex % count($offsets)];
+                            @endphp
+
+                            <div class="roadmap-node-container" style="--offset: {{ $offset }}px; transform: translateX({{ $offset }}px);">
+                                
+                                <div class="node-btn-wrapper" data-completed="{{ $lesson['is_completed'] ? 'true' : 'false' }}" data-unlocked="{{ $lesson['is_unlocked'] ? 'true' : 'false' }}">
+                                    @if ($lesson['is_unlocked'])
+                                        <a href="{{ route('learn.lesson', $lesson['id']) }}" 
+                                           style="text-decoration: none; position: relative; display: inline-block;">
+                                            
+                                            @if ($lesson['is_current'])
+                                                <!-- Floating Start Tooltip -->
+                                                <div style="position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: #2563eb; color: #fff; font-size: 11px; font-weight: 900; text-transform: uppercase; padding: 6px 12px; border-radius: 12px; box-shadow: 0 4px 0 #1e40af; white-space: nowrap; z-index: 10;" class="animate-float">
+                                                    Mulai +{{ $lesson['xp_reward'] }} XP
+                                                    <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #2563eb;"></div>
+                                                </div>
+                                            @endif
+
+                                            <!-- Circular Node Button -->
+                                            <div class="btn-3d node-circle {{ $lesson['is_completed'] ? 'btn-green' : ($lesson['is_current'] ? 'btn-blue pulse-active-node' : 'btn-blue') }}"
+                                                 style="width: 76px; height: 76px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 0 {{ $lesson['is_completed'] ? 'var(--accent-green-shadow)' : 'var(--primary-blue-shadow)' }};">
+                                                @if ($lesson['is_completed'])
+                                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                                @elseif ($lesson['is_current'])
+                                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                                @else
+                                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                                @endif
+                                            </div>
+                                        </a>
+                                    @else
+                                        <!-- Locked Node Button -->
+                                        <div class="btn-3d node-circle btn-gray"
+                                             style="width: 76px; height: 76px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; cursor: not-allowed;">
+                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                         </div>
                                     @endif
-
-                                    <!-- Circular Node Button -->
-                                    <div class="btn-3d {{ $lesson['is_completed'] ? 'btn-green' : ($lesson['is_current'] ? 'btn-blue pulse-active-node' : 'btn-blue') }}"
-                                         style="width: 74px; height: 74px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center;">
-                                        @if ($lesson['is_completed'])
-                                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                        @elseif ($lesson['is_current'])
-                                            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        @else
-                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                                        @endif
-                                    </div>
-                                </a>
-                            @else
-                                <!-- Locked Node Button -->
-                                <div class="btn-3d btn-gray"
-                                     style="width: 74px; height: 74px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; cursor: not-allowed;">
-                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                 </div>
-                            @endif
 
-                            <div style="font-size: 13px; font-weight: 800; color: {{ $lesson['is_unlocked'] ? '#0f172a' : '#94a3b8' }}; margin-top: 8px; text-align: center; max-width: 140px; line-height: 1.3;">
-                                {{ $lesson['title'] }}
+                                <div style="font-size: 13px; font-weight: 800; color: {{ $lesson['is_unlocked'] ? '#0f172a' : '#94a3b8' }}; margin-top: 10px; text-align: center; max-width: 150px; line-height: 1.3;">
+                                    {{ $lesson['title'] }}
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -280,4 +302,57 @@
         </div>
 
     </div>
+
+    <!-- Script to render smooth SVG connecting paths between consecutive roadmap nodes -->
+    <script>
+        function drawRoadmapConnectors() {
+            document.querySelectorAll('.unit-roadmap-wrapper').forEach(unit => {
+                const svg = unit.querySelector('.roadmap-svg-connector');
+                const nodeContainers = unit.querySelectorAll('.node-btn-wrapper');
+                if (!svg || nodeContainers.length < 2) return;
+
+                const unitRect = unit.getBoundingClientRect();
+                svg.setAttribute('viewBox', `0 0 ${unitRect.width} ${unitRect.height}`);
+
+                let svgContent = '';
+
+                for (let i = 0; i < nodeContainers.length - 1; i++) {
+                    const nodeA = nodeContainers[i];
+                    const nodeB = nodeContainers[i + 1];
+
+                    const rectA = nodeA.getBoundingClientRect();
+                    const rectB = nodeB.getBoundingClientRect();
+
+                    const x1 = (rectA.left + rectA.right) / 2 - unitRect.left;
+                    const y1 = (rectA.top + rectA.bottom) / 2 - unitRect.top;
+                    const x2 = (rectB.left + rectB.right) / 2 - unitRect.left;
+                    const y2 = (rectB.top + rectB.bottom) / 2 - unitRect.top;
+
+                    const isCompleted = nodeA.getAttribute('data-completed') === 'true' && nodeB.getAttribute('data-unlocked') === 'true';
+                    const strokeColor = isCompleted ? '#10b981' : '#cbd5e1';
+
+                    // Smooth Bezier Curve connecting Node A to Node B
+                    const cy1 = y1 + (y2 - y1) * 0.5;
+                    const cy2 = y1 + (y2 - y1) * 0.5;
+
+                    svgContent += `
+                        <path d="M ${x1} ${y1} C ${x1} ${cy1}, ${x2} ${cy2}, ${x2} ${y2}" 
+                              stroke="${strokeColor}" 
+                              stroke-width="10" 
+                              stroke-linecap="round" 
+                              stroke-dasharray="${isCompleted ? 'none' : '10 10'}" 
+                              fill="none" 
+                              opacity="0.85" />
+                    `;
+                }
+
+                svg.innerHTML = svgContent;
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(drawRoadmapConnectors, 100);
+        });
+        window.addEventListener('resize', drawRoadmapConnectors);
+    </script>
 </x-app-layout>
