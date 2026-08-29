@@ -16,15 +16,14 @@
             --primary-blue-hover: #1d4ed8;
             --primary-blue-shadow: #1e40af;
             --primary-blue-light: #eff6ff;
+            --primary-blue-subtle: #dbeafe;
             --accent-green: #10b981;
             --accent-green-shadow: #059669;
             --accent-orange: #f59e0b;
             --accent-orange-shadow: #d97706;
             --accent-red: #ef4444;
             --accent-red-shadow: #dc2626;
-            --accent-purple: #8b5cf6;
-            --accent-cyan: #06b6d4;
-            --bg-page: #f0f6ff;
+            --bg-page: #f8fafc;
             --bg-card: #ffffff;
             --border-color: #e2e8f0;
             --text-main: #0f172a;
@@ -45,59 +44,18 @@
             min-height: 100vh;
             display: flex;
             overflow-x: hidden;
-            position: relative;
             background-image: 
-                radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 85% 35%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
-                radial-gradient(rgba(37, 99, 235, 0.12) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px;
-            background-attachment: fixed;
-        }
-
-        /* Animated Ambient Dynamic Glow Orbs */
-        .bg-glow-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(90px);
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.45;
-        }
-
-        .orb-1 {
-            width: 450px;
-            height: 450px;
-            background: linear-gradient(135deg, #3b82f6, #06b6d4);
-            top: -100px;
-            left: 20%;
-            animation: floatOrb1 18s ease-in-out infinite alternate;
-        }
-
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-            bottom: -50px;
-            right: 5%;
-            animation: floatOrb2 22s ease-in-out infinite alternate;
-        }
-
-        @keyframes floatOrb1 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(80px, 60px) scale(1.15); }
-        }
-
-        @keyframes floatOrb2 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-70px, -50px) scale(1.1); }
+                radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.04) 0%, transparent 50%),
+                linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
         }
 
         .code-font {
             font-family: 'Fira Code', monospace;
         }
 
-        /* 3D Button Utility in Blue/Light Theme */
+        /* 3D Button Utility */
         .btn-3d {
             position: relative;
             display: inline-flex;
@@ -122,7 +80,7 @@
         }
 
         .btn-blue {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            background: var(--primary-blue);
             color: #ffffff;
             box-shadow: 0 4px 0 var(--primary-blue-shadow);
         }
@@ -131,7 +89,7 @@
         }
 
         .btn-green {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: var(--accent-green);
             color: #ffffff;
             box-shadow: 0 4px 0 var(--accent-green-shadow);
         }
@@ -140,7 +98,7 @@
         }
 
         .btn-orange {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: var(--accent-orange);
             color: #ffffff;
             box-shadow: 0 4px 0 var(--accent-orange-shadow);
         }
@@ -149,7 +107,7 @@
         }
 
         .btn-red {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: var(--accent-red);
             color: #ffffff;
             box-shadow: 0 4px 0 var(--accent-red-shadow);
         }
@@ -176,27 +134,25 @@
             box-shadow: 0 0 0 #cbd5e1;
         }
 
-        /* 3D Card Utility with Frosted Glass Effect */
+        /* 3D Card Utility */
         .card-3d {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 2px solid #e2e8f0;
+            background: #ffffff;
+            border: 2px solid var(--border-color);
             border-radius: 24px;
-            box-shadow: 0 6px 0 #e2e8f0, 0 12px 24px -6px rgba(37, 99, 235, 0.06);
-            transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 4px 0 #e2e8f0;
+            transition: transform 0.15s ease, border-color 0.15s ease;
         }
 
         /* Animations */
         @keyframes pulse-ring {
-            0% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6); }
-            70% { transform: scale(1.04); box-shadow: 0 0 0 16px rgba(37, 99, 235, 0); }
+            0% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5); }
+            70% { transform: scale(1.04); box-shadow: 0 0 0 14px rgba(37, 99, 235, 0); }
             100% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
         }
 
         @keyframes float-soft {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-6px); }
         }
 
         .animate-float {
@@ -210,10 +166,8 @@
         /* Desktop & Tablet Sidebar */
         .sidebar {
             width: 260px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-right: 2px solid #e2e8f0;
+            background: #ffffff;
+            border-right: 2px solid var(--border-color);
             display: flex;
             flex-direction: column;
             padding: 24px 16px;
@@ -248,16 +202,14 @@
         }
 
         .nav-item:hover {
-            background: #eff6ff;
+            background: #f1f5f9;
             color: var(--primary-blue);
-            transform: translateX(3px);
         }
 
         .nav-item.active {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            background: var(--primary-blue-light);
             color: var(--primary-blue);
             border-color: #bfdbfe;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
         }
 
         .main-wrapper {
@@ -267,13 +219,11 @@
             padding: 32px 24px;
             overflow-y: auto;
             max-width: 100%;
-            position: relative;
-            z-index: 10;
         }
 
         .content-container {
             width: 100%;
-            max-width: 1080px;
+            max-width: 1060px;
             display: grid;
             grid-template-columns: 1fr 340px;
             gap: 36px;
@@ -299,7 +249,7 @@
             }
         }
 
-        /* Mobile Viewport (Phones) */
+        /* Mobile Viewport */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -383,16 +333,12 @@
 </head>
 <body>
 
-    <!-- Ambient Glowing Orbs in Background -->
-    <div class="bg-glow-orb orb-1"></div>
-    <div class="bg-glow-orb orb-2"></div>
-
     @auth
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div class="sidebar-top" style="margin-bottom: 32px; padding: 0 8px;">
             <a href="{{ route('learn.index') }}" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-                <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #2563eb, #06b6d4); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 0 #1e40af;">
+                <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 0 #1e40af;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 </div>
                 <div class="logo-text">
@@ -458,7 +404,7 @@
             </a>
         </nav>
 
-        <div class="sidebar-bottom" style="border-top: 2px solid #e2e8f0; padding-top: 16px;">
+        <div class="sidebar-bottom" style="border-top: 2px solid var(--border-color); padding-top: 16px;">
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 0 8px;">
                 <img src="{{ auth()->user()->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . auth()->user()->id }}" style="width: 38px; height: 38px; border-radius: 50%; background: #eff6ff; border: 2px solid #bfdbfe;" alt="Avatar">
                 <div style="overflow: hidden;">
@@ -530,21 +476,21 @@
                 osc.start(now);
                 osc.stop(now + 0.25);
             },
-            playClick() {
+            playTap() {
                 this.init();
                 if (!this.ctx) return;
                 const now = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(400, now);
-                osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                osc.frequency.setValueAtTime(500, now);
+                osc.frequency.exponentialRampToValueAtTime(900, now + 0.04);
                 gain.gain.setValueAtTime(0.1, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start(now);
-                osc.stop(now + 0.05);
+                osc.stop(now + 0.04);
             },
             playVictory() {
                 this.init();
