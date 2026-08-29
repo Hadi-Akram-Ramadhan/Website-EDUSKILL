@@ -318,10 +318,11 @@ class DatabaseSeeder extends Seeder
             'is_published' => true,
         ]);
 
+        // Course 2 - Unit 1
         $unitWeb1 = Unit::create([
             'course_id' => $course2->id,
-            'title' => 'Unit 1: Tag Dasar HTML',
-            'description' => 'Mengenal struktur halaman web, tag judul h1, dan paragraf p.',
+            'title' => 'Unit 1: Struktur & Tag Dasar HTML',
+            'description' => 'Mengenal struktur halaman web, tag judul h1, paragraf, dan hyperlink.',
             'order_index' => 1,
         ]);
 
@@ -347,17 +348,39 @@ class DatabaseSeeder extends Seeder
             'order_index' => 1,
         ]);
 
-        $unitWeb2 = Unit::create([
-            'course_id' => $course2->id,
-            'title' => 'Unit 2: Styling Dasar CSS',
-            'description' => 'Mengatur warna dan ukuran teks menggunakan kode CSS.',
+        $lessonWeb2 = Lesson::create([
+            'unit_id' => $unitWeb1->id,
+            'title' => 'Link Tautan & Gambar',
+            'slug' => 'link-tautan-dan-gambar',
+            'description' => 'Menyematkan tautan antar-halaman (anchor) dan gambar.',
+            'type' => 'quiz',
+            'theory_content' => 'Tag <a> digunakan untuk membuat tautan web, dan tag <img> untuk menampilkan gambar.',
+            'xp_reward' => 25,
             'order_index' => 2,
         ]);
 
-        $lessonWeb2 = Lesson::create([
+        Exercise::create([
+            'lesson_id' => $lessonWeb2->id,
+            'question_type' => 'multiple_choice',
+            'prompt' => 'Atribut HTML manakah yang digunakan pada tag <a> untuk menentukan alamat link tujuan?',
+            'options_json' => ['href', 'src', 'link', 'target'],
+            'answer_json' => 'href',
+            'explanation' => 'Atribut "href" (Hypertext Reference) menentukan URL halaman tujuan pada tag <a>.',
+            'order_index' => 1,
+        ]);
+
+        // Course 2 - Unit 2
+        $unitWeb2 = Unit::create([
+            'course_id' => $course2->id,
+            'title' => 'Unit 2: Styling Dasar CSS Modern',
+            'description' => 'Mengatur warna latar, font teks, dan margin tata letak elemen web.',
+            'order_index' => 2,
+        ]);
+
+        $lessonWeb3 = Lesson::create([
             'unit_id' => $unitWeb2->id,
-            'title' => 'Warna dan Font Teks',
-            'slug' => 'warna-dan-font-teks',
+            'title' => 'Warna & Font Teks CSS',
+            'slug' => 'warna-dan-font-teks-css',
             'description' => 'Menghias tampilan elemen dengan properti color dan font-size.',
             'type' => 'quiz',
             'theory_content' => 'Properti color mengatur warna teks, sedangkan font-size mengatur ukuran teks.',
@@ -366,7 +389,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Exercise::create([
-            'lesson_id' => $lessonWeb2->id,
+            'lesson_id' => $lessonWeb3->id,
             'question_type' => 'multiple_choice',
             'prompt' => 'Properti CSS manakah yang digunakan untuk mengubah warna teks menjadi biru?',
             'options_json' => ['color: blue;', 'text-color: blue;', 'font-color: blue;', 'background: blue;'],
@@ -389,10 +412,11 @@ class DatabaseSeeder extends Seeder
             'is_published' => true,
         ]);
 
+        // Course 3 - Unit 1
         $unitAlgo1 = Unit::create([
             'course_id' => $course3->id,
             'title' => 'Unit 1: Pola Berpikir Komputasional',
-            'description' => 'Dekomposisi masalah dan pengenalan pola algoritma.',
+            'description' => 'Dekomposisi masalah dan pengenalan pola algoritma secara terstruktur.',
             'order_index' => 1,
         ]);
 
@@ -414,6 +438,60 @@ class DatabaseSeeder extends Seeder
             'options_json' => ['Proses (Processing)', 'Output', 'Shutdown', 'Error'],
             'answer_json' => 'Proses (Processing)',
             'explanation' => 'Setelah data diterima (Input), komputer melakukan tahap pemrosesan (Proses) sebelum menghasilkan output.',
+            'order_index' => 1,
+        ]);
+
+        $lessonAlgo2 = Lesson::create([
+            'unit_id' => $unitAlgo1->id,
+            'title' => 'Diagram Alur & Urutan Langkah',
+            'slug' => 'diagram-alur-dan-urutan-langkah',
+            'description' => 'Menyusun langkah algoritma sekuensial yang presisi dan efisien.',
+            'type' => 'quiz',
+            'theory_content' => 'Algoritma harus berurutan secara logis (sekuensial) agar menghasilkan solusi yang tepat.',
+            'xp_reward' => 30,
+            'order_index' => 2,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonAlgo2->id,
+            'question_type' => 'code_ordering',
+            'prompt' => 'Susun langkah algoritma membuat secangkir teh manis berikut dengan urutan yang benar:',
+            'options_json' => [
+                ['id' => '1', 'text' => 'Rebus air sampai mendidih'],
+                ['id' => '2', 'text' => 'Celupkan teh dan masukkan gula ke cangkir'],
+                ['id' => '3', 'text' => 'Tuang air panas lalu aduk hingga larut'],
+            ],
+            'answer_json' => ['1', '2', '3'],
+            'explanation' => 'Algoritma harus runtut: menyiapkan air panas, bahan, lalu mencampurnya.',
+            'order_index' => 1,
+        ]);
+
+        // Course 3 - Unit 2
+        $unitAlgo2 = Unit::create([
+            'course_id' => $course3->id,
+            'title' => 'Unit 2: Pengambilan Keputusan Algoritma',
+            'description' => 'Memahami percabangan kondisi dan perbandingan nilai logika.',
+            'order_index' => 2,
+        ]);
+
+        $lessonAlgo3 = Lesson::create([
+            'unit_id' => $unitAlgo2->id,
+            'title' => 'Kondisi Logika Benar atau Salah',
+            'slug' => 'kondisi-logika-benar-salah',
+            'description' => 'Mengevaluasi kondisi Boolean dalam alur logika program.',
+            'type' => 'quiz',
+            'theory_content' => 'Percabangan logika membantu algoritma mengambil jalur tindakan yang berbeda sesuai syarat.',
+            'xp_reward' => 30,
+            'order_index' => 1,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonAlgo3->id,
+            'question_type' => 'multiple_choice',
+            'prompt' => 'Jika kondisi "Lampu Merah == Menyala", aksi logika yang benar adalah:',
+            'options_json' => ['Kendaraan Berhenti', 'Kendaraan Berjalan Cepat', 'Kendaraan Mundur', 'Putar Balik'],
+            'answer_json' => 'Kendaraan Berhenti',
+            'explanation' => 'Kondisi lampu merah bernilai True mengharuskan kendaraan untuk berhenti.',
             'order_index' => 1,
         ]);
 

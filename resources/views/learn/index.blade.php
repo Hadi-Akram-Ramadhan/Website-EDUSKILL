@@ -113,26 +113,31 @@
                 </div>
             </div>
 
-            <!-- Top Course Switcher Bar -->
-            <div style="background: #ffffff; border: 2px solid var(--border-color); border-radius: 20px; padding: 14px 18px; margin-bottom: 24px; box-shadow: 0 4px 0 #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+            <!-- Top Course Switcher Bar (Consistent Structured Layout) -->
+            <div class="card-3d" style="padding: 16px 20px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+                    <div style="display: flex; align-items: center; gap: 12px; min-width: 240px; flex: 1;">
+                        <div style="width: 40px; height: 40px; border-radius: 12px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1.5px solid #bfdbfe;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Topik Kursus Aktif</div>
+                            <div style="font-size: 16px; font-weight: 900; color: #0f172a; line-height: 1.2;">{{ $course->title ?? 'Pilih Kursus' }}</div>
+                        </div>
                     </div>
-                    <div>
-                        <div style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Topik Kursus Aktif</div>
-                        <div style="font-size: 15px; font-weight: 900; color: #0f172a;">{{ $course->title ?? 'Pilih Kursus' }}</div>
-                    </div>
-                </div>
 
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    @foreach ($allCourses as $c)
-                        <a href="{{ route('learn.index', ['course' => $c->id]) }}" 
-                           class="btn-3d {{ ($course && $course->id === $c->id) ? 'btn-blue' : 'btn-outline' }}" 
-                           style="padding: 8px 14px; font-size: 12px; border-radius: 12px; text-transform: none;">
-                            {{ $c->category }}
-                        </a>
-                    @endforeach
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        @foreach ($allCourses as $c)
+                            <a href="{{ route('learn.index', ['course' => $c->id]) }}" 
+                               class="btn-3d {{ ($course && $course->id === $c->id) ? 'btn-blue' : 'btn-outline' }}" 
+                               style="padding: 8px 16px; font-size: 12px; border-radius: 12px; text-transform: none; display: inline-flex; align-items: center; gap: 6px;">
+                                @if ($course && $course->id === $c->id)
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                @endif
+                                {{ $c->category }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
