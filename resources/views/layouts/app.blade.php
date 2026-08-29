@@ -366,6 +366,10 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
                     <span class="nav-text">Sertifikat</span>
                 </a>
+                <a href="{{ route('docs.api') }}" target="_blank" class="nav-item" title="OpenAPI Docs">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    <span class="nav-text">OpenAPI Docs</span>
+                </a>
             @elseif (auth()->user()->role === 'guru')
                 <a href="{{ route('mentor.dashboard') }}" class="nav-item {{ request()->routeIs('mentor.*') ? 'active' : '' }}" title="Dashboard Mentor">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -397,11 +401,6 @@
                     <span class="nav-text">Sertifikat</span>
                 </a>
             @endif
-
-            <a href="{{ route('docs.api') }}" target="_blank" class="nav-item" title="OpenAPI Docs">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                <span class="nav-text">OpenAPI Docs</span>
-            </a>
         </nav>
 
         <div class="sidebar-bottom" style="border-top: 2px solid var(--border-color); padding-top: 16px;">
