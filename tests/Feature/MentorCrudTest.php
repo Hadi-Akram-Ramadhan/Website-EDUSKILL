@@ -142,6 +142,6 @@ class MentorCrudTest extends TestCase
     public function test_student_cannot_access_mentor_portal(): void
     {
         $response = $this->actingAs($this->student)->get(route('mentor.courses.index'));
-        $response->assertStatus(403);
+        $response->assertRedirect(route('learn.index'));
     }
 }
