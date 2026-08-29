@@ -148,7 +148,8 @@
                     const optText = typeof opt === 'object' ? (opt.text || JSON.stringify(opt)) : opt;
                     html += `
                         <button type="button" class="btn-3d btn-outline opt-chip" 
-                                onclick="selectSingleOption('${escapeJs(optText)}', this)" 
+                                data-option="${escapeHtml(optText)}"
+                                onclick="selectSingleOption(this)" 
                                 style="justify-content: flex-start; text-align: left; text-transform: none; font-size: 15px; font-weight: 700; padding: 18px 20px; width: 100%; border-radius: 18px;">
                             <span style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #64748b; font-weight: 800; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0;">
                                 ${String.fromCharCode(65 + idx)}
@@ -173,7 +174,7 @@
                 poolList.forEach(item => {
                     html += `
                         <button type="button" class="btn-3d btn-outline ordering-chip code-font" 
-                                data-id="${item.id}"
+                                data-id="${escapeHtml(item.id)}"
                                 onclick="moveOrderingChip(this)" 
                                 style="justify-content: flex-start; text-align: left; text-transform: none; font-size: 15px; font-weight: 600; padding: 14px 18px; border-radius: 14px;">
                             ${escapeHtml(item.text)}
@@ -195,14 +196,20 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                             ${leftKeys.map(k => `
-                                <button type="button" class="btn-3d btn-outline match-left code-font" data-key="${escapeJs(k)}" onclick="selectMatchPair('left', '${escapeJs(k)}', this)" style="text-transform: none; font-size: 14px; padding: 14px 16px; border-radius: 14px;">
+                                <button type="button" class="btn-3d btn-outline match-left code-font" 
+                                        data-key="${escapeHtml(k)}" 
+                                        onclick="selectMatchPair('left', this)" 
+                                        style="text-transform: none; font-size: 14px; padding: 14px 16px; border-radius: 14px; width: 100%; text-align: center;">
                                     ${escapeHtml(k)}
                                 </button>
                             `).join('')}
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                             ${rightVals.map(v => `
-                                <button type="button" class="btn-3d btn-outline match-right code-font" data-val="${escapeJs(v)}" onclick="selectMatchPair('right', '${escapeJs(v)}', this)" style="text-transform: none; font-size: 14px; padding: 14px 16px; border-radius: 14px;">
+                                <button type="button" class="btn-3d btn-outline match-right code-font" 
+                                        data-val="${escapeHtml(v)}" 
+                                        onclick="selectMatchPair('right', this)" 
+                                        style="text-transform: none; font-size: 14px; padding: 14px 16px; border-radius: 14px; width: 100%; text-align: center;">
                                     ${escapeHtml(v)}
                                 </button>
                             `).join('')}
@@ -218,8 +225,9 @@
         }
 
         // Single Choice / Fill Blank Selection
-        function selectSingleOption(val, btn) {
-            window.SoundEngine.playTap();
+        function selectSingleOption(btn) {
+            if (window.SoundEngine && window.SoundEngine.playTap) window.SoundEngine.playTap();
+            const val = btn.getAttribute('data-option');
             document.querySelectorAll('.opt-chip').forEach(c => {
                 c.style.borderColor = '#cbd5e1';
                 c.style.background = '#ffffff';
@@ -232,7 +240,7 @@
 
         // Parsons Code Ordering Move
         function moveOrderingChip(btn) {
-            window.SoundEngine.playTap();
+            if (window.SoundEngine && window.SoundEngine.playTap) window.SoundEngine.playTap();
             const bucket = document.getElementById('ordering-bucket');
             const pool = document.getElementById('ordering-pool');
 
@@ -251,36 +259,104 @@
             selectedAnswer = Array.from(bucketChips).map(c => c.getAttribute('data-id'));
         }
 
-        // Matching Pairs Logic
-        function selectMatchPair(side, val, btn) {
-            window.SoundEngine.playTap();
+        // Matching Pairs Logic (Zero Quoting Bug & Re-pairable)
+        function selectMatchPair(side, btn) {
+            if (window.SoundEngine && window.SoundEngine.playTap) window.SoundEngine.playTap();
+
             if (side === 'left') {
+                const key = btn.getAttribute('data-key');
+                
+                // If button is already paired, un-pair it first
+                if (btn.getAttribute('data-paired') === 'true') {
+                    const pairedVal = window._matchedPairs[key];
+                    delete window._matchedPairs[key];
+                    btn.removeAttribute('data-paired');
+                    btn.style.background = '#ffffff';
+                    btn.style.borderColor = '#cbd5e1';
+                    btn.style.color = 'var(--primary-blue)';
+
+                    // Find and un-pair the right button
+                    document.querySelectorAll('.match-right').forEach(rBtn => {
+                        if (rBtn.getAttribute('data-val') === pairedVal) {
+                            rBtn.removeAttribute('data-paired');
+                            rBtn.style.background = '#ffffff';
+                            rBtn.style.borderColor = '#cbd5e1';
+                            rBtn.style.color = 'var(--primary-blue)';
+                        }
+                    });
+                }
+
+                // Highlight selected left button
                 document.querySelectorAll('.match-left').forEach(b => {
-                    if (!b.getAttribute('data-paired')) b.style.background = '#ffffff';
+                    if (b.getAttribute('data-paired') !== 'true') {
+                        b.style.background = '#ffffff';
+                        b.style.borderColor = '#cbd5e1';
+                    }
                 });
+
                 btn.style.background = '#eff6ff';
-                window._currentMatchLeft = { val, btn };
+                btn.style.borderColor = 'var(--primary-blue)';
+                window._currentMatchLeft = { val: key, btn: btn };
+
             } else {
+                const val = btn.getAttribute('data-val');
+
+                // If right button is already paired, un-pair it first
+                if (btn.getAttribute('data-paired') === 'true') {
+                    for (let k in window._matchedPairs) {
+                        if (window._matchedPairs[k] === val) {
+                            delete window._matchedPairs[k];
+                            // Un-pair the left button
+                            document.querySelectorAll('.match-left').forEach(lBtn => {
+                                if (lBtn.getAttribute('data-key') === k) {
+                                    lBtn.removeAttribute('data-paired');
+                                    lBtn.style.background = '#ffffff';
+                                    lBtn.style.borderColor = '#cbd5e1';
+                                    lBtn.style.color = 'var(--primary-blue)';
+                                }
+                            });
+                            break;
+                        }
+                    }
+                    btn.removeAttribute('data-paired');
+                    btn.style.background = '#ffffff';
+                    btn.style.borderColor = '#cbd5e1';
+                    btn.style.color = 'var(--primary-blue)';
+                }
+
+                // Highlight selected right button
                 document.querySelectorAll('.match-right').forEach(b => {
-                    if (!b.getAttribute('data-paired')) b.style.background = '#ffffff';
+                    if (b.getAttribute('data-paired') !== 'true') {
+                        b.style.background = '#ffffff';
+                        b.style.borderColor = '#cbd5e1';
+                    }
                 });
+
                 btn.style.background = '#eff6ff';
-                window._currentMatchRight = { val, btn };
+                btn.style.borderColor = 'var(--primary-blue)';
+                window._currentMatchRight = { val: val, btn: btn };
             }
 
+            // If both a left and right item are actively selected, pair them!
             if (window._currentMatchLeft && window._currentMatchRight) {
-                window._matchedPairs[window._currentMatchLeft.val] = window._currentMatchRight.val;
+                const leftKey = window._currentMatchLeft.val;
+                const rightVal = window._currentMatchRight.val;
+
+                window._matchedPairs[leftKey] = rightVal;
+
                 window._currentMatchLeft.btn.style.background = '#ecfdf5';
                 window._currentMatchLeft.btn.style.borderColor = '#10b981';
+                window._currentMatchLeft.btn.style.color = '#065f46';
                 window._currentMatchLeft.btn.setAttribute('data-paired', 'true');
                 
                 window._currentMatchRight.btn.style.background = '#ecfdf5';
                 window._currentMatchRight.btn.style.borderColor = '#10b981';
+                window._currentMatchRight.btn.style.color = '#065f46';
                 window._currentMatchRight.btn.setAttribute('data-paired', 'true');
 
                 window._currentMatchLeft = null;
                 window._currentMatchRight = null;
-                selectedAnswer = window._matchedPairs;
+                selectedAnswer = Object.assign({}, window._matchedPairs);
             }
         }
 
@@ -325,7 +401,7 @@
             const btnAction = document.getElementById('btn-action');
 
             if (isCorrect) {
-                window.SoundEngine.playCorrect();
+                if (window.SoundEngine && window.SoundEngine.playCorrect) window.SoundEngine.playCorrect();
                 drawer.className = 'action-drawer correct-state';
                 feedback.innerHTML = `
                     <div style="width: 44px; height: 44px; border-radius: 14px; background: #10b981; color: #fff; display: flex; align-items: center; justify-content: center;">
@@ -339,7 +415,7 @@
                 btnAction.className = 'btn-3d btn-green';
                 btnAction.innerText = 'Lanjutkan';
             } else {
-                window.SoundEngine.playWrong();
+                if (window.SoundEngine && window.SoundEngine.playWrong) window.SoundEngine.playWrong();
                 currentHearts = Math.max(0, currentHearts - 1);
                 document.getElementById('hearts-counter').innerText = currentHearts;
 
@@ -382,7 +458,7 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    window.SoundEngine.playVictory();
+                    if (window.SoundEngine && window.SoundEngine.playVictory) window.SoundEngine.playVictory();
                     confetti({
                         particleCount: 100,
                         spread: 70,
@@ -404,9 +480,6 @@
 
         function escapeHtml(str) {
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
-        function escapeJs(str) {
-            return String(str).replace(/'/g, "\\'");
         }
     </script>
 </x-lesson-layout>
