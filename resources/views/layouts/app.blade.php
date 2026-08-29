@@ -325,6 +325,25 @@
                 height: 22px;
             }
 
+            /* Mobile Top Navigation Bar */
+            .mobile-top-header {
+                display: flex !important;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-bottom: 2px solid var(--border-color);
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 40;
+                margin-bottom: 16px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            }
+
             .sidebar .nav-text {
                 display: none;
             }
@@ -332,6 +351,40 @@
     </style>
 </head>
 <body>
+
+    <!-- Mobile Sticky Top Header (Visible only on mobile/tablet) -->
+    <header class="mobile-top-header" style="display: none;">
+        <a href="{{ route('learn.index') }}" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #fff;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <span style="font-size: 17px; font-weight: 900; color: var(--primary-blue); letter-spacing: -0.5px;">EDUSKILL</span>
+        </a>
+
+        @auth
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <img src="{{ auth()->user()->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . auth()->user()->id }}" style="width: 28px; height: 28px; border-radius: 50%; background: #eff6ff; border: 1.5px solid #bfdbfe;" alt="">
+                    <span style="font-size: 11px; font-weight: 800; color: #0f172a; max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ auth()->user()->name }}</span>
+                </div>
+                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="btn-3d btn-outline" style="padding: 6px 10px; font-size: 11px; border-radius: 8px;" title="Keluar / Ganti Akun">
+                        Keluar
+                    </button>
+                </form>
+            </div>
+        @else
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <a href="{{ route('login') }}" class="btn-3d btn-outline" style="padding: 6px 12px; font-size: 11px; border-radius: 8px;">
+                    Masuk
+                </a>
+                <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 6px 12px; font-size: 11px; border-radius: 8px;">
+                    Daftar
+                </a>
+            </div>
+        @endauth
+    </header>
 
     @auth
     <!-- Sidebar Navigation -->

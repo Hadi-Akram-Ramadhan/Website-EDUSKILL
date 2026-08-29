@@ -117,13 +117,18 @@
         .navbar {
             max-width: 1140px;
             margin: 0 auto;
-            padding: 20px 24px;
+            padding: 16px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative;
-            z-index: 20;
+            position: sticky;
+            top: 0;
+            background: rgba(248, 250, 252, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 40;
             width: 100%;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
         }
 
         /* Hero Section */
@@ -362,8 +367,26 @@
                 font-size: 22px;
             }
 
-            .feature-card {
-                padding: 20px 16px;
+            .mobile-bottom-cta {
+                display: flex !important;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                padding: 12px 16px;
+                border-top: 2px solid var(--border-color);
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+                z-index: 50;
+                gap: 10px;
+            }
+
+            .mobile-bottom-cta .btn-3d {
+                flex: 1;
+                padding: 12px;
+                font-size: 13px;
             }
         }
     </style>
@@ -538,6 +561,21 @@
                 <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Sertifikat Terverifikasi QR</h3>
                 <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Selesaikan seluruh unit untuk menerbitkan sertifikat digital resmi bertanda tangan kriptografis dengan QR publik.</p>
             </div>
+        </div>
+        <!-- Mobile Floating Bottom CTA Bar (Visible only on mobile) -->
+        <div class="mobile-bottom-cta" style="display: none;">
+            @auth
+                <a href="{{ route('learn.index') }}" class="btn-3d btn-blue">
+                    Buka Roadmap Belajar
+                </a>
+            @else
+                <a href="{{ route('login') }}" class="btn-3d btn-outline">
+                    Masuk
+                </a>
+                <a href="{{ route('register') }}" class="btn-3d btn-blue">
+                    Daftar Akun
+                </a>
+            @endauth
         </div>
     </section>
 
