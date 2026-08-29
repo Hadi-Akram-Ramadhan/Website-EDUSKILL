@@ -350,33 +350,45 @@
 
         <nav>
             @if (auth()->user()->role === 'super_admin')
-                <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.*') ? 'active' : '' }}" title="Dashboard Admin">
+                <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" title="Dashboard Admin">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                     <span class="nav-text">Dashboard Admin</span>
                 </a>
-                <a href="{{ route('learn.index') }}" class="nav-item {{ request()->routeIs('learn.*') ? 'active' : '' }}" title="Preview Siswa">
+                <a href="{{ route('admin.users.index') }}" class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" title="Kelola Pengguna">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span class="nav-text">Kelola Pengguna</span>
+                </a>
+                <a href="{{ route('admin.courses.index') }}" class="nav-item {{ request()->routeIs('admin.courses.*') ? 'active' : '' }}" title="Master Kursus">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+                    <span class="nav-text">Master Kursus</span>
+                </a>
+                <a href="{{ route('admin.certificates.index') }}" class="nav-item {{ request()->routeIs('admin.certificates.*') ? 'active' : '' }}" title="Rekap Sertifikat">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                    <span class="nav-text">Rekap Sertifikat</span>
+                </a>
+                <a href="{{ route('learn.index') }}" class="nav-item {{ request()->routeIs('learn.*') ? 'active' : '' }}" title="Preview Siswa">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     <span class="nav-text">Preview Siswa</span>
                 </a>
                 <a href="{{ route('leaderboard.web') }}" class="nav-item {{ request()->routeIs('leaderboard.*') ? 'active' : '' }}" title="Peringkat">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M6 2h12v7a6 6 0 0 1-12 0V2Z"></path></svg>
                     <span class="nav-text">Peringkat</span>
                 </a>
-                <a href="{{ route('certificates.web') }}" class="nav-item {{ request()->routeIs('certificates.*') ? 'active' : '' }}" title="Sertifikat">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-                    <span class="nav-text">Sertifikat</span>
-                </a>
                 <a href="{{ route('docs.api') }}" target="_blank" class="nav-item" title="OpenAPI Docs">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
                     <span class="nav-text">OpenAPI Docs</span>
                 </a>
             @elseif (auth()->user()->role === 'guru')
-                <a href="{{ route('mentor.dashboard') }}" class="nav-item {{ request()->routeIs('mentor.*') ? 'active' : '' }}" title="Dashboard Mentor">
+                <a href="{{ route('mentor.dashboard') }}" class="nav-item {{ request()->routeIs('mentor.dashboard') ? 'active' : '' }}" title="Dashboard Mentor">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                     <span class="nav-text">Dashboard Mentor</span>
                 </a>
-                <a href="{{ route('learn.index') }}" class="nav-item {{ request()->routeIs('learn.*') ? 'active' : '' }}" title="Preview Roadmap">
+                <a href="{{ route('mentor.courses.index') }}" class="nav-item {{ request()->routeIs('mentor.courses.*') ? 'active' : '' }}" title="Kursus Saya">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+                    <span class="nav-text">Kursus Saya</span>
+                </a>
+                <a href="{{ route('learn.index') }}" class="nav-item {{ request()->routeIs('learn.*') ? 'active' : '' }}" title="Preview Roadmap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     <span class="nav-text">Preview Roadmap</span>
                 </a>
                 <a href="{{ route('leaderboard.web') }}" class="nav-item {{ request()->routeIs('leaderboard.*') ? 'active' : '' }}" title="Peringkat">

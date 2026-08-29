@@ -113,6 +113,29 @@
                 </div>
             </div>
 
+            <!-- Top Course Switcher Bar -->
+            <div style="background: #ffffff; border: 2px solid var(--border-color); border-radius: 20px; padding: 14px 18px; margin-bottom: 24px; box-shadow: 0 4px 0 #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Topik Kursus Aktif</div>
+                        <div style="font-size: 15px; font-weight: 900; color: #0f172a;">{{ $course->title ?? 'Pilih Kursus' }}</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    @foreach ($allCourses as $c)
+                        <a href="{{ route('learn.index', ['course' => $c->id]) }}" 
+                           class="btn-3d {{ ($course && $course->id === $c->id) ? 'btn-blue' : 'btn-outline' }}" 
+                           style="padding: 8px 14px; font-size: 12px; border-radius: 12px; text-transform: none;">
+                            {{ $c->category }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+
             @if (session('success'))
                 <div style="background: #ecfdf5; border: 2px solid #a7f3d0; border-radius: 18px; padding: 14px 20px; margin-bottom: 24px; font-weight: 700; color: #065f46; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 0 #a7f3d0;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>

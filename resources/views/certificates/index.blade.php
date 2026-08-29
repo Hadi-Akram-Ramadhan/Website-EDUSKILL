@@ -91,10 +91,10 @@
                                 </button>
                             </form>
                         @else
-                            <div style="display: flex; align-items: center; gap: 8px; color: #94a3b8; font-size: 13px; font-weight: 800;">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                Selesaikan Semua Modul
-                            </div>
+                            <a href="{{ route('learn.index', ['course' => $card['course']->id]) }}" class="btn-3d btn-outline" style="font-size: 13px; padding: 12px 20px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                Lanjut Belajar
+                            </a>
                         @endif
                     </div>
                 </div>

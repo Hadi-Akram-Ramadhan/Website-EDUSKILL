@@ -314,7 +314,7 @@ class DatabaseSeeder extends Seeder
             'target_audience' => 'Siswa SMP & SMA',
             'thumbnail' => 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=80',
             'level' => 'beginner',
-            'total_xp' => 100,
+            'total_xp' => 120,
             'is_published' => true,
         ]);
 
@@ -344,6 +344,76 @@ class DatabaseSeeder extends Seeder
             'options_json' => ['h1', 'p', 'div', 'span'],
             'answer_json' => 'h1',
             'explanation' => 'Tag <h1> adalah tag standar HTML untuk judul utama halaman.',
+            'order_index' => 1,
+        ]);
+
+        $unitWeb2 = Unit::create([
+            'course_id' => $course2->id,
+            'title' => 'Unit 2: Styling Dasar CSS',
+            'description' => 'Mengatur warna dan ukuran teks menggunakan kode CSS.',
+            'order_index' => 2,
+        ]);
+
+        $lessonWeb2 = Lesson::create([
+            'unit_id' => $unitWeb2->id,
+            'title' => 'Warna dan Font Teks',
+            'slug' => 'warna-dan-font-teks',
+            'description' => 'Menghias tampilan elemen dengan properti color dan font-size.',
+            'type' => 'quiz',
+            'theory_content' => 'Properti color mengatur warna teks, sedangkan font-size mengatur ukuran teks.',
+            'xp_reward' => 25,
+            'order_index' => 1,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonWeb2->id,
+            'question_type' => 'multiple_choice',
+            'prompt' => 'Properti CSS manakah yang digunakan untuk mengubah warna teks menjadi biru?',
+            'options_json' => ['color: blue;', 'text-color: blue;', 'font-color: blue;', 'background: blue;'],
+            'answer_json' => 'color: blue;',
+            'explanation' => 'Properti CSS yang tepat untuk memberi warna font teks adalah "color".',
+            'order_index' => 1,
+        ]);
+
+        // Course 3: Logika Algoritma & Flowchart
+        $course3 = Course::create([
+            'mentor_id' => $guru1->id,
+            'title' => 'Logika Pemrograman & Algoritma',
+            'slug' => 'logika-pemrograman-dan-algoritma',
+            'description' => 'Asah kemampuan berpikir komputasional, diagram alur logika, dan pemecahan masalah coding.',
+            'category' => 'Algoritma',
+            'target_audience' => 'Siswa SMP & SMA',
+            'thumbnail' => 'https://images.unsplash.com/photo-1516116211227-bbc13c72b226?w=600&auto=format&fit=crop&q=80',
+            'level' => 'intermediate',
+            'total_xp' => 140,
+            'is_published' => true,
+        ]);
+
+        $unitAlgo1 = Unit::create([
+            'course_id' => $course3->id,
+            'title' => 'Unit 1: Pola Berpikir Komputasional',
+            'description' => 'Dekomposisi masalah dan pengenalan pola algoritma.',
+            'order_index' => 1,
+        ]);
+
+        $lessonAlgo1 = Lesson::create([
+            'unit_id' => $unitAlgo1->id,
+            'title' => 'Konsep Input, Proses, & Output',
+            'slug' => 'konsep-input-proses-output',
+            'description' => 'Memahami siklus pemrosesan data dasar dalam komputasi.',
+            'type' => 'quiz',
+            'theory_content' => 'Setiap program komputer menerima input, melakukan pemrosesan data, dan menghasilkan output ke pengguna.',
+            'xp_reward' => 25,
+            'order_index' => 1,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonAlgo1->id,
+            'question_type' => 'multiple_choice',
+            'prompt' => 'Dalam siklus komputasi, apa tahapan yang terjadi setelah komputer menerima Input dari pengguna?',
+            'options_json' => ['Proses (Processing)', 'Output', 'Shutdown', 'Error'],
+            'answer_json' => 'Proses (Processing)',
+            'explanation' => 'Setelah data diterima (Input), komputer melakukan tahap pemrosesan (Proses) sebelum menghasilkan output.',
             'order_index' => 1,
         ]);
 

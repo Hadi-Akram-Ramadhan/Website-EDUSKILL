@@ -24,8 +24,12 @@
                 <p style="color: #64748b; font-size: 14px; margin-top: 2px;">Kelola materi pelajaran, bank soal interaktif, dan pantau kemajuan belajar murid kamu.</p>
             </div>
 
-            <div style="display: flex; gap: 10px;">
-                <a href="{{ route('learn.index') }}" class="btn-3d btn-blue" style="font-size: 13px; padding: 10px 18px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="{{ route('mentor.courses.index') }}" class="btn-3d btn-blue" style="font-size: 13px; padding: 10px 18px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    Kelola Kursus &amp; Materi
+                </a>
+                <a href="{{ route('learn.index') }}" class="btn-3d btn-outline" style="font-size: 13px; padding: 10px 18px;">
                     Preview Roadmap Siswa
                 </a>
             </div>

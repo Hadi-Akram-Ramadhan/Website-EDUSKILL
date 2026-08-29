@@ -26,13 +26,29 @@ class LearnController extends Controller
     /**
      * Learning Path Roadmap View (Duolingo snake path).
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         $user = Auth::user();
         $this->gamificationService->syncHearts($user);
 
-        // Fetch active published course with units and lessons
-        $course = Course::with(['units.lessons.exercises'])->where('is_published', true)->first();
+        // Fetch all published courses for the course selector
+        $allCourses = Course::where('is_published', true)->get();
+
+        $selectedCourseId = $request->query('course');
+        if ($selectedCourseId) {
+            $course = Course::with(['units.lessons.exercises'])
+                ->where('is_published', true)
+                ->where(function ($q) use ($selectedCourseId) {
+                    $q->where('id', $selectedCourseId)->orWhere('slug', $selectedCourseId);
+                })
+                ->first();
+        } else {
+            $course = Course::with(['units.lessons.exercises'])->where('is_published', true)->first();
+        }
+
+        if (! $course && $allCourses->isNotEmpty()) {
+            $course = Course::with(['units.lessons.exercises'])->find($allCourses->first()->id);
+        }
 
         $userProgress = UserProgress::where('user_id', $user->id)->get()->keyBy('lesson_id');
 
@@ -82,7 +98,7 @@ class LearnController extends Controller
         // Top 3 leaderboard snippet
         $topStudents = User::where('role', 'siswa')->orderByDesc('xp')->limit(3)->get();
 
-        return view('learn.index', compact('user', 'course', 'units', 'activeLesson', 'topStudents'));
+        return view('learn.index', compact('user', 'course', 'allCourses', 'units', 'activeLesson', 'topStudents'));
     }
 
     /**

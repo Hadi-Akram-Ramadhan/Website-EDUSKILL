@@ -32,10 +32,19 @@
             </div>
 
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <a href="{{ route('docs.api') }}" target="_blank" class="btn-3d btn-outline" style="font-size: 13px; padding: 10px 18px;">
-                    OpenAPI Docs
+                <a href="{{ route('admin.users.index') }}" class="btn-3d btn-blue" style="font-size: 13px; padding: 10px 18px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    Kelola Pengguna
                 </a>
-                <a href="{{ route('learn.index') }}" class="btn-3d btn-blue" style="font-size: 13px; padding: 10px 18px;">
+                <a href="{{ route('admin.courses.index') }}" class="btn-3d btn-outline" style="font-size: 13px; padding: 10px 18px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+                    Master Kursus
+                </a>
+                <a href="{{ route('admin.certificates.index') }}" class="btn-3d btn-outline" style="font-size: 13px; padding: 10px 18px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                    Rekap Sertifikat
+                </a>
+                <a href="{{ route('learn.index') }}" class="btn-3d btn-outline" style="font-size: 13px; padding: 10px 18px;">
                     Preview Siswa
                 </a>
             </div>
