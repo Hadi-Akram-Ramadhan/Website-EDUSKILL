@@ -14,11 +14,30 @@ use App\Http\Controllers\Web\MentorDashboardController;
 use App\Http\Controllers\Web\MentorLessonController;
 use App\Http\Controllers\Web\ProfileWebController;
 use App\Http\Controllers\Web\WebAuthController;
+use App\Models\Course;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 
 // Public Landing Page
 Route::get('/', function () {
-    return view('landing');
+    $activeCourses = collect();
+    $upcomingCourses = collect();
+
+    if (Schema::hasTable('courses')) {
+        $activeCourses = Course::where('is_published', true)
+            ->where('is_upcoming', false)
+            ->withCount('lessons')
+            ->with('units')
+            ->orderBy('id')
+            ->get();
+
+        $upcomingCourses = Course::where('is_upcoming', true)
+            ->where('is_published', true)
+            ->orderBy('id')
+            ->get();
+    }
+
+    return view('landing', compact('activeCourses', 'upcomingCourses'));
 })->name('landing');
 
 // Web Authentication & 1-Click Demo Switcher

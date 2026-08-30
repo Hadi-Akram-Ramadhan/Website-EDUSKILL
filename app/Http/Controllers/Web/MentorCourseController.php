@@ -55,6 +55,7 @@ class MentorCourseController extends Controller
             'target_audience' => 'nullable|string|max:255',
             'thumbnail' => 'nullable|url|max:500',
             'is_published' => 'nullable|boolean',
+            'is_upcoming' => 'nullable|boolean',
         ]);
 
         $slug = Str::slug($validated['title']).'-'.Str::random(5);
@@ -70,6 +71,7 @@ class MentorCourseController extends Controller
             'thumbnail' => $validated['thumbnail'] ?? 'https://images.unsplash.com/photo-1516116211227-bbc13c72b226?w=600&auto=format&fit=crop&q=80',
             'total_xp' => 100,
             'is_published' => $request->has('is_published'),
+            'is_upcoming' => $request->has('is_upcoming'),
         ]);
 
         return redirect()->route('mentor.courses.manage', $course->id)->with('success', "Kursus '{$course->title}' berhasil dibuat. Silakan tambahkan unit dan modul pelajaran!");
@@ -106,6 +108,7 @@ class MentorCourseController extends Controller
             'target_audience' => 'nullable|string|max:255',
             'thumbnail' => 'nullable|url|max:500',
             'is_published' => 'nullable|boolean',
+            'is_upcoming' => 'nullable|boolean',
         ]);
 
         $course->update([
@@ -116,6 +119,7 @@ class MentorCourseController extends Controller
             'target_audience' => $validated['target_audience'] ?? $course->target_audience,
             'thumbnail' => $validated['thumbnail'] ?? $course->thumbnail,
             'is_published' => $request->has('is_published'),
+            'is_upcoming' => $request->has('is_upcoming'),
         ]);
 
         return redirect()->route('mentor.courses.index')->with('success', "Kursus '{$course->title}' berhasil diperbarui.");

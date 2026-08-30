@@ -495,6 +495,49 @@ class DatabaseSeeder extends Seeder
             'order_index' => 1,
         ]);
 
+        // Upcoming Courses Roadmap (Can be edited/managed by Admin & Mentors)
+        $upcomingCourse1 = Course::create([
+            'mentor_id' => $guru2->id,
+            'title' => 'JavaScript Interaktif & Web App',
+            'slug' => 'javascript-interaktif',
+            'description' => 'Jadikan website hidup dengan tombol interaktif, animasi dinamis, dan manipulasi elemen web secara real-time.',
+            'category' => 'JavaScript',
+            'target_audience' => 'Siswa SMP & SMA',
+            'thumbnail' => 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=600&auto=format&fit=crop&q=80',
+            'level' => 'intermediate',
+            'total_xp' => 200,
+            'is_published' => true,
+            'is_upcoming' => true,
+        ]);
+
+        $upcomingCourse2 = Course::create([
+            'mentor_id' => $guru1->id,
+            'title' => 'C++ & Olimpiade Komputer (OSN)',
+            'slug' => 'cpp-olimpiade-komputer',
+            'description' => 'Asah kemampuan logika pemecahan masalah tingkat kompetisi sains dan olimpiade informatika nasional.',
+            'category' => 'C++',
+            'target_audience' => 'Siswa SMA',
+            'thumbnail' => 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600&auto=format&fit=crop&q=80',
+            'level' => 'advanced',
+            'total_xp' => 300,
+            'is_published' => true,
+            'is_upcoming' => true,
+        ]);
+
+        $upcomingCourse3 = Course::create([
+            'mentor_id' => $guru2->id,
+            'title' => 'SQL & Manajemen Basis Data',
+            'slug' => 'sql-basis-data',
+            'description' => 'Pahami cara menyimpan, mencari, dan mengolah data dalam jumlah besar dengan query basis data relasional.',
+            'category' => 'Database',
+            'target_audience' => 'Siswa SMP & SMA',
+            'thumbnail' => 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&auto=format&fit=crop&q=80',
+            'level' => 'intermediate',
+            'total_xp' => 180,
+            'is_published' => true,
+            'is_upcoming' => true,
+        ]);
+
         // 5. Seed progress for Siti (Course 1 Completed -> Certificate Issued)
         foreach ([$lesson1, $lesson2, $lesson3] as $l) {
             UserProgress::create([

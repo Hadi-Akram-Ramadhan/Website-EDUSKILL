@@ -63,9 +63,15 @@
                     <textarea name="description" rows="3" style="width: 100%; padding: 12px 16px; border: 2px solid #cbd5e1; border-radius: 14px; font-size: 14px; font-weight: 600; outline: none;">{{ old('description', $course->description) }}</textarea>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0;">
-                    <input type="checkbox" name="is_published" id="is_published" value="1" {{ old('is_published', $course->is_published) ? 'checked' : '' }} style="width: 18px; height: 18px; accent-color: var(--primary-blue);">
-                    <label for="is_published" style="font-size: 14px; font-weight: 800; color: #0f172a; cursor: pointer;">Publikasikan kursus ini agar aktif</label>
+                <div style="background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; padding: 14px 18px; display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" name="is_published" id="is_published" value="1" {{ old('is_published', $course->is_published) ? 'checked' : '' }} style="width: 18px; height: 18px; accent-color: var(--primary-blue);">
+                        <label for="is_published" style="font-size: 14px; font-weight: 800; color: #0f172a; cursor: pointer;">Publikasikan kursus ini</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" name="is_upcoming" id="is_upcoming" value="1" {{ old('is_upcoming', $course->is_upcoming) ? 'checked' : '' }} style="width: 18px; height: 18px; accent-color: #d97706;">
+                        <label for="is_upcoming" style="font-size: 13px; font-weight: 700; color: #b45309; cursor: pointer;">Tandai sebagai "Kursus Mendatang / Segera Hadir" (Roadmap di Landing Page)</label>
+                    </div>
                 </div>
 
                 <div style="margin-top: 10px; display: flex; gap: 12px;">

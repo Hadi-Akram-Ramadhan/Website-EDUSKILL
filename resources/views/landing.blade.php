@@ -1003,167 +1003,108 @@
 
         <div class="languages-grid">
             
-            <!-- Language 1: Python -->
-            <div class="lang-card">
-                <div>
-                    <div class="lang-header">
-                        <div class="lang-icon-box" style="background: #eff6ff; color: #2563eb;">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m10 15 5-3-5-3v6Z"></path><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg>
-                        </div>
-                        <div>
-                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">Dasar Pemrograman Python</h3>
-                            <span style="font-size: 12px; color: #059669; font-weight: 800; text-transform: uppercase;">Tingkat: Pemula (SMP/SMA)</span>
-                        </div>
-                    </div>
-                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
-                        Pelajari variabel, percabangan (if-else), perulangan (loops), dan fungsi dengan sintaks yang bersih dan mudah dipahami.
-                    </p>
-                    <div class="lang-pill-tags">
-                        <span class="lang-pill-tag">Sintaks Ramah</span>
-                        <span class="lang-pill-tag">Otomasi &amp; AI Dasar</span>
-                        <span class="lang-pill-tag">2 Unit &bull; 4 Modul</span>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
-                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Total 280 XP</span>
-                    <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Pelajari</a>
-                </div>
-            </div>
+            {{-- 1. Active & Playable Courses From Database --}}
+            @forelse ($activeCourses ?? [] as $course)
+                @php
+                    $isPython = str_contains(strtolower($course->title), 'python');
+                    $isWeb = str_contains(strtolower($course->title), 'web') || str_contains(strtolower($course->title), 'html');
+                    $isAlgo = str_contains(strtolower($course->title), 'algoritma') || str_contains(strtolower($course->title), 'logika');
 
-            <!-- Language 2: HTML & CSS -->
-            <div class="lang-card">
-                <div>
-                    <div class="lang-header">
-                        <div class="lang-icon-box" style="background: #fff7ed; color: #ea580c;">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    $iconBg = $isPython ? '#eff6ff' : ($isWeb ? '#fff7ed' : ($isAlgo ? '#fdf4ff' : '#f0fdf4'));
+                    $iconColor = $isPython ? '#2563eb' : ($isWeb ? '#ea580c' : ($isAlgo ? '#c026d3' : '#16a34a'));
+                    $badgeColor = $isPython ? '#059669' : ($isWeb ? '#ea580c' : ($isAlgo ? '#c026d3' : '#2563eb'));
+                @endphp
+                <div class="lang-card">
+                    <div>
+                        <div class="lang-header">
+                            <div class="lang-icon-box" style="background: {{ $iconBg }}; color: {{ $iconColor }};">
+                                @if ($isPython)
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m10 15 5-3-5-3v6Z"></path><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg>
+                                @elseif ($isWeb)
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                @elseif ($isAlgo)
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                                @else
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                @endif
+                            </div>
+                            <div>
+                                <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">{{ $course->title }}</h3>
+                                <span style="font-size: 12px; color: {{ $badgeColor }}; font-weight: 800; text-transform: uppercase;">
+                                    Tingkat: {{ ucfirst($course->level) }} ({{ $course->target_audience ?? 'SMP/SMA' }})
+                                </span>
+                            </div>
                         </div>
-                        <div>
-                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">Dasar Web HTML &amp; CSS</h3>
-                            <span style="font-size: 12px; color: #ea580c; font-weight: 800; text-transform: uppercase;">Tingkat: Pemula (SMP/SMA)</span>
+                        <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
+                            {{ $course->description ?: 'Pelajari konsep fundamental dan latihan interaktif berbasis puzzle untuk menguasai topik ini.' }}
+                        </p>
+                        <div class="lang-pill-tags">
+                            <span class="lang-pill-tag">{{ $course->category }}</span>
+                            <span class="lang-pill-tag">{{ $course->units->count() }} Unit &bull; {{ $course->lessons_count ?? $course->lessons->count() }} Modul</span>
+                            <span class="lang-pill-tag">Sertifikat Valid QR</span>
                         </div>
                     </div>
-                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
-                        Bikin halaman website pertamamu! Kenali struktur tag HTML5, tata letak CSS box model, warna estetis, dan desain responsif.
-                    </p>
-                    <div class="lang-pill-tags">
-                        <span class="lang-pill-tag">Bikin Website</span>
-                        <span class="lang-pill-tag">Desain Visual</span>
-                        <span class="lang-pill-tag">2 Unit &bull; 4 Modul</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
+                        <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Total {{ $course->total_xp }} XP</span>
+                        @auth
+                            <a href="{{ route('learn.index', ['course_id' => $course->id]) }}" class="btn-3d btn-blue" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Mulai Belajar</a>
+                        @else
+                            <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Pelajari</a>
+                        @endauth
                     </div>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
-                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Total 260 XP</span>
-                    <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Pelajari</a>
+            @empty
+                <div style="grid-column: 1 / -1; text-align: center; background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; color: #fff;">
+                    Belum ada kursus aktif.
                 </div>
-            </div>
+            @endforelse
 
-            <!-- Language 3: Logika & Algoritma -->
-            <div class="lang-card">
-                <div>
-                    <div class="lang-header">
-                        <div class="lang-icon-box" style="background: #fdf4ff; color: #c026d3;">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                        </div>
-                        <div>
-                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">Logika &amp; Algoritma</h3>
-                            <span style="font-size: 12px; color: #c026d3; font-weight: 800; text-transform: uppercase;">Tingkat: Fondasi Logika</span>
-                        </div>
-                    </div>
-                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
-                        Latihan cara berpikir komputasional, flowchart alur program, dan memecahkan teka-teki logika dengan metode Parsons Problem.
-                    </p>
-                    <div class="lang-pill-tags">
-                        <span class="lang-pill-tag">Problem Solving</span>
-                        <span class="lang-pill-tag">Puzzle Algoritma</span>
-                        <span class="lang-pill-tag">2 Unit &bull; 4 Modul</span>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
-                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Total 280 XP</span>
-                    <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Pelajari</a>
-                </div>
-            </div>
+            {{-- 2. Upcoming Roadmap Courses From Database --}}
+            @foreach ($upcomingCourses ?? [] as $upcoming)
+                @php
+                    $isJS = str_contains(strtolower($upcoming->title), 'javascript');
+                    $isCpp = str_contains(strtolower($upcoming->title), 'c++') || str_contains(strtolower($upcoming->title), 'olimpiade');
+                    $isSql = str_contains(strtolower($upcoming->title), 'sql') || str_contains(strtolower($upcoming->title), 'database') || str_contains(strtolower($upcoming->title), 'basis data');
 
-            <!-- Language 4: JavaScript -->
-            <div class="lang-card">
-                <div>
-                    <div class="lang-header">
-                        <div class="lang-icon-box" style="background: #fefce8; color: #ca8a04;">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    $upBg = $isJS ? '#fefce8' : ($isCpp ? '#f0fdf4' : ($isSql ? '#f1f5f9' : '#fffbeb'));
+                    $upColor = $isJS ? '#ca8a04' : ($isCpp ? '#16a34a' : ($isSql ? '#0284c7' : '#d97706'));
+                @endphp
+                <div class="lang-card">
+                    <div>
+                        <div class="lang-header">
+                            <div class="lang-icon-box" style="background: {{ $upBg }}; color: {{ $upColor }};">
+                                @if ($isJS)
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                @elseif ($isCpp)
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect></svg>
+                                @elseif ($isSql)
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                                @else
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                @endif
+                            </div>
+                            <div>
+                                <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">{{ $upcoming->title }}</h3>
+                                <span style="font-size: 12px; color: {{ $upColor }}; font-weight: 800; text-transform: uppercase;">
+                                    Tingkat: {{ ucfirst($upcoming->level) }} &bull; Roadmap Mendatang
+                                </span>
+                            </div>
                         </div>
-                        <div>
-                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">JavaScript Interaktif</h3>
-                            <span style="font-size: 12px; color: #ca8a04; font-weight: 800; text-transform: uppercase;">Tingkat: Menengah</span>
-                        </div>
-                    </div>
-                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
-                        Jadikan website hidup dengan tombol interaktif, animasi dinamis, dan manipulasi elemen web secara real-time.
-                    </p>
-                    <div class="lang-pill-tags">
-                        <span class="lang-pill-tag">Interaktivitas Web</span>
-                        <span class="lang-pill-tag">Event Handling</span>
-                        <span class="lang-pill-tag">Game Sederhana</span>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
-                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Segera Hadir</span>
-                    <a href="{{ route('register') }}" class="btn-3d btn-outline" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Daftar Dulu</a>
-                </div>
-            </div>
-
-            <!-- Language 5: C / C++ -->
-            <div class="lang-card">
-                <div>
-                    <div class="lang-header">
-                        <div class="lang-icon-box" style="background: #f0fdf4; color: #16a34a;">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect></svg>
-                        </div>
-                        <div>
-                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">C++ &amp; Olimpiade Komputer</h3>
-                            <span style="font-size: 12px; color: #16a34a; font-weight: 800; text-transform: uppercase;">Tingkat: Lanjut (OSN)</span>
+                        <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
+                            {{ $upcoming->description ?: 'Materi kurikulum masa depan yang sedang disusun oleh mentor kami.' }}
+                        </p>
+                        <div class="lang-pill-tags">
+                            <span class="lang-pill-tag">{{ $upcoming->category }}</span>
+                            <span class="lang-pill-tag">{{ $upcoming->target_audience ?? 'Siswa SMP & SMA' }}</span>
+                            <span class="lang-pill-tag" style="background: #fef3c7; color: #b45309; font-weight: 800;">Segera Rilis</span>
                         </div>
                     </div>
-                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
-                        Asah kemampuan logika pemecahan masalah tingkat kompetisi sains dan olimpiade informatika nasional.
-                    </p>
-                    <div class="lang-pill-tags">
-                        <span class="lang-pill-tag">Kecepatan Eksekusi</span>
-                        <span class="lang-pill-tag">Struktur Data</span>
-                        <span class="lang-pill-tag">Persiapan OSN</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
+                        <span style="font-size: 12px; font-weight: 800; color: #b45309;">Roadmap Mendatang</span>
+                        <a href="{{ route('register') }}" class="btn-3d btn-outline" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Daftar Dulu</a>
                     </div>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
-                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Segera Hadir</span>
-                    <a href="{{ route('register') }}" class="btn-3d btn-outline" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Daftar Dulu</a>
-                </div>
-            </div>
-
-            <!-- Language 6: SQL & Database -->
-            <div class="lang-card">
-                <div>
-                    <div class="lang-header">
-                        <div class="lang-icon-box" style="background: #f1f5f9; color: #0284c7;">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
-                        </div>
-                        <div>
-                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">SQL &amp; Basis Data</h3>
-                            <span style="font-size: 12px; color: #0284c7; font-weight: 800; text-transform: uppercase;">Tingkat: Menengah</span>
-                        </div>
-                    </div>
-                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
-                        Pahami cara menyimpan, mencari, dan mengolah data dalam jumlah besar dengan query basis data relasional.
-                    </p>
-                    <div class="lang-pill-tags">
-                        <span class="lang-pill-tag">Manajemen Data</span>
-                        <span class="lang-pill-tag">Query Relasional</span>
-                        <span class="lang-pill-tag">Fondasi Backend</span>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
-                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Segera Hadir</span>
-                    <a href="{{ route('register') }}" class="btn-3d btn-outline" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Daftar Dulu</a>
-                </div>
-            </div>
+            @endforeach
 
         </div>
     </section>
