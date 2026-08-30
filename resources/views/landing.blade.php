@@ -27,8 +27,8 @@
             --accent-orange-shadow: #d97706;
             --accent-red: #ef4444;
             --accent-purple: #8b5cf6;
-            --bg-page: #ffffff;
-            --bg-dark-section: #1e40af;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
             --border-color: #e2e8f0;
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -63,11 +63,11 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            border-radius: 18px;
+            border-radius: 16px;
             border: none;
             cursor: pointer;
-            padding: 16px 32px;
-            font-size: 15px;
+            padding: 14px 28px;
+            font-size: 14px;
             text-decoration: none;
             user-select: none;
             transition: transform 0.1s ease, filter 0.15s ease, box-shadow 0.1s ease;
@@ -80,7 +80,7 @@
         .btn-blue {
             background: var(--primary-blue);
             color: #ffffff;
-            box-shadow: 0 5px 0 var(--primary-blue-shadow);
+            box-shadow: 0 4px 0 var(--primary-blue-shadow);
         }
         .btn-blue:hover {
             background: var(--primary-blue-hover);
@@ -92,7 +92,7 @@
         .btn-green {
             background: var(--accent-green);
             color: #ffffff;
-            box-shadow: 0 5px 0 var(--accent-green-shadow);
+            box-shadow: 0 4px 0 var(--accent-green-shadow);
         }
         .btn-green:active {
             box-shadow: 0 0 0 var(--accent-green-shadow);
@@ -111,10 +111,10 @@
         .btn-white {
             background: #ffffff;
             color: var(--primary-blue);
-            box-shadow: 0 5px 0 #93c5fd;
+            box-shadow: 0 4px 0 #bfdbfe;
         }
         .btn-white:active {
-            box-shadow: 0 0 0 #93c5fd;
+            box-shadow: 0 0 0 #bfdbfe;
         }
 
         /* Top Sticky Navbar */
@@ -139,9 +139,8 @@
         .hero-wrapper {
             position: relative;
             padding-top: 40px;
-            padding-bottom: 0;
-            background: radial-gradient(circle at 50% 10%, rgba(37, 99, 235, 0.08) 0%, #ffffff 70%);
-            overflow: visible;
+            padding-bottom: 20px;
+            background: radial-gradient(circle at 50% 10%, rgba(37, 99, 235, 0.07) 0%, #ffffff 70%);
         }
 
         .hero-container {
@@ -158,25 +157,25 @@
             align-items: center;
             gap: 8px;
             background: #eff6ff;
-            border: 2px solid #bfdbfe;
+            border: 1.5px solid #bfdbfe;
             color: var(--primary-blue);
-            padding: 8px 18px;
+            padding: 6px 16px;
             border-radius: 9999px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .hero-title {
-            font-size: 52px;
+            font-size: 48px;
             font-weight: 900;
-            line-height: 1.14;
-            letter-spacing: -1.5px;
+            line-height: 1.15;
+            letter-spacing: -1.2px;
             color: #0f172a;
             max-width: 820px;
-            margin: 0 auto 20px auto;
+            margin: 0 auto 18px auto;
         }
 
         .hero-title span {
@@ -186,151 +185,110 @@
         }
 
         .hero-subtitle {
-            font-size: 18px;
+            font-size: 17px;
             color: var(--text-muted);
             line-height: 1.6;
-            max-width: 640px;
-            margin: 0 auto 36px auto;
+            max-width: 620px;
+            margin: 0 auto 32px auto;
         }
 
         .hero-cta-group {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
 
-        /* Interactive Gamified Playground Stage (Overlapping Centerpiece) */
-        .stage-wrapper {
-            position: relative;
-            max-width: 860px;
+        /* Interactive Simulator Card (Clean, Unobstructed, Well-Aligned) */
+        .simulator-box {
+            max-width: 820px;
             margin: 0 auto;
-            z-index: 20;
-            padding-bottom: 30px;
-        }
-
-        /* Floating Gamification Vector Badges */
-        .floating-badge {
-            position: absolute;
             background: #ffffff;
             border: 2px solid var(--border-color);
-            border-radius: 20px;
-            padding: 10px 14px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 0 #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            user-select: none;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
-            z-index: 25;
-        }
-
-        .floating-badge:hover {
-            transform: scale(1.12) rotate(2deg) !important;
-            box-shadow: 0 16px 30px -5px rgba(37, 99, 235, 0.25), 0 4px 0 #bfdbfe;
-            border-color: #bfdbfe;
-        }
-
-        .floating-badge:active {
-            transform: scale(0.95) !important;
-        }
-
-        /* Keyframe Floating Micro-Animations */
-        @keyframes floatGentle1 {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-14px) rotate(3deg); }
-        }
-
-        @keyframes floatGentle2 {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-18px) rotate(-4deg); }
-        }
-
-        @keyframes floatGentle3 {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-12px) rotate(2deg); }
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { filter: drop-shadow(0 0 4px rgba(37, 99, 235, 0.2)); }
-            50% { filter: drop-shadow(0 0 12px rgba(37, 99, 235, 0.5)); }
-        }
-
-        .badge-heart {
-            top: 20px;
-            left: -40px;
-            animation: floatGentle1 4s ease-in-out infinite;
-        }
-
-        .badge-gems {
-            top: 10px;
-            right: -40px;
-            animation: floatGentle2 3.6s ease-in-out infinite 0.5s;
-        }
-
-        .badge-streak {
-            bottom: 80px;
-            left: -60px;
-            animation: floatGentle3 4.2s ease-in-out infinite 1s;
-        }
-
-        .badge-xp {
-            bottom: 70px;
-            right: -50px;
-            animation: floatGentle1 3.8s ease-in-out infinite 1.5s;
-        }
-
-        /* Center Phone / Terminal Container */
-        .main-stage-card {
-            background: #ffffff;
-            border: 3px solid #cbd5e1;
-            border-radius: 32px;
-            box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.2), 0 8px 0 #94a3b8;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.15), 0 6px 0 #cbd5e1;
             overflow: hidden;
-            width: 100%;
-            margin: 0 auto;
+            text-align: left;
             position: relative;
+            z-index: 20;
         }
 
-        .terminal-header {
+        .simulator-top-bar {
             background: #f8fafc;
             border-bottom: 2px solid #e2e8f0;
-            padding: 14px 22px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .terminal-dots {
+        .simulator-dots {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
         .dot {
-            width: 12px;
-            height: 12px;
+            width: 11px;
+            height: 11px;
             border-radius: 50%;
         }
         .dot-red { background: #ef4444; }
         .dot-yellow { background: #f59e0b; }
         .dot-green { background: #10b981; }
 
-        .terminal-body {
-            padding: 28px;
-            background: #ffffff;
+        /* Integrated HUD Row Inside Simulator Header */
+        .hud-status-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .hud-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            border: 1.5px solid transparent;
+        }
+
+        .hud-pill.heart {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        .hud-pill.gems {
+            background: #eff6ff;
+            color: var(--primary-blue);
+            border-color: #bfdbfe;
+        }
+
+        .hud-pill.streak {
+            background: #fffbeb;
+            color: #d97706;
+            border-color: #fde68a;
+        }
+
+        .simulator-body {
+            padding: 24px;
         }
 
         /* Interactive Quiz Chip Choice Buttons */
         .quiz-chip {
-            padding: 12px 20px;
-            border-radius: 16px;
+            padding: 10px 18px;
+            border-radius: 14px;
             background: #f8fafc;
             border: 2px solid #cbd5e1;
-            box-shadow: 0 4px 0 #cbd5e1;
+            box-shadow: 0 3px 0 #cbd5e1;
             font-family: 'Fira Code', monospace;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #1e293b;
             cursor: pointer;
@@ -353,181 +311,347 @@
         .quiz-chip.selected-correct {
             background: #ecfdf5 !important;
             border-color: #10b981 !important;
-            box-shadow: 0 4px 0 #059669 !important;
+            box-shadow: 0 3px 0 #059669 !important;
             color: #065f46 !important;
         }
 
         .quiz-chip.selected-wrong {
             background: #fef2f2 !important;
             border-color: #ef4444 !important;
-            box-shadow: 0 4px 0 #b91c1c !important;
+            box-shadow: 0 3px 0 #b91c1c !important;
             color: #991b1b !important;
         }
 
-        /* Organic Wave Curve Divider (Seamless Hill Connection) */
-        .wave-curve-divider {
+        /* Wave Divider 1: Transition into Languages Section */
+        .wave-curve-1 {
             position: relative;
             width: 100%;
             overflow: hidden;
             line-height: 0;
-            margin-top: -120px;
+            margin-top: -60px;
             z-index: 5;
         }
 
-        .wave-curve-divider svg {
+        .wave-curve-1 svg {
             position: relative;
             display: block;
             width: calc(100% + 1.3px);
-            height: 180px;
+            height: 120px;
         }
 
-        /* Connected Gamified Section (Royal Blue Wonderland) */
-        .connected-section {
-            background: linear-gradient(180deg, #1d4ed8 0%, #1e3a8a 100%);
+        /* Section 2: Programming Languages Catalog */
+        .languages-section {
+            background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
             color: #ffffff;
-            padding: 40px 24px 100px 24px;
+            padding: 30px 24px 90px 24px;
             position: relative;
             z-index: 10;
         }
 
-        .section-header {
+        .section-header-white {
             text-align: center;
-            max-width: 760px;
-            margin: 0 auto 50px auto;
+            max-width: 740px;
+            margin: 0 auto 44px auto;
         }
 
-        .section-header .tag-pill {
+        .section-header-white .tag-pill {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: #ffffff;
-            padding: 6px 16px;
+            padding: 5px 14px;
             border-radius: 9999px;
             font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
-        .section-header h2 {
-            font-size: 38px;
+        .section-header-white h2 {
+            font-size: 34px;
             font-weight: 900;
-            letter-spacing: -1px;
-            line-height: 1.2;
+            letter-spacing: -0.8px;
             color: #ffffff;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
-        .section-header p {
-            font-size: 16px;
+        .section-header-white p {
+            font-size: 15px;
             color: #bfdbfe;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        /* Feature Cards Grid */
-        .features-grid {
+        /* Languages Grid */
+        .languages-grid {
             max-width: 1140px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
         }
 
-        .feature-box {
+        .lang-card {
             background: #ffffff;
-            border-radius: 28px;
-            padding: 32px 24px;
+            border-radius: 24px;
+            padding: 24px;
             color: var(--text-main);
-            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15), 0 20px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15), 0 15px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .feature-box:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 16px 0 rgba(0, 0, 0, 0.2), 0 25px 40px rgba(0, 0, 0, 0.15);
+        .lang-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 0 rgba(0, 0, 0, 0.2), 0 20px 30px rgba(0, 0, 0, 0.15);
         }
 
-        .feature-icon-bubble {
-            width: 60px;
-            height: 60px;
-            border-radius: 20px;
+        .lang-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .lang-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
-        /* Bottom Final CTA Card */
-        .final-cta-container {
-            max-width: 960px;
-            margin: 60px auto 0 auto;
-            background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.2) 0%, transparent 60%), #2563eb;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 32px;
-            padding: 44px 32px;
+        .lang-pill-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 12px 0 18px 0;
+        }
+
+        .lang-pill-tag {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Wave Divider 2: Transition into Features Section */
+        .wave-curve-2 {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            margin-top: -60px;
+            z-index: 15;
+        }
+
+        .wave-curve-2 svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 120px;
+        }
+
+        /* Section 3: Gamified Features (White Page) */
+        .features-section {
+            background: #f8fafc;
+            padding: 40px 24px 80px 24px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .section-header-dark {
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 6px 0 #1e40af;
+            max-width: 740px;
+            margin: 0 auto 44px auto;
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 900px) {
+        .section-header-dark .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-blue-light);
+            border: 1.5px solid #bfdbfe;
+            color: var(--primary-blue);
+            padding: 5px 14px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .section-header-dark h2 {
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: -0.8px;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .section-header-dark p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .features-grid {
+            max-width: 1140px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 24px;
+            padding: 26px 20px;
+            box-shadow: 0 4px 0 #e2e8f0;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #bfdbfe;
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.12), 0 4px 0 #bfdbfe;
+        }
+
+        /* Section 4: 3-Step Journey */
+        .steps-section {
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 70px 24px;
+        }
+
+        .steps-grid {
+            max-width: 1080px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+        }
+
+        .step-box {
+            text-align: center;
+            padding: 20px 16px;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 4px 0 var(--primary-blue-shadow);
+        }
+
+        /* FAQ Accordion Section */
+        .faq-section {
+            max-width: 820px;
+            margin: 80px auto;
+            padding: 0 24px;
+        }
+
+        .faq-item {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 18px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 0 #f1f5f9;
+        }
+
+        .faq-question {
+            padding: 18px 22px;
+            font-size: 15px;
+            font-weight: 800;
+            color: #0f172a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .faq-answer {
+            padding: 0 22px 18px 22px;
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Final Conversion Card */
+        .final-cta-card {
+            max-width: 1080px;
+            margin: 0 auto 80px auto;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border-radius: 32px;
+            padding: 50px 32px;
+            text-align: center;
+            color: #ffffff;
+            box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.3), 0 6px 0 #1e40af;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 50px 24px 30px 24px;
+            font-size: 14px;
+        }
+
+        .footer-content {
+            max-width: 1140px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 30px;
+            margin-bottom: 24px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
             .hero-title {
-                font-size: 34px;
-                letter-spacing: -0.8px;
+                font-size: 30px;
+                letter-spacing: -0.5px;
             }
             .hero-subtitle {
-                font-size: 15px;
+                font-size: 14px;
             }
-            .stage-wrapper {
-                padding: 0 12px;
+            .section-header-white h2,
+            .section-header-dark h2 {
+                font-size: 24px;
             }
-            .floating-badge {
-                position: static !important;
-                display: inline-flex;
-                margin: 4px;
-                animation: none !important;
+            .languages-grid {
+                grid-template-columns: 1fr;
             }
-            .floating-badges-mobile-row {
-                display: flex;
-                justify-content: center;
-                gap: 8px;
-                flex-wrap: wrap;
-                margin-bottom: 16px;
+            .simulator-body {
+                padding: 16px;
             }
-            .wave-curve-divider {
-                margin-top: -60px;
-            }
-            .section-header h2 {
-                font-size: 28px;
-            }
-            .mobile-bottom-cta {
-                display: flex !important;
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(16px);
-                -webkit-backdrop-filter: blur(16px);
-                padding: 12px 16px;
-                border-top: 2px solid var(--border-color);
-                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-                z-index: 50;
-                gap: 10px;
-            }
-            .mobile-bottom-cta .btn-3d {
-                flex: 1;
-                padding: 14px;
-                font-size: 13px;
+            .final-cta-card {
+                padding: 36px 20px;
             }
         }
     </style>
@@ -536,38 +660,38 @@
 
     <!-- Top Sticky Header Navigation -->
     <header class="navbar" id="navbar">
-        <a href="/" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-            <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 0 #1e40af;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+            <div style="width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 3px 0 #1e40af;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
             <div>
-                <span style="font-size: 22px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">EDUSKILL</span>
-                <span style="font-size: 9px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">LEARNING PLATFORM</span>
+                <span style="font-size: 20px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">EDUSKILL</span>
+                <span style="font-size: 8px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">LEARNING PLATFORM</span>
             </div>
         </a>
 
         <div style="display: flex; align-items: center; gap: 8px;">
             @auth
-                <a href="{{ route('learn.index') }}" class="btn-3d btn-blue" style="padding: 10px 20px; font-size: 13px;">
+                <a href="{{ route('learn.index') }}" class="btn-3d btn-blue" style="padding: 10px 18px; font-size: 13px;">
                     Roadmap Belajar
                 </a>
             @else
-                <a href="{{ route('login') }}" class="btn-3d btn-outline" style="padding: 10px 18px; font-size: 13px;">
+                <a href="{{ route('login') }}" class="btn-3d btn-outline" style="padding: 10px 16px; font-size: 13px;">
                     Masuk
                 </a>
-                <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 10px 20px; font-size: 13px;">
+                <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 10px 18px; font-size: 13px;">
                     Daftar
                 </a>
             @endauth
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- SECTION 1: HERO & INTERACTIVE SIMULATOR -->
     <section class="hero-wrapper" id="hero">
         <div class="hero-container">
             
             <div class="hero-tag" id="hero-tag">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 Platform Belajar Interaktif SMP &amp; SMA
             </div>
 
@@ -576,115 +700,79 @@
             </h1>
 
             <p class="hero-subtitle" id="hero-subtext">
-                Kuasai logika algoritma, susun baris kode dengan interaktif, pertahankan streak harian, dan raih sertifikat resmi dengan verifikasi QR Code publik.
+                Kuasai logika algoritma pemrograman dasar, susun baris kode dengan puzzle interaktif, pertahankan streak harian, dan raih sertifikat resmi ber-QR publik.
             </p>
 
             <div class="hero-cta-group" id="hero-ctas">
-                <a href="{{ route('register') }}" class="btn-3d btn-blue" style="font-size: 16px; padding: 18px 36px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <a href="{{ route('register') }}" class="btn-3d btn-blue" style="font-size: 15px; padding: 16px 32px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     Mulai Petualangan
                 </a>
-                <a href="{{ route('login') }}" class="btn-3d btn-outline" style="font-size: 16px; padding: 18px 28px;">
+                <a href="{{ route('login') }}" class="btn-3d btn-outline" style="font-size: 15px; padding: 16px 24px;">
                     Demo Akun Uji Coba
                 </a>
             </div>
 
-            <!-- Overlapping Gamification Stage -->
-            <div class="stage-wrapper" id="stage-wrapper">
+            <!-- Clean Integrated Simulator Box (No clutter, clear text) -->
+            <div class="simulator-box" id="simulator-card">
                 
-                <!-- Floating Gamified Badge 1: Heart (Nyawa) -->
-                <div class="floating-badge badge-heart" id="badge-heart" onclick="triggerBadgePop('heart')">
-                    <div style="width: 36px; height: 36px; background: #fef2f2; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #ef4444;">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                    </div>
-                    <div style="text-align: left;">
-                        <div style="font-size: 14px; font-weight: 900; color: #dc2626;">5 / 5 Nyawa</div>
-                        <div style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Siap Tantangan</div>
-                    </div>
-                </div>
-
-                <!-- Floating Gamified Badge 2: Gems (Berlian) -->
-                <div class="floating-badge badge-gems" id="badge-gems" onclick="triggerBadgePop('gems')">
-                    <div style="width: 36px; height: 36px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue);">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"></path><path d="M11 3 8 9l4 13 4-13-3-6"></path><path d="M2 9h20"></path></svg>
-                    </div>
-                    <div style="text-align: left;">
-                        <div style="font-size: 14px; font-weight: 900; color: var(--primary-blue);">250 Gems</div>
-                        <div style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Bonus Refill</div>
-                    </div>
-                </div>
-
-                <!-- Floating Gamified Badge 3: Streak Api -->
-                <div class="floating-badge badge-streak" id="badge-streak" onclick="triggerBadgePop('streak')">
-                    <div style="width: 36px; height: 36px; background: #fffbeb; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #d97706;">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
-                    </div>
-                    <div style="text-align: left;">
-                        <div style="font-size: 14px; font-weight: 900; color: #d97706;">7 Hari Streak</div>
-                        <div style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Makin Konsisten</div>
-                    </div>
-                </div>
-
-                <!-- Floating Gamified Badge 4: XP Coin -->
-                <div class="floating-badge badge-xp" id="badge-xp" onclick="triggerBadgePop('xp')">
-                    <div style="width: 36px; height: 36px; background: #ecfdf5; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #059669;">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    </div>
-                    <div style="text-align: left;">
-                        <div style="font-size: 14px; font-weight: 900; color: #059669;">+50 XP Bonus</div>
-                        <div style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Naik Liga</div>
-                    </div>
-                </div>
-
-                <!-- Center Interactive Simulator Terminal -->
-                <div class="main-stage-card" id="terminal-card">
-                    <!-- Header -->
-                    <div class="terminal-header">
-                        <div class="terminal-dots">
+                <div class="simulator-top-bar">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div class="simulator-dots">
                             <div class="dot dot-red"></div>
                             <div class="dot dot-yellow"></div>
                             <div class="dot dot-green"></div>
                         </div>
-                        <div class="code-font" style="font-size: 13px; font-weight: 700; color: #64748b; display: flex; align-items: center; gap: 6px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                            tantangan_pertama.py
-                        </div>
-                        <div style="font-size: 11px; font-weight: 800; color: #10b981; background: #ecfdf5; padding: 4px 10px; border-radius: 8px;">
-                            LIVE SIMULATOR
+                        <div class="code-font" style="font-size: 12px; font-weight: 700; color: #64748b; display: flex; align-items: center; gap: 6px;">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                            simulasi_tantangan.py
                         </div>
                     </div>
 
-                    <!-- Body Interactive Quiz & Code Runner -->
-                    <div class="terminal-body">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue); background: var(--primary-blue-light); padding: 4px 10px; border-radius: 8px;">KUIS #1</span>
-                                <span style="font-size: 14px; font-weight: 700; color: #1e293b;">Pilih fungsi untuk mencetak teks ke layar:</span>
-                            </div>
+                    <!-- Clean Integrated HUD Pills -->
+                    <div class="hud-status-group">
+                        <div class="hud-pill heart">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                            5 Nyawa
                         </div>
+                        <div class="hud-pill gems">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3h12l4 6-10 13L2 9Z"></path></svg>
+                            250 Gems
+                        </div>
+                        <div class="hud-pill streak">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+                            7 Hari
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- Code Snippet with Slot Placeholder -->
-                        <div style="background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 18px; padding: 18px; margin-bottom: 16px; text-align: left;">
-                            <div class="code-font" style="font-size: 14px; line-height: 1.7; color: #1e293b;">
-                                <span id="slot-placeholder" style="display: inline-block; min-width: 80px; padding: 4px 12px; background: #ffffff; border: 2px dashed #94a3b8; border-radius: 10px; color: var(--primary-blue); font-weight: 700; text-align: center;">...</span>(<span style="color: #d97706;">"Selamat Datang di EduSkill!"</span>)
-                            </div>
-                        </div>
+                <div class="simulator-body">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <span style="font-size: 11px; font-weight: 800; color: var(--primary-blue); background: var(--primary-blue-light); padding: 3px 8px; border-radius: 8px;">KUIS INTERAKTIF</span>
+                        <span style="font-size: 13px; font-weight: 700; color: #1e293b;">Pilih perintah yang tepat untuk menampilkan teks ke layar:</span>
+                    </div>
 
-                        <!-- Clickable Options -->
-                        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; justify-content: center;">
-                            <button type="button" class="quiz-chip" data-choice="input" onclick="chooseOption(this, false)">input</button>
-                            <button type="button" class="quiz-chip" data-choice="print" onclick="chooseOption(this, true)">print</button>
-                            <button type="button" class="quiz-chip" data-choice="echo" onclick="chooseOption(this, false)">echo</button>
+                    <!-- Code Snippet -->
+                    <div style="background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+                        <div class="code-font" style="font-size: 13px; line-height: 1.7; color: #1e293b;">
+                            <span id="slot-placeholder" style="display: inline-block; min-width: 70px; padding: 3px 10px; background: #ffffff; border: 2px dashed #94a3b8; border-radius: 8px; color: var(--primary-blue); font-weight: 700; text-align: center;">...</span>(<span style="color: #d97706;">"Selamat Datang di EduSkill!"</span>)
                         </div>
+                    </div>
 
-                        <!-- Feedback Alert / Status Area -->
-                        <div id="quiz-feedback-box" style="background: #0f172a; border-radius: 16px; padding: 14px 18px; color: #38bdf8; font-size: 13px; font-family: 'Fira Code', monospace; min-height: 50px; display: flex; align-items: center; justify-content: space-between; text-align: left;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="color: #64748b;">&gt;</span>
-                                <span id="quiz-feedback-text">Klik salah satu opsi jawaban di atas untuk menguji kode...</span>
-                            </div>
-                            <span id="quiz-xp-badge" style="display: none; background: #059669; color: #fff; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 8px;">+10 XP</span>
+                    <!-- Options -->
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; justify-content: center;">
+                        <button type="button" class="quiz-chip" data-choice="input" onclick="chooseOption(this, false)">input</button>
+                        <button type="button" class="quiz-chip" data-choice="print" onclick="chooseOption(this, true)">print</button>
+                        <button type="button" class="quiz-chip" data-choice="echo" onclick="chooseOption(this, false)">echo</button>
+                    </div>
+
+                    <!-- Feedback Alert -->
+                    <div id="quiz-feedback-box" style="background: #0f172a; border-radius: 14px; padding: 12px 16px; color: #38bdf8; font-size: 12px; font-family: 'Fira Code', monospace; min-height: 46px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="color: #64748b;">&gt;</span>
+                            <span id="quiz-feedback-text">Klik salah satu opsi jawaban untuk melihat hasilnya...</span>
                         </div>
+                        <span id="quiz-xp-badge" style="display: none; background: #059669; color: #fff; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px;">+10 XP</span>
                     </div>
                 </div>
 
@@ -693,148 +781,363 @@
         </div>
     </section>
 
-    <!-- Organic Wave Curve Divider (Seamless Hill Bridge) -->
-    <div class="wave-curve-divider">
-        <svg viewBox="0 0 1440 180" fill="none" preserveAspectRatio="none">
-            <path d="M0,60 C360,160 720,20 1080,100 C1260,140 1380,80 1440,60 L1440,180 L0,180 Z" fill="#1d4ed8"></path>
+    <!-- Wave Divider 1: Transition into Languages Catalog -->
+    <div class="wave-curve-1">
+        <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
+            <path d="M0,40 C360,110 720,10 1080,70 C1260,100 1380,50 1440,40 L1440,120 L0,120 Z" fill="#1d4ed8"></path>
         </svg>
     </div>
 
-    <!-- Connected Gamified Section (Royal Blue Wonderland) -->
-    <section class="connected-section" id="features">
-        <div class="section-header">
+    <!-- SECTION 2: PROGRAMMING LANGUAGES CATALOG -->
+    <section class="languages-section" id="languages">
+        <div class="section-header-white">
             <div class="tag-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                Metode Belajar Gamifikasi
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Pilihan Kurikulum &amp; Topik
             </div>
-            <h2>Kenapa Belajar di EduSkill Terasa Beda?</h2>
-            <p>Dirancang khusus untuk membuang rasa bosan dan ketakutan saat mulai belajar pemrograman dasar.</p>
+            <h2>Jalur Bahasa Pemrograman Sesuai Minatmu</h2>
+            <p>Mulai dari logika komputasi paling mendasar hingga pembuatan aplikasi web modern.</p>
         </div>
 
-        <!-- 4 Bubbly Feature Boxes -->
+        <div class="languages-grid">
+            
+            <!-- Language 1: Python -->
+            <div class="lang-card">
+                <div>
+                    <div class="lang-header">
+                        <div class="lang-icon-box" style="background: #eff6ff; color: #2563eb;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m10 15 5-3-5-3v6Z"></path><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">Dasar Pemrograman Python</h3>
+                            <span style="font-size: 12px; color: #059669; font-weight: 800; text-transform: uppercase;">Tingkat: Pemula (SMP/SMA)</span>
+                        </div>
+                    </div>
+                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
+                        Pelajari variabel, percabangan (if-else), perulangan (loops), dan fungsi dengan sintaks yang bersih dan mudah dipahami.
+                    </p>
+                    <div class="lang-pill-tags">
+                        <span class="lang-pill-tag">Sintaks Ramah</span>
+                        <span class="lang-pill-tag">Otomasi &amp; AI Dasar</span>
+                        <span class="lang-pill-tag">2 Unit &bull; 4 Modul</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
+                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Total 280 XP</span>
+                    <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Pelajari</a>
+                </div>
+            </div>
+
+            <!-- Language 2: HTML & CSS -->
+            <div class="lang-card">
+                <div>
+                    <div class="lang-header">
+                        <div class="lang-icon-box" style="background: #fff7ed; color: #ea580c;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">Dasar Web HTML &amp; CSS</h3>
+                            <span style="font-size: 12px; color: #ea580c; font-weight: 800; text-transform: uppercase;">Tingkat: Pemula (SMP/SMA)</span>
+                        </div>
+                    </div>
+                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
+                        Bikin halaman website pertamamu! Kenali struktur tag HTML5, tata letak CSS box model, warna estetis, dan desain responsif.
+                    </p>
+                    <div class="lang-pill-tags">
+                        <span class="lang-pill-tag">Bikin Website</span>
+                        <span class="lang-pill-tag">Desain Visual</span>
+                        <span class="lang-pill-tag">2 Unit &bull; 4 Modul</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
+                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Total 260 XP</span>
+                    <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Pelajari</a>
+                </div>
+            </div>
+
+            <!-- Language 3: Logika & Algoritma -->
+            <div class="lang-card">
+                <div>
+                    <div class="lang-header">
+                        <div class="lang-icon-box" style="background: #fdf4ff; color: #c026d3;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">Logika &amp; Algoritma</h3>
+                            <span style="font-size: 12px; color: #c026d3; font-weight: 800; text-transform: uppercase;">Tingkat: Fondasi Logika</span>
+                        </div>
+                    </div>
+                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
+                        Latihan cara berpikir komputasional, flowchart alur program, dan memecahkan teka-teki logika dengan metode Parsons Problem.
+                    </p>
+                    <div class="lang-pill-tags">
+                        <span class="lang-pill-tag">Problem Solving</span>
+                        <span class="lang-pill-tag">Puzzle Algoritma</span>
+                        <span class="lang-pill-tag">2 Unit &bull; 4 Modul</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
+                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Total 280 XP</span>
+                    <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Pelajari</a>
+                </div>
+            </div>
+
+            <!-- Language 4: JavaScript -->
+            <div class="lang-card">
+                <div>
+                    <div class="lang-header">
+                        <div class="lang-icon-box" style="background: #fefce8; color: #ca8a04;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">JavaScript Interaktif</h3>
+                            <span style="font-size: 12px; color: #ca8a04; font-weight: 800; text-transform: uppercase;">Tingkat: Menengah</span>
+                        </div>
+                    </div>
+                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
+                        Jadikan website hidup dengan tombol interaktif, animasi keren, dan manipulasi elemen web secara langsung.
+                    </p>
+                    <div class="lang-pill-tags">
+                        <span class="lang-pill-tag">Interaktivitas Web</span>
+                        <span class="lang-pill-tag">Event Handling</span>
+                        <span class="lang-pill-tag">Game Sederhana</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
+                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Segera Hadir</span>
+                    <a href="{{ route('register') }}" class="btn-3d btn-outline" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Daftar Dulu</a>
+                </div>
+            </div>
+
+            <!-- Language 5: C / C++ -->
+            <div class="lang-card">
+                <div>
+                    <div class="lang-header">
+                        <div class="lang-icon-box" style="background: #f0fdf4; color: #16a34a;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">C++ &amp; Olimpiade Komputer</h3>
+                            <span style="font-size: 12px; color: #16a34a; font-weight: 800; text-transform: uppercase;">Tingkat: Lanjut (OSN)</span>
+                        </div>
+                    </div>
+                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
+                        Asah kemampuan logika pemecahan masalah tingkat kompetisi sains dan olimpiade informatika nasional.
+                    </p>
+                    <div class="lang-pill-tags">
+                        <span class="lang-pill-tag">Kecepatan Eksekusi</span>
+                        <span class="lang-pill-tag">Struktur Data</span>
+                        <span class="lang-pill-tag">Persiapan OSN</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
+                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Segera Hadir</span>
+                    <a href="{{ route('register') }}" class="btn-3d btn-outline" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Daftar Dulu</a>
+                </div>
+            </div>
+
+            <!-- Language 6: SQL & Database -->
+            <div class="lang-card">
+                <div>
+                    <div class="lang-header">
+                        <div class="lang-icon-box" style="background: #f1f5f9; color: #0284c7;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 900; color: #0f172a;">SQL &amp; Basis Data</h3>
+                            <span style="font-size: 12px; color: #0284c7; font-weight: 800; text-transform: uppercase;">Tingkat: Menengah</span>
+                        </div>
+                    </div>
+                    <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
+                        Pahami cara menyimpan, mencari, dan mengolah data dalam jumlah besar dengan query basis data relasional.
+                    </p>
+                    <div class="lang-pill-tags">
+                        <span class="lang-pill-tag">Manajemen Data</span>
+                        <span class="lang-pill-tag">Query Relasional</span>
+                        <span class="lang-pill-tag">Fondasi Backend</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 6px;">
+                    <span style="font-size: 12px; font-weight: 800; color: var(--primary-blue);">Segera Hadir</span>
+                    <a href="{{ route('register') }}" class="btn-3d btn-outline" style="padding: 8px 16px; font-size: 12px; border-radius: 12px;">Daftar Dulu</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Wave Divider 2: Transition into Features Section -->
+    <div class="wave-curve-2">
+        <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
+            <path d="M0,80 C360,10 720,110 1080,50 C1260,20 1380,60 1440,80 L1440,120 L0,120 Z" fill="#f8fafc"></path>
+        </svg>
+    </div>
+
+    <!-- SECTION 3: GAMIFIED FEATURES -->
+    <section class="features-section" id="features">
+        <div class="section-header-dark">
+            <div class="tag-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Fitur Unggulan
+            </div>
+            <h2>Belajar Seru Tanpa Frustrasi Sintaks</h2>
+            <p>Fitur interaktif yang didesain agar siswa SMP &amp; SMA menikmati proses belajar setiap hari.</p>
+        </div>
+
         <div class="features-grid">
             
-            <!-- Box 1: Parsons Problem -->
-            <div class="feature-box">
-                <div>
-                    <div class="feature-icon-bubble" style="background: #eff6ff; color: var(--primary-blue);">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
-                    </div>
-                    <h3 style="font-size: 20px; font-weight: 900; margin-bottom: 10px; color: #0f172a;">Parsons Code Puzzle</h3>
-                    <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-                        Susun baris kode acak layaknya puzzle untuk melatih alur logika tanpa frustrasi eror tanda kurung atau titik koma.
-                    </p>
+            <div class="feature-card">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
                 </div>
-                <div style="background: #f8fafc; border-radius: 14px; padding: 12px; border: 1.5px dashed #cbd5e1; font-family: 'Fira Code', monospace; font-size: 12px; color: var(--primary-blue); font-weight: 700;">
-                    1. for i in range(5):<br>
-                    2. &nbsp;&nbsp;print("Belajar Asik")
-                </div>
+                <h3 style="font-size: 17px; font-weight: 900; margin-bottom: 8px;">Parsons Code Ordering</h3>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6;">Susun balok baris kode layaknya puzzle untuk melatih alur logika tanpa takut frustrasi salah tanda kurung.</p>
             </div>
 
-            <!-- Box 2: Gamifikasi Nyawa & Streak -->
-            <div class="feature-box">
-                <div>
-                    <div class="feature-icon-bubble" style="background: #fef2f2; color: #ef4444;">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                    </div>
-                    <h3 style="font-size: 20px; font-weight: 900; margin-bottom: 10px; color: #0f172a;">Nyawa &amp; Api Streak</h3>
-                    <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-                        Jaga 5 nyawa belajar setiap modul, kumpulkan gems berharga, dan pertahankan streak harian agar tidak terputus.
-                    </p>
+            <div class="feature-card">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: #fef2f2; color: #ef4444; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
                 </div>
-                <div style="display: flex; gap: 8px; align-items: center; background: #fff1f2; border-radius: 14px; padding: 10px 14px; color: #e11d48; font-weight: 800; font-size: 12px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                    Refill nyawa otomatis dengan Gems
-                </div>
+                <h3 style="font-size: 17px; font-weight: 900; margin-bottom: 8px;">Gamifikasi Nyawa &amp; Streak</h3>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6;">Jaga nyawa belajarmu, kumpulkan gems berharga, dan pertahankan streak api setiap hari agar makin konsisten.</p>
             </div>
 
-            <!-- Box 3: Liga Berlian & Podium -->
-            <div class="feature-box">
-                <div>
-                    <div class="feature-icon-bubble" style="background: #fffbeb; color: #d97706;">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M6 2h12v7a6 6 0 0 1-12 0V2Z"></path></svg>
-                    </div>
-                    <h3 style="font-size: 20px; font-weight: 900; margin-bottom: 10px; color: #0f172a;">Liga &amp; Papan Skor</h3>
-                    <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-                        Raih poin XP tertinggi setiap minggu, naik dari Liga Perunggu hingga Liga Berlian, dan pamerkan lencana profil.
-                    </p>
+            <div class="feature-card">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M6 2h12v7a6 6 0 0 1-12 0V2Z"></path></svg>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; background: #fef3c7; border-radius: 14px; padding: 10px 14px; color: #b45309; font-weight: 800; font-size: 12px;">
-                    <span>Top #1 Liga Berlian</span>
-                    <span>+100 XP</span>
-                </div>
+                <h3 style="font-size: 17px; font-weight: 900; margin-bottom: 8px;">Liga &amp; Papan Peringkat</h3>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6;">Raih posisi podium teratas di Liga Berlian mingguan dan pamerkan lencana pencapaian di profilmu.</p>
             </div>
 
-            <!-- Box 4: QR Certified -->
-            <div class="feature-box">
-                <div>
-                    <div class="feature-icon-bubble" style="background: #ecfdf5; color: #059669;">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-                    </div>
-                    <h3 style="font-size: 20px; font-weight: 900; margin-bottom: 10px; color: #0f172a;">Sertifikat Valid QR</h3>
-                    <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-                        Tuntaskan seluruh unit kursus untuk klaim sertifikat resmi bertanda tangan digital dengan kode verifikasi publik.
-                    </p>
+            <div class="feature-card">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
                 </div>
-                <div style="display: flex; align-items: center; gap: 8px; background: #ecfdf5; border-radius: 14px; padding: 10px 14px; color: #047857; font-weight: 800; font-size: 12px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    Verifikasi Instan via QR Publik
-                </div>
+                <h3 style="font-size: 17px; font-weight: 900; margin-bottom: 8px;">Sertifikat Valid QR</h3>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6;">Tuntaskan seluruh modul untuk menerbitkan sertifikat resmi digital yang bisa diverifikasi secara publik via QR Code.</p>
             </div>
 
         </div>
+    </section>
 
-        <!-- Final Conversion CTA Block -->
-        <div class="final-cta-container">
-            <h3 style="font-size: 32px; font-weight: 900; color: #ffffff; margin-bottom: 12px; letter-spacing: -0.5px;">
-                Siap Mulai Petualangan Kodingmu?
-            </h3>
-            <p style="color: #bfdbfe; font-size: 16px; max-width: 580px; margin: 0 auto 28px auto;">
-                Daftar gratis sekarang dan bergabung bersama ratusan siswa SMP &amp; SMA lainnya di EduSkill!
+    <!-- SECTION 4: 3-STEP JOURNEY -->
+    <section class="steps-section">
+        <div class="section-header-dark" style="margin-bottom: 36px;">
+            <div class="tag-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Alur Belajar
+            </div>
+            <h2>3 Langkah Mudah Memulai di EduSkill</h2>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-box">
+                <div class="step-number">1</div>
+                <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Pilih Topik Belajar</h3>
+                <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Pilih bahasa pemrograman yang ingin kamu kuasai, mulai dari Python, HTML/CSS, hingga Logika Algoritma.</p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">2</div>
+                <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Selesaikan Kuis &amp; Puzzle</h3>
+                <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Taklukkan tantangan interaktif per modul, kumpulkan poin XP, dan naikkan peringkat mingguanmu.</p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">3</div>
+                <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Klaim Sertifikat Resmi</h3>
+                <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Setelah menyelesaikan 100% kurikulum, terbitkan sertifikat kelulusan ber-QR publik yang bisa kamu cantumkan di portofolio.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: FAQ ACCORDION -->
+    <section class="faq-section">
+        <div class="section-header-dark" style="margin-bottom: 30px;">
+            <h2>Pertanyaan yang Sering Diajukan</h2>
+            <p>Punya pertanyaan seputar platform EduSkill? Temukan jawabannya di sini.</p>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Apakah platform ini cocok untuk pemula yang belum pernah coding?</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+                Sangat cocok! EduSkill dirancang khusus untuk siswa SMP dan SMA. Metode belajarnya menggunakan kuis interaktif, pilihan berganda, dan susun baris kode (Parsons Problem) sehingga kamu tidak perlu pusing menghafal sintaks yang rumit di awal.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Apakah bisa diakses lewat handphone atau tablet?</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+                Bisa banget! Seluruh tampilan EduSkill sudah dioptimasi responsif untuk smartphone, tablet, maupun laptop/desktop komputer sekolah.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Bagaimana cara memverifikasi sertifikat yang didapat?</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+                Setiap sertifikat memiliki kode unik dan QR Code resmi. Siapapun (guru, orang tua, teman) dapat memindai QR Code tersebut untuk langsung melihat halaman verifikasi kelulusan asli secara publik.
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: FINAL CONVERSION CARD -->
+    <div style="padding: 0 24px;">
+        <div class="final-cta-card">
+            <h2 style="font-size: 32px; font-weight: 900; margin-bottom: 12px; letter-spacing: -0.5px;">
+                Siap Menjadi Programmer Muda Berbakat?
+            </h2>
+            <p style="color: #bfdbfe; font-size: 15px; max-width: 540px; margin: 0 auto 28px auto; line-height: 1.6;">
+                Daftar sekarang secara gratis dan mulai petualangan belajarmu bersama teman-teman sekolah di EduSkill!
             </p>
-            <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
-                <a href="{{ route('register') }}" class="btn-3d btn-white" style="font-size: 15px; padding: 16px 36px;">
-                    Daftar Akun Sekarang
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ route('register') }}" class="btn-3d btn-white" style="font-size: 15px; padding: 15px 32px;">
+                    Daftar Akun Gratis
                 </a>
-                <a href="{{ route('login') }}" class="btn-3d btn-outline" style="font-size: 15px; padding: 16px 28px; background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.4); box-shadow: 0 4px 0 rgba(0,0,0,0.2);">
+                <a href="{{ route('login') }}" class="btn-3d btn-outline" style="font-size: 15px; padding: 15px 24px; background: rgba(255,255,255,0.12); color: #ffffff; border-color: rgba(255,255,255,0.4); box-shadow: 0 4px 0 rgba(0,0,0,0.2);">
                     Masuk ke Akun
                 </a>
             </div>
         </div>
+    </div>
 
-        <!-- Mobile Floating Bottom CTA Bar (Visible only on mobile) -->
-        <div class="mobile-bottom-cta" style="display: none;">
-            @auth
-                <a href="{{ route('learn.index') }}" class="btn-3d btn-blue">
-                    Buka Roadmap Belajar
-                </a>
-            @else
-                <a href="{{ route('login') }}" class="btn-3d btn-outline">
-                    Masuk
-                </a>
-                <a href="{{ route('register') }}" class="btn-3d btn-blue">
-                    Daftar Akun
-                </a>
-            @endauth
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: #2563eb; display: flex; align-items: center; justify-content: center; color: #fff;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <div>
+                    <span style="font-size: 18px; font-weight: 900; color: #ffffff; letter-spacing: -0.5px;">EDUSKILL</span>
+                    <span style="font-size: 9px; font-weight: 800; display: block; color: #64748b;">PLATFORM PEMROGRAMAN INTERAKTIF</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <a href="{{ route('learn.index') }}" style="color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 700;">Roadmap Belajar</a>
+                <a href="{{ route('leaderboard.web') }}" style="color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 700;">Papan Peringkat</a>
+                <a href="{{ route('login') }}" style="color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 700;">Masuk Akun</a>
+                <a href="{{ route('register') }}" style="color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 700;">Daftar Siswa</a>
+            </div>
         </div>
-    </section>
+        <div style="max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12px;">
+            <span>&copy; {{ date('Y') }} EduSkill Learning Platform. Dikembangkan khusus untuk siswa SMP &amp; SMA.</span>
+            <span>Semua hak dilindungi undang-undang.</span>
+        </div>
+    </footer>
 
     <!-- Interactive Scripts & Micro-Interactions -->
     <script>
-        // Sound & Confetti triggers for floating badges
-        function triggerBadgePop(type) {
-            confetti({
-                particleCount: 40,
-                spread: 50,
-                origin: { y: 0.6 }
-            });
-            
-            const badge = document.getElementById('badge-' + type);
-            if (badge) {
-                gsap.fromTo(badge, { scale: 0.9 }, { scale: 1.15, yoyo: true, repeat: 1, duration: 0.2 });
-            }
-        }
-
         // Interactive Mini-Quiz Handler
         function chooseOption(btn, isCorrect) {
             const placeholder = document.getElementById('slot-placeholder');
@@ -859,7 +1162,7 @@
                 xpBadge.style.display = 'inline-block';
 
                 confetti({
-                    particleCount: 70,
+                    particleCount: 60,
                     spread: 60,
                     origin: { y: 0.65 }
                 });
@@ -885,22 +1188,7 @@
                   .from("#hero-title", { y: 25, opacity: 0, duration: 0.6 }, "-=0.3")
                   .from("#hero-subtext", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3")
                   .from("#hero-ctas .btn-3d", { y: 15, opacity: 0, stagger: 0.1, duration: 0.5 }, "-=0.2")
-                  .from("#terminal-card", { scale: 0.95, opacity: 0, duration: 0.7, ease: "back.out(1.2)" }, "-=0.4")
-                  .from(".floating-badge", { scale: 0.5, opacity: 0, stagger: 0.1, duration: 0.6, ease: "back.out(1.8)" }, "-=0.3");
-
-                // Mouse Parallax Effect on Hero Stage
-                const stage = document.getElementById('stage-wrapper');
-                if (stage && window.innerWidth > 900) {
-                    window.addEventListener('mousemove', (e) => {
-                        const x = (e.clientX / window.innerWidth - 0.5) * 20;
-                        const y = (e.clientY / window.innerHeight - 0.5) * 20;
-                        
-                        gsap.to("#badge-heart", { x: x * 1.2, y: y * 1.2, duration: 0.5 });
-                        gsap.to("#badge-gems", { x: -x * 1.5, y: -y * 1.2, duration: 0.5 });
-                        gsap.to("#badge-streak", { x: x * 0.8, y: -y * 0.9, duration: 0.5 });
-                        gsap.to("#badge-xp", { x: -x * 1.1, y: y * 1.4, duration: 0.5 });
-                    });
-                }
+                  .from("#simulator-card", { scale: 0.95, opacity: 0, duration: 0.7, ease: "back.out(1.2)" }, "-=0.4");
             }
         });
     </script>
