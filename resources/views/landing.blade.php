@@ -28,7 +28,6 @@
             --accent-red: #ef4444;
             --accent-purple: #8b5cf6;
             --bg-page: #f8fafc;
-            --bg-card: #ffffff;
             --border-color: #e2e8f0;
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -53,7 +52,7 @@
             font-family: 'Fira Code', monospace;
         }
 
-        /* 3D Chunky Playful Buttons */
+        /* 3D Chunky Buttons */
         .btn-3d {
             position: relative;
             display: inline-flex;
@@ -89,15 +88,6 @@
             box-shadow: 0 0 0 var(--primary-blue-shadow);
         }
 
-        .btn-green {
-            background: var(--accent-green);
-            color: #ffffff;
-            box-shadow: 0 4px 0 var(--accent-green-shadow);
-        }
-        .btn-green:active {
-            box-shadow: 0 0 0 var(--accent-green-shadow);
-        }
-
         .btn-outline {
             background: #ffffff;
             color: var(--primary-blue);
@@ -117,30 +107,36 @@
             box-shadow: 0 0 0 #bfdbfe;
         }
 
-        /* Top Sticky Navbar */
-        .navbar {
+        /* Full Width Header Container (Unified Background) */
+        .navbar-wrapper {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .navbar-inner {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 16px 24px;
+            padding: 14px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            z-index: 50;
             width: 100%;
-            border-bottom: 1px solid rgba(226, 232, 240, 0.7);
         }
 
         /* Hero Wrapper */
         .hero-wrapper {
             position: relative;
             padding-top: 40px;
-            padding-bottom: 20px;
-            background: radial-gradient(circle at 50% 10%, rgba(37, 99, 235, 0.07) 0%, #ffffff 70%);
+            padding-bottom: 40px;
+            background: radial-gradient(circle at 50% 15%, rgba(37, 99, 235, 0.08) 0%, #f8fafc 70%);
+            overflow: hidden;
         }
 
         .hero-container {
@@ -198,17 +194,110 @@
             justify-content: center;
             gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 40px;
+            margin-bottom: 36px;
         }
 
-        /* Interactive Simulator Card (Clean, Unobstructed, Well-Aligned) */
+        /* Side Floating Gamified Decorations (Like Duolingo Gutters) */
+        .side-float-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 8;
+            overflow: hidden;
+        }
+
+        .float-item {
+            position: absolute;
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 10px 14px;
+            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08), 0 4px 0 #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: auto;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+        }
+
+        .float-item:hover {
+            transform: scale(1.1) rotate(2deg) !important;
+            box-shadow: 0 16px 30px -5px rgba(37, 99, 235, 0.2), 0 4px 0 #bfdbfe;
+            border-color: #bfdbfe;
+        }
+
+        .float-item:active {
+            transform: scale(0.95) !important;
+        }
+
+        /* Floating Animation Keyframes */
+        @keyframes floatSide1 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-16px) rotate(3deg); }
+        }
+        @keyframes floatSide2 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(-4deg); }
+        }
+        @keyframes floatSide3 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-14px) rotate(2deg); }
+        }
+
+        /* Left Side Items */
+        .float-left-1 {
+            top: 18%;
+            left: 3%;
+            animation: floatSide1 4s ease-in-out infinite;
+        }
+        .float-left-2 {
+            top: 48%;
+            left: 2%;
+            animation: floatSide2 3.6s ease-in-out infinite 0.5s;
+        }
+        .float-left-3 {
+            top: 76%;
+            left: 4%;
+            animation: floatSide3 4.2s ease-in-out infinite 1s;
+        }
+
+        /* Right Side Items */
+        .float-right-1 {
+            top: 16%;
+            right: 3%;
+            animation: floatSide2 3.8s ease-in-out infinite 0.3s;
+        }
+        .float-right-2 {
+            top: 46%;
+            right: 2%;
+            animation: floatSide1 4.4s ease-in-out infinite 0.8s;
+        }
+        .float-right-3 {
+            top: 74%;
+            right: 4%;
+            animation: floatSide3 3.9s ease-in-out infinite 1.2s;
+        }
+
+        /* Hide side floaties on tablet/mobile so layout is clean */
+        @media (max-width: 1140px) {
+            .side-float-container {
+                display: none;
+            }
+        }
+
+        /* Simulator Card */
         .simulator-box {
-            max-width: 820px;
+            max-width: 800px;
             margin: 0 auto;
             background: #ffffff;
             border: 2px solid var(--border-color);
             border-radius: 28px;
-            box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.15), 0 6px 0 #cbd5e1;
+            box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.12), 0 6px 0 #cbd5e1;
             overflow: hidden;
             text-align: left;
             position: relative;
@@ -322,28 +411,27 @@
             color: #991b1b !important;
         }
 
-        /* Wave Divider 1: Transition into Languages Section */
+        /* Wave Curve 1: Seamless Bridge into Languages Section */
         .wave-curve-1 {
             position: relative;
             width: 100%;
             overflow: hidden;
             line-height: 0;
-            margin-top: -60px;
-            z-index: 5;
+            background: #f8fafc;
         }
 
         .wave-curve-1 svg {
             position: relative;
             display: block;
-            width: calc(100% + 1.3px);
-            height: 120px;
+            width: 100%;
+            height: 90px;
         }
 
         /* Section 2: Programming Languages Catalog */
         .languages-section {
-            background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+            background: #1d4ed8;
             color: #ffffff;
-            padding: 30px 24px 90px 24px;
+            padding: 20px 24px 80px 24px;
             position: relative;
             z-index: 10;
         }
@@ -351,15 +439,15 @@
         .section-header-white {
             text-align: center;
             max-width: 740px;
-            margin: 0 auto 44px auto;
+            margin: 0 auto 40px auto;
         }
 
         .section-header-white .tag-pill {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             color: #ffffff;
             padding: 5px 14px;
             border-radius: 9999px;
@@ -384,7 +472,6 @@
             line-height: 1.5;
         }
 
-        /* Languages Grid */
         .languages-grid {
             max-width: 1140px;
             margin: 0 auto;
@@ -443,27 +530,26 @@
             color: #475569;
         }
 
-        /* Wave Divider 2: Transition into Features Section */
+        /* Wave Curve 2: Transition from Blue into White */
         .wave-curve-2 {
             position: relative;
             width: 100%;
             overflow: hidden;
             line-height: 0;
-            margin-top: -60px;
-            z-index: 15;
+            background: #1d4ed8;
         }
 
         .wave-curve-2 svg {
             position: relative;
             display: block;
-            width: calc(100% + 1.3px);
-            height: 120px;
+            width: 100%;
+            height: 90px;
         }
 
-        /* Section 3: Gamified Features (White Page) */
+        /* Section 3: Gamified Features */
         .features-section {
-            background: #f8fafc;
-            padding: 40px 24px 80px 24px;
+            background: #ffffff;
+            padding: 30px 24px 80px 24px;
             position: relative;
             z-index: 20;
         }
@@ -527,30 +613,49 @@
             box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.12), 0 4px 0 #bfdbfe;
         }
 
-        /* Section 4: 3-Step Journey */
-        .steps-section {
+        /* Wave Curve 3: Transition into Light Blue Steps & FAQ */
+        .wave-curve-3 {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
             background: #ffffff;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 70px 24px;
+        }
+
+        .wave-curve-3 svg {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 80px;
+        }
+
+        /* Section 4: 3-Step Journey & FAQ */
+        .steps-faq-section {
+            background: #f0f7ff;
+            padding: 30px 24px 80px 24px;
+            position: relative;
         }
 
         .steps-grid {
             max-width: 1080px;
-            margin: 0 auto;
+            margin: 0 auto 70px auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 28px;
+            gap: 24px;
         }
 
         .step-box {
+            background: #ffffff;
+            border: 2px solid #dbeafe;
+            border-radius: 24px;
+            padding: 28px 20px;
             text-align: center;
-            padding: 20px 16px;
+            box-shadow: 0 4px 0 #bfdbfe;
         }
 
         .step-number {
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             background: var(--primary-blue);
             color: #ffffff;
@@ -563,24 +668,29 @@
             box-shadow: 0 4px 0 var(--primary-blue-shadow);
         }
 
-        /* FAQ Accordion Section */
-        .faq-section {
+        /* FAQ Interactive Accordion */
+        .faq-container {
             max-width: 820px;
-            margin: 80px auto;
-            padding: 0 24px;
+            margin: 0 auto;
         }
 
         .faq-item {
             background: #ffffff;
-            border: 2px solid var(--border-color);
-            border-radius: 18px;
-            margin-bottom: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 20px;
+            margin-bottom: 14px;
             overflow: hidden;
-            box-shadow: 0 3px 0 #f1f5f9;
+            box-shadow: 0 4px 0 #e2e8f0;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .faq-item.active {
+            border-color: #93c5fd;
+            box-shadow: 0 6px 0 #bfdbfe;
         }
 
         .faq-question {
-            padding: 18px 22px;
+            padding: 20px 24px;
             font-size: 15px;
             font-weight: 800;
             color: #0f172a;
@@ -589,22 +699,46 @@
             align-items: center;
             justify-content: space-between;
             user-select: none;
+            transition: color 0.15s ease;
+        }
+
+        .faq-question:hover {
+            color: var(--primary-blue);
+        }
+
+        .faq-chevron {
+            transition: transform 0.25s ease;
+            color: #64748b;
+        }
+
+        .faq-item.active .faq-chevron {
+            transform: rotate(180deg);
+            color: var(--primary-blue);
         }
 
         .faq-answer {
-            padding: 0 22px 18px 22px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
+            padding: 0 24px;
             font-size: 14px;
-            color: #64748b;
-            line-height: 1.6;
+            color: #475569;
+            line-height: 1.65;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding-bottom: 22px;
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease;
         }
 
         /* Final Conversion Card */
         .final-cta-card {
             max-width: 1080px;
-            margin: 0 auto 80px auto;
+            margin: 60px auto 0 auto;
             background: linear-gradient(135deg, #2563eb, #1d4ed8);
             border-radius: 32px;
-            padding: 50px 32px;
+            padding: 48px 32px;
             text-align: center;
             color: #ffffff;
             box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.3), 0 6px 0 #1e40af;
@@ -634,7 +768,7 @@
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 30px;
+                font-size: 28px;
                 letter-spacing: -0.5px;
             }
             .hero-subtitle {
@@ -642,7 +776,7 @@
             }
             .section-header-white h2,
             .section-header-dark h2 {
-                font-size: 24px;
+                font-size: 22px;
             }
             .languages-grid {
                 grid-template-columns: 1fr;
@@ -658,36 +792,104 @@
 </head>
 <body>
 
-    <!-- Top Sticky Header Navigation -->
-    <header class="navbar" id="navbar">
-        <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-            <div style="width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 3px 0 #1e40af;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            </div>
-            <div>
-                <span style="font-size: 20px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">EDUSKILL</span>
-                <span style="font-size: 8px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">LEARNING PLATFORM</span>
-            </div>
-        </a>
+    <!-- Unified Full Width Top Navigation Bar -->
+    <header class="navbar-wrapper" id="navbar">
+        <div class="navbar-inner">
+            <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                <div style="width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 3px 0 #1e40af;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <div>
+                    <span style="font-size: 20px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">EDUSKILL</span>
+                    <span style="font-size: 8px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">LEARNING PLATFORM</span>
+                </div>
+            </a>
 
-        <div style="display: flex; align-items: center; gap: 8px;">
-            @auth
-                <a href="{{ route('learn.index') }}" class="btn-3d btn-blue" style="padding: 10px 18px; font-size: 13px;">
-                    Roadmap Belajar
-                </a>
-            @else
-                <a href="{{ route('login') }}" class="btn-3d btn-outline" style="padding: 10px 16px; font-size: 13px;">
-                    Masuk
-                </a>
-                <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 10px 18px; font-size: 13px;">
-                    Daftar
-                </a>
-            @endauth
+            <div style="display: flex; align-items: center; gap: 8px;">
+                @auth
+                    <a href="{{ route('learn.index') }}" class="btn-3d btn-blue" style="padding: 10px 18px; font-size: 13px;">
+                        Roadmap Belajar
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="btn-3d btn-outline" style="padding: 10px 16px; font-size: 13px;">
+                        Masuk
+                    </a>
+                    <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 10px 18px; font-size: 13px;">
+                        Daftar
+                    </a>
+                @endauth
+            </div>
         </div>
     </header>
 
-    <!-- SECTION 1: HERO & INTERACTIVE SIMULATOR -->
+    <!-- SECTION 1: HERO & INTERACTIVE SIMULATOR WITH SIDE DECORATIONS -->
     <section class="hero-wrapper" id="hero">
+        
+        <!-- Side Floating Gamified Decorations (Flanking the Margins) -->
+        <div class="side-float-container">
+            <!-- Left Side Floaties -->
+            <div class="float-item float-left-1" onclick="triggerBadgePop(this)">
+                <div style="width: 34px; height: 34px; background: #fef2f2; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #ef4444;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                </div>
+                <div>
+                    <div style="font-size: 13px; font-weight: 900; color: #dc2626;">5 / 5 Nyawa</div>
+                    <div style="font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Siap Kuis</div>
+                </div>
+            </div>
+
+            <div class="float-item float-left-2" onclick="triggerBadgePop(this)">
+                <div style="width: 34px; height: 34px; background: #fffbeb; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #d97706;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+                </div>
+                <div>
+                    <div style="font-size: 13px; font-weight: 900; color: #d97706;">7 Hari Streak</div>
+                    <div style="font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Konsisten</div>
+                </div>
+            </div>
+
+            <div class="float-item float-left-3" onclick="triggerBadgePop(this)">
+                <div style="width: 34px; height: 34px; background: #eff6ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #2563eb;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <div>
+                    <div style="font-size: 13px; font-weight: 900; color: #2563eb;">Puzzle Kode</div>
+                    <div style="font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Parsons Mode</div>
+                </div>
+            </div>
+
+            <!-- Right Side Floaties -->
+            <div class="float-item float-right-1" onclick="triggerBadgePop(this)">
+                <div style="width: 34px; height: 34px; background: #eff6ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3h12l4 6-10 13L2 9Z"></path><path d="M11 3 8 9l4 13 4-13-3-6"></path></svg>
+                </div>
+                <div>
+                    <div style="font-size: 13px; font-weight: 900; color: var(--primary-blue);">250 Gems</div>
+                    <div style="font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Bonus Harian</div>
+                </div>
+            </div>
+
+            <div class="float-item float-right-2" onclick="triggerBadgePop(this)">
+                <div style="width: 34px; height: 34px; background: #ecfdf5; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #059669;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div>
+                    <div style="font-size: 13px; font-weight: 900; color: #059669;">+50 XP Poin</div>
+                    <div style="font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Liga Berlian</div>
+                </div>
+            </div>
+
+            <div class="float-item float-right-3" onclick="triggerBadgePop(this)">
+                <div style="width: 34px; height: 34px; background: #fdf4ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #c026d3;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M6 2h12v7a6 6 0 0 1-12 0V2Z"></path></svg>
+                </div>
+                <div>
+                    <div style="font-size: 13px; font-weight: 900; color: #c026d3;">Sertifikat QR</div>
+                    <div style="font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Valid Digital</div>
+                </div>
+            </div>
+        </div>
+
         <div class="hero-container">
             
             <div class="hero-tag" id="hero-tag">
@@ -713,7 +915,7 @@
                 </a>
             </div>
 
-            <!-- Clean Integrated Simulator Box (No clutter, clear text) -->
+            <!-- Clean Integrated Simulator Box -->
             <div class="simulator-box" id="simulator-card">
                 
                 <div class="simulator-top-bar">
@@ -783,8 +985,8 @@
 
     <!-- Wave Divider 1: Transition into Languages Catalog -->
     <div class="wave-curve-1">
-        <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
-            <path d="M0,40 C360,110 720,10 1080,70 C1260,100 1380,50 1440,40 L1440,120 L0,120 Z" fill="#1d4ed8"></path>
+        <svg viewBox="0 0 1440 90" fill="none" preserveAspectRatio="none">
+            <path d="M0,30 C360,90 720,0 1080,60 C1260,85 1380,40 1440,30 L1440,90 L0,90 Z" fill="#1d4ed8"></path>
         </svg>
     </div>
 
@@ -895,7 +1097,7 @@
                         </div>
                     </div>
                     <p style="color: #64748b; font-size: 13px; line-height: 1.6;">
-                        Jadikan website hidup dengan tombol interaktif, animasi keren, dan manipulasi elemen web secara langsung.
+                        Jadikan website hidup dengan tombol interaktif, animasi dinamis, dan manipulasi elemen web secara real-time.
                     </p>
                     <div class="lang-pill-tags">
                         <span class="lang-pill-tag">Interaktivitas Web</span>
@@ -966,10 +1168,10 @@
         </div>
     </section>
 
-    <!-- Wave Divider 2: Transition into Features Section -->
+    <!-- Wave Divider 2: Transition from Blue to White -->
     <div class="wave-curve-2">
-        <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
-            <path d="M0,80 C360,10 720,110 1080,50 C1260,20 1380,60 1440,80 L1440,120 L0,120 Z" fill="#f8fafc"></path>
+        <svg viewBox="0 0 1440 90" fill="none" preserveAspectRatio="none">
+            <path d="M0,60 C360,0 720,90 1080,30 C1260,10 1380,50 1440,60 L1440,90 L0,90 Z" fill="#ffffff"></path>
         </svg>
     </div>
 
@@ -1021,14 +1223,24 @@
         </div>
     </section>
 
-    <!-- SECTION 4: 3-STEP JOURNEY -->
-    <section class="steps-section">
+    <!-- Wave Curve 3: Transition from White into Light Blue Steps & FAQ -->
+    <div class="wave-curve-3">
+        <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+            <path d="M0,20 C360,70 720,10 1080,50 C1260,70 1380,30 1440,20 L1440,80 L0,80 Z" fill="#f0f7ff"></path>
+        </svg>
+    </div>
+
+    <!-- SECTION 4: 3-STEP JOURNEY & INTERACTIVE FAQ ACCORDION -->
+    <section class="steps-faq-section">
+        
+        <!-- Steps Sub-Section -->
         <div class="section-header-dark" style="margin-bottom: 36px;">
             <div class="tag-pill">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 Alur Belajar
             </div>
             <h2>3 Langkah Mudah Memulai di EduSkill</h2>
+            <p>Mulai perjalanan belajarmu dengan langkah sederhana dan terarah.</p>
         </div>
 
         <div class="steps-grid">
@@ -1050,48 +1262,72 @@
                 <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Setelah menyelesaikan 100% kurikulum, terbitkan sertifikat kelulusan ber-QR publik yang bisa kamu cantumkan di portofolio.</p>
             </div>
         </div>
-    </section>
 
-    <!-- SECTION 5: FAQ ACCORDION -->
-    <section class="faq-section">
-        <div class="section-header-dark" style="margin-bottom: 30px;">
-            <h2>Pertanyaan yang Sering Diajukan</h2>
-            <p>Punya pertanyaan seputar platform EduSkill? Temukan jawabannya di sini.</p>
+        <!-- FAQ Sub-Section -->
+        <div class="faq-container">
+            <div class="section-header-dark" style="margin-bottom: 30px;">
+                <div class="tag-pill">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    Tanya Jawab
+                </div>
+                <h2>Pertanyaan yang Sering Diajukan</h2>
+                <p>Klik pertanyaan di bawah untuk melihat penjelasan lengkapnya.</p>
+            </div>
+
+            <!-- FAQ Item 1 (Active by Default) -->
+            <div class="faq-item active">
+                <div class="faq-question">
+                    <span>Apakah platform ini cocok untuk pemula yang belum pernah coding?</span>
+                    <div class="faq-chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    Sangat cocok! EduSkill dirancang khusus untuk siswa SMP dan SMA. Metode belajarnya menggunakan kuis interaktif, pilihan berganda, dan susun baris kode (Parsons Problem) sehingga kamu tidak perlu pusing menghafal sintaks yang rumit di awal.
+                </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Apakah bisa diakses lewat handphone atau tablet?</span>
+                    <div class="faq-chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    Bisa banget! Seluruh tampilan EduSkill sudah dioptimasi secara responsif untuk smartphone, tablet, maupun laptop/desktop komputer sekolah tanpa perlu install aplikasi tambahan.
+                </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Bagaimana cara memverifikasi sertifikat yang didapat?</span>
+                    <div class="faq-chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    Setiap sertifikat memiliki kode unik dan QR Code resmi. Siapapun (guru, orang tua, teman) dapat memindai QR Code tersebut untuk langsung melihat halaman verifikasi kelulusan asli secara publik di internet.
+                </div>
+            </div>
+
+            <!-- FAQ Item 4 -->
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Bagaimana jika nyawa belajar saya habis saat salah kuis?</span>
+                    <div class="faq-chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    Jangan khawatir! Kamu bisa me-refill nyawa belajarmu secara instan menggunakan Gems yang kamu dapatkan setiap kali menyelesaikan kuis harian, atau nyawamu akan terisi kembali secara berkala.
+                </div>
+            </div>
         </div>
 
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Apakah platform ini cocok untuk pemula yang belum pernah coding?</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <div class="faq-answer">
-                Sangat cocok! EduSkill dirancang khusus untuk siswa SMP dan SMA. Metode belajarnya menggunakan kuis interaktif, pilihan berganda, dan susun baris kode (Parsons Problem) sehingga kamu tidak perlu pusing menghafal sintaks yang rumit di awal.
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Apakah bisa diakses lewat handphone atau tablet?</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <div class="faq-answer">
-                Bisa banget! Seluruh tampilan EduSkill sudah dioptimasi responsif untuk smartphone, tablet, maupun laptop/desktop komputer sekolah.
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Bagaimana cara memverifikasi sertifikat yang didapat?</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <div class="faq-answer">
-                Setiap sertifikat memiliki kode unik dan QR Code resmi. Siapapun (guru, orang tua, teman) dapat memindai QR Code tersebut untuk langsung melihat halaman verifikasi kelulusan asli secara publik.
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 6: FINAL CONVERSION CARD -->
-    <div style="padding: 0 24px;">
+        <!-- Final Conversion Card -->
         <div class="final-cta-card">
             <h2 style="font-size: 32px; font-weight: 900; margin-bottom: 12px; letter-spacing: -0.5px;">
                 Siap Menjadi Programmer Muda Berbakat?
@@ -1108,7 +1344,8 @@
                 </a>
             </div>
         </div>
-    </div>
+
+    </section>
 
     <!-- FOOTER -->
     <footer class="footer">
@@ -1178,17 +1415,48 @@
             }
         }
 
-        // GSAP Animations on Entrance
+        // Side badge pop confetti on click
+        function triggerBadgePop(el) {
+            confetti({
+                particleCount: 35,
+                spread: 45,
+                origin: { y: 0.6 }
+            });
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo(el, { scale: 0.88 }, { scale: 1.15, yoyo: true, repeat: 1, duration: 0.2 });
+            }
+        }
+
+        // FAQ Accordion Interactive Toggle
         document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const item = question.closest('.faq-item');
+                    const wasActive = item.classList.contains('active');
+                    
+                    // Close other items
+                    document.querySelectorAll('.faq-item').forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+
+                    // Toggle clicked item
+                    if (!wasActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            // Entrance GSAP Animations
             if (typeof gsap !== 'undefined') {
                 const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-                tl.from("#navbar", { y: -30, opacity: 0, duration: 0.7 })
+                tl.from("#navbar", { y: -30, opacity: 0, duration: 0.6 })
                   .from("#hero-tag", { scale: 0.8, opacity: 0, duration: 0.5, ease: "back.out(1.7)" }, "-=0.3")
                   .from("#hero-title", { y: 25, opacity: 0, duration: 0.6 }, "-=0.3")
                   .from("#hero-subtext", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3")
                   .from("#hero-ctas .btn-3d", { y: 15, opacity: 0, stagger: 0.1, duration: 0.5 }, "-=0.2")
-                  .from("#simulator-card", { scale: 0.95, opacity: 0, duration: 0.7, ease: "back.out(1.2)" }, "-=0.4");
+                  .from("#simulator-card", { scale: 0.95, opacity: 0, duration: 0.7, ease: "back.out(1.2)" }, "-=0.4")
+                  .from(".float-item", { scale: 0.5, opacity: 0, stagger: 0.08, duration: 0.6, ease: "back.out(1.7)" }, "-=0.3");
             }
         });
     </script>
