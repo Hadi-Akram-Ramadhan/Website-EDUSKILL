@@ -68,8 +68,8 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')
     Route::delete('certificates/{certificate}', [AdminCertificateController::class, 'destroy'])->name('certificates.destroy');
 });
 
-// Mentor / Guru Area
-Route::middleware(['auth', 'role:guru,super_admin'])->prefix('mentor')->name('mentor.')->group(function () {
+// Mentor / Guru Area (Strictly for role:guru)
+Route::middleware(['auth', 'role:guru'])->prefix('mentor')->name('mentor.')->group(function () {
     Route::get('/dashboard', [MentorDashboardController::class, 'index'])->name('dashboard');
 
     // Mentor Course Management CRUD

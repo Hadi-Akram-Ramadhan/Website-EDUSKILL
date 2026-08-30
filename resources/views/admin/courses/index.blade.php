@@ -66,17 +66,13 @@
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <form action="{{ route('admin.courses.toggle-publish', $c->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-3d {{ $c->is_published ? 'btn-outline' : 'btn-green' }}" style="padding: 10px 14px; font-size: 12px;">
+                            <button type="submit" class="btn-3d {{ $c->is_published ? 'btn-outline' : 'btn-blue' }}" style="padding: 10px 14px; font-size: 12px;">
                                 {{ $c->is_published ? 'Arsipkan (Draft)' : 'Publikasikan' }}
                             </button>
                         </form>
 
-                        <a href="{{ route('mentor.courses.manage', $c->id) }}" class="btn-3d btn-blue" style="padding: 10px 14px; font-size: 12px;">
-                            Kelola Kurikulum
-                        </a>
-
-                        <a href="{{ route('admin.courses.edit', $c->id) }}" class="btn-3d btn-outline" style="padding: 10px 14px; font-size: 12px;">
-                            Edit
+                        <a href="{{ route('admin.courses.edit', $c->id) }}" class="btn-3d btn-blue" style="padding: 10px 14px; font-size: 12px;">
+                            Edit Info &amp; Mentor
                         </a>
 
                         <form action="{{ route('admin.courses.destroy', $c->id) }}" method="POST" onsubmit="return confirm('Hapus kursus ini beserta seluruh unit dan modulnya?')">
