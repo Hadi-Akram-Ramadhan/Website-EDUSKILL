@@ -76,8 +76,8 @@
                         @if ($card['certificate'])
                             <div style="text-align: right;">
                                 <a href="{{ route('certificate.verify', $card['certificate']->cert_code) }}" target="_blank" class="btn-3d btn-green" style="font-size: 13px; padding: 12px 20px;">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"></path><path d="M12 2v20"></path></svg>
-                                    Lihat Sertifikat ({{ $card['certificate']->cert_code }})
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                    Lihat & Unduh PDF ({{ $card['certificate']->cert_code }})
                                 </a>
                                 <div style="font-size: 11px; color: #059669; font-weight: 800; margin-top: 6px;">
                                     Skor: {{ number_format($card['certificate']->score_average, 1) }}/100 (Grade {{ $card['certificate']->grade_info['grade'] }}) &bull; {{ Carbon\Carbon::parse($card['certificate']->issue_date)->format('d M Y') }}
