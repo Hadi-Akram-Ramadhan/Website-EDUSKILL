@@ -130,14 +130,144 @@
             width: 100%;
         }
 
-        /* Hero Wrapper */
+        /* Dynamic Hero Wrapper & Ambient Glow Mesh */
         .hero-wrapper {
             position: relative;
-            padding-top: 40px;
-            padding-bottom: 40px;
-            background: radial-gradient(circle at 50% 15%, rgba(37, 99, 235, 0.08) 0%, #f8fafc 70%);
+            padding-top: 48px;
+            padding-bottom: 56px;
+            background-color: #f8fafc;
             overflow: hidden;
         }
+
+        /* Ambient Glow Mesh Gradient Orbs */
+        .ambient-glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(75px);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.65;
+            animation: pulseAmbient 9s ease-in-out infinite alternate;
+        }
+
+        .orb-blue {
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 650px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.22) 0%, rgba(37, 99, 235, 0) 70%);
+        }
+
+        .orb-emerald {
+            top: 22%;
+            left: -8%;
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(16, 185, 129, 0) 70%);
+            animation-duration: 11s;
+        }
+
+        .orb-purple {
+            top: 28%;
+            right: -8%;
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, rgba(139, 92, 246, 0) 70%);
+            animation-duration: 10s;
+        }
+
+        .orb-amber {
+            bottom: 4%;
+            left: 24%;
+            width: 440px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.13) 0%, rgba(245, 158, 11, 0) 70%);
+            animation-duration: 12s;
+        }
+
+        @keyframes pulseAmbient {
+            0% { transform: scale(1) translateY(0); opacity: 0.55; }
+            50% { transform: scale(1.18) translateY(-25px); opacity: 0.85; }
+            100% { transform: scale(1) translateY(0); opacity: 0.55; }
+        }
+
+        /* Modern Blueprint Matrix Dot-Grid Background */
+        .hero-matrix-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(rgba(37, 99, 235, 0.2) 1.5px, transparent 1.5px),
+                linear-gradient(to right, rgba(203, 213, 225, 0.45) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(203, 213, 225, 0.45) 1px, transparent 1px);
+            background-size: 32px 32px, 64px 64px, 64px 64px;
+            background-position: center top;
+            mask-image: radial-gradient(ellipse 80% 75% at 50% 35%, #000 35%, transparent 95%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 35%, #000 35%, transparent 95%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Floating Code Tokens & Logic Syntax Layer */
+        .bg-code-token {
+            position: absolute;
+            z-index: 3;
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.85;
+            transition: transform 0.3s ease;
+        }
+
+        .token-glass-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(191, 219, 254, 0.9);
+            box-shadow: 0 10px 20px -4px rgba(37, 99, 235, 0.1), 0 3px 0 #bfdbfe;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e293b;
+            white-space: nowrap;
+        }
+
+        .token-symbol {
+            font-family: 'Fira Code', monospace;
+            font-size: 26px;
+            font-weight: 900;
+            color: #3b82f6;
+            opacity: 0.3;
+            letter-spacing: 2px;
+            text-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Floating Keyframes */
+        @keyframes floatToken1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-10px, -20px) rotate(4deg); }
+        }
+        @keyframes floatToken2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(12px, -24px) rotate(-5deg); }
+        }
+        @keyframes floatToken3 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-8px, -16px) rotate(3deg); }
+        }
+        @keyframes floatToken4 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(14px, -18px) rotate(-4deg); }
+        }
+
+        .anim-token-1 { animation: floatToken1 6s ease-in-out infinite; }
+        .anim-token-2 { animation: floatToken2 7.5s ease-in-out infinite 0.8s; }
+        .anim-token-3 { animation: floatToken3 8.5s ease-in-out infinite 1.5s; }
+        .anim-token-4 { animation: floatToken4 7s ease-in-out infinite 2s; }
 
         .hero-container {
             max-width: 1140px;
@@ -211,24 +341,26 @@
 
         .float-item {
             position: absolute;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 2px solid var(--border-color);
             border-radius: 20px;
             padding: 10px 14px;
-            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08), 0 4px 0 #e2e8f0;
+            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08), 0 4px 0 #cbd5e1;
             display: flex;
             align-items: center;
             gap: 10px;
             pointer-events: auto;
             cursor: pointer;
             user-select: none;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
         .float-item:hover {
-            transform: scale(1.1) rotate(2deg) !important;
+            transform: scale(1.08) rotate(2deg) !important;
             box-shadow: 0 16px 30px -5px rgba(37, 99, 235, 0.2), 0 4px 0 #bfdbfe;
-            border-color: #bfdbfe;
+            border-color: #93c5fd;
         }
 
         .float-item:active {
@@ -283,9 +415,10 @@
             animation: floatSide3 3.9s ease-in-out infinite 1.2s;
         }
 
-        /* Hide side floaties on tablet/mobile so layout is clean */
+        /* Hide side floaties and background code badges on tablet/mobile so layout is clean */
         @media (max-width: 1140px) {
-            .side-float-container {
+            .side-float-container,
+            .bg-code-token {
                 display: none;
             }
         }
@@ -429,17 +562,29 @@
 
         /* Section 2: Programming Languages Catalog */
         .languages-section {
-            background: #1d4ed8;
+            background: radial-gradient(circle at 80% 20%, #2563eb 0%, #1d4ed8 60%, #1e40af 100%);
             color: #ffffff;
             padding: 20px 24px 80px 24px;
             position: relative;
             z-index: 10;
         }
 
+        .languages-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1.5px, transparent 1.5px);
+            background-size: 28px 28px;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
         .section-header-white {
             text-align: center;
             max-width: 740px;
             margin: 0 auto 40px auto;
+            position: relative;
+            z-index: 2;
         }
 
         .section-header-white .tag-pill {
@@ -551,16 +696,29 @@
 
         /* Section 3: Gamified Features */
         .features-section {
-            background: #ffffff;
-            padding: 30px 24px 80px 24px;
+            background: radial-gradient(circle at 50% 10%, #f0f7ff 0%, #ffffff 80%);
+            padding: 36px 24px 80px 24px;
             position: relative;
             z-index: 20;
+        }
+
+        .features-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(37, 99, 235, 0.07) 1.5px, transparent 1.5px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, #000 30%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, #000 30%, transparent 100%);
         }
 
         .section-header-dark {
             text-align: center;
             max-width: 740px;
             margin: 0 auto 44px auto;
+            position: relative;
+            z-index: 2;
         }
 
         .section-header-dark .tag-pill {
@@ -956,9 +1114,61 @@
         </div>
     </header>
 
-    <!-- SECTION 1: HERO & INTERACTIVE SIMULATOR WITH SIDE DECORATIONS -->
+    <!-- SECTION 1: HERO & INTERACTIVE SIMULATOR WITH AMBIENT BACKGROUND & DECORATIONS -->
     <section class="hero-wrapper" id="hero">
         
+        <!-- Ambient Glow Mesh Layer -->
+        <div class="ambient-glow-orb orb-blue"></div>
+        <div class="ambient-glow-orb orb-emerald"></div>
+        <div class="ambient-glow-orb orb-purple"></div>
+        <div class="ambient-glow-orb orb-amber"></div>
+
+        <!-- Tech Matrix Blueprint Grid Pattern -->
+        <div class="hero-matrix-grid"></div>
+
+        <!-- Background Floating Code Badges & Logic Tokens (Gently Drifting) -->
+        <div class="bg-code-token anim-token-1" style="top: 7%; left: 7%;">
+            <div class="token-glass-badge">
+                <span style="color: #2563eb;">def</span> <span style="color: #059669;">main</span>(): <span style="color: #64748b;">// start</span>
+            </div>
+        </div>
+
+        <div class="bg-code-token anim-token-2" style="top: 8%; right: 7%;">
+            <div class="token-glass-badge">
+                <span style="color: #8b5cf6;">const</span> <span style="color: #d97706;">score</span> = <span style="color: #2563eb;">100</span>;
+            </div>
+        </div>
+
+        <div class="bg-code-token anim-token-3" style="top: 34%; left: 8%;">
+            <div class="token-symbol">{ &nbsp; }</div>
+        </div>
+
+        <div class="bg-code-token anim-token-4" style="top: 32%; right: 8%;">
+            <div class="token-glass-badge">
+                <span style="color: #059669;">&lt;code&gt;</span> <span style="color: #2563eb;">active</span> <span style="color: #059669;">/&gt;</span>
+            </div>
+        </div>
+
+        <div class="bg-code-token anim-token-2" style="top: 65%; left: 7%;">
+            <div class="token-glass-badge">
+                <span style="color: #d97706;">while</span> streak &gt; 0:
+            </div>
+        </div>
+
+        <div class="bg-code-token anim-token-1" style="top: 67%; right: 7%;">
+            <div class="token-glass-badge">
+                <span style="color: #2563eb;">return</span> <span style="color: #059669;">"Success!"</span>
+            </div>
+        </div>
+
+        <div class="bg-code-token anim-token-3" style="top: 86%; left: 14%;">
+            <div class="token-symbol">&lt; / &gt;</div>
+        </div>
+
+        <div class="bg-code-token anim-token-4" style="top: 88%; right: 14%;">
+            <div class="token-symbol">[ 0 .. n ]</div>
+        </div>
+
         <!-- Side Floating Gamified Decorations (Flanking the Margins) -->
         <div class="side-float-container">
             <!-- Left Side Floaties -->
