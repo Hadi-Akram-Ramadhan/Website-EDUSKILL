@@ -794,22 +794,25 @@
             position: relative;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            background: #faf6ed;
             border: 2px solid #e2e8f0;
-            line-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             aspect-ratio: 4/3;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
         }
 
         .mascot-img-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             display: block;
-            transition: transform 0.4s ease;
+            transition: transform 0.3s ease;
         }
 
         .mascot-img-box:hover img {
-            transform: scale(1.04);
+            transform: scale(1.05);
         }
 
         .mascot-floating-tag {
