@@ -794,25 +794,25 @@
             position: relative;
             border-radius: 24px;
             overflow: hidden;
-            background: #faf6ed;
-            border: 2px solid #e2e8f0;
+            background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+            border: 2px solid #c7d2fe;
             display: flex;
             align-items: center;
             justify-content: center;
             aspect-ratio: 4/3;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
         }
 
         .mascot-img-box img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             display: block;
-            transition: transform 0.3s ease;
+            transition: transform 0.35s ease;
         }
 
         .mascot-img-box:hover img {
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
 
         .mascot-floating-tag {
