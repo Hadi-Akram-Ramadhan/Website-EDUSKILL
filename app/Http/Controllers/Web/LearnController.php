@@ -34,7 +34,9 @@ class LearnController extends Controller
         // Fetch all published courses for the course selector
         $allCourses = Course::where('is_published', true)->get();
 
-        $selectedCourseId = $request->query('course');
+        $selectedCourseId = $request->query('course') ?? session('active_learn_course_id');
+        $course = null;
+
         if ($selectedCourseId) {
             $course = Course::with(['units.lessons.exercises'])
                 ->where('is_published', true)
@@ -42,12 +44,14 @@ class LearnController extends Controller
                     $q->where('id', $selectedCourseId)->orWhere('slug', $selectedCourseId);
                 })
                 ->first();
-        } else {
-            $course = Course::with(['units.lessons.exercises'])->where('is_published', true)->first();
         }
 
         if (! $course && $allCourses->isNotEmpty()) {
             $course = Course::with(['units.lessons.exercises'])->find($allCourses->first()->id);
+        }
+
+        if ($course) {
+            session(['active_learn_course_id' => $course->id]);
         }
 
         $userProgress = UserProgress::where('user_id', $user->id)->get()->keyBy('lesson_id');
@@ -111,11 +115,16 @@ class LearnController extends Controller
         $user = Auth::user();
         $this->gamificationService->syncHearts($user);
 
-        if ($user->hearts <= 0) {
-            return redirect()->route('learn.index')->with('error', 'Nyawa kamu habis (0/5). Isi ulang dengan gems atau tunggu sebentar!');
+        $lesson = Lesson::with(['unit.course', 'exercises'])->findOrFail($id);
+
+        if ($lesson->unit && $lesson->unit->course_id) {
+            session(['active_learn_course_id' => $lesson->unit->course_id]);
         }
 
-        $lesson = Lesson::with(['unit.course', 'exercises'])->findOrFail($id);
+        if ($user->hearts <= 0) {
+            $courseParam = $lesson->unit ? ['course' => $lesson->unit->course_id] : [];
+            return redirect()->route('learn.index', $courseParam)->with('error', 'Nyawa kamu habis (0/5). Isi ulang dengan gems atau tunggu sebentar!');
+        }
 
         // Sanitize exercise options for the frontend engine
         $exercises = $lesson->exercises->map(function ($ex) {
@@ -150,7 +159,11 @@ class LearnController extends Controller
             ], 403);
         }
 
-        $lesson = Lesson::with('exercises')->findOrFail($id);
+        $lesson = Lesson::with(['unit.course', 'exercises'])->findOrFail($id);
+        if ($lesson->unit && $lesson->unit->course_id) {
+            session(['active_learn_course_id' => $lesson->unit->course_id]);
+        }
+
         $answers = $request->input('answers', []);
 
         $result = $this->gamificationService->submitLesson($user, $lesson, $answers);

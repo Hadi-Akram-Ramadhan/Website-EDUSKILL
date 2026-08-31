@@ -7,7 +7,7 @@
         
         <!-- Header Progress & Lives Bar -->
         <header class="lesson-header">
-            <a href="{{ route('learn.index') }}" class="btn-close" title="Keluar">
+            <a href="{{ route('learn.index', ['course' => $lesson->unit->course_id]) }}" class="btn-close" title="Keluar">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </a>
 
@@ -77,7 +77,7 @@
             </div>
         </div>
 
-        <a href="{{ route('learn.index') }}" class="btn-3d btn-blue" style="font-size: 16px; padding: 16px 48px;">
+        <a href="{{ route('learn.index', ['course' => $lesson->unit->course_id]) }}" class="btn-3d btn-blue" style="font-size: 16px; padding: 16px 48px;">
             Lanjutkan ke Roadmap
         </a>
     </div>
