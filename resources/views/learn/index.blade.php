@@ -9,12 +9,12 @@
         }
 
         .unit-section-container {
-            margin-bottom: 48px;
+            margin-bottom: 64px;
         }
 
         .roadmap-path-wrapper {
             position: relative;
-            padding: 32px 0;
+            padding: 36px 0;
         }
 
         .roadmap-svg-connector {
@@ -45,6 +45,7 @@
             justify-content: center;
             cursor: pointer;
             transition: transform 0.15s ease, filter 0.15s ease;
+            position: relative;
         }
 
         .node-circle:hover {
@@ -53,6 +54,31 @@
 
         .node-circle:active {
             transform: scale(0.96) translateY(4px);
+        }
+
+        /* Distinct Mini Project Capstone Node Styling */
+        .project-node {
+            width: 84px !important;
+            height: 84px !important;
+            border-radius: 26px !important;
+        }
+
+        .project-node.btn-purple {
+            background: linear-gradient(135deg, #9333ea, #7e22ce) !important;
+            border: 3px solid #d8b4fe !important;
+            box-shadow: 0 6px 0 #581c87 !important;
+        }
+
+        .project-node.btn-green {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            border: 3px solid #a7f3d0 !important;
+            box-shadow: 0 6px 0 #047857 !important;
+        }
+
+        .project-node.btn-gray {
+            border-radius: 26px !important;
+            border: 2.5px dashed #94a3b8 !important;
+            background: #e2e8f0 !important;
         }
 
         @media (max-width: 768px) {
@@ -158,7 +184,7 @@
             @foreach ($units as $unitIndex => $unit)
                 <div class="unit-section-container">
                     <!-- Clean Unified Royal Blue Unit Header Banner -->
-                    <div class="unit-banner" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 24px; padding: 24px; margin-bottom: 28px; box-shadow: 0 6px 0 #1e40af, 0 10px 25px -5px rgba(37, 99, 235, 0.2); position: relative; overflow: hidden;">
+                    <div class="unit-banner" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 24px; padding: 24px; margin-bottom: 32px; box-shadow: 0 6px 0 #1e40af, 0 10px 25px -5px rgba(37, 99, 235, 0.2); position: relative; overflow: hidden;">
                         <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; position: relative; z-index: 2;">
                             <div>
                                 <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #bfdbfe; letter-spacing: 0.8px;">
@@ -178,7 +204,7 @@
                     <div class="roadmap-path-wrapper">
                         <svg class="roadmap-svg-connector" id="svg-unit-{{ $unitIndex }}"></svg>
 
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 42px; position: relative; z-index: 2;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 68px; position: relative; z-index: 2;">
                             @php
                                 $offsets = [0, 52, 0, -52];
                             @endphp
@@ -197,28 +223,34 @@
                                                 
                                                 @if ($lesson['is_current'])
                                                     <!-- Floating Start Tooltip -->
-                                                    <div style="position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: {{ $lesson['is_project'] ? '#7e22ce' : '#2563eb' }}; color: #fff; font-size: 11px; font-weight: 900; text-transform: uppercase; padding: 6px 14px; border-radius: 12px; box-shadow: 0 4px 0 {{ $lesson['is_project'] ? '#581c87' : '#1e40af' }}; white-space: nowrap; z-index: 10;" class="animate-float">
-                                                        {{ $lesson['is_project'] ? '⭐ PROYEK +' . $lesson['xp_reward'] . ' XP' : 'Mulai +' . $lesson['xp_reward'] . ' XP' }}
+                                                    <div style="position: absolute; top: -42px; left: 50%; transform: translateX(-50%); background: {{ $lesson['is_project'] ? '#7e22ce' : '#2563eb' }}; color: #fff; font-size: 11px; font-weight: 900; text-transform: uppercase; padding: 6px 14px; border-radius: 12px; box-shadow: 0 4px 0 {{ $lesson['is_project'] ? '#581c87' : '#1e40af' }}; white-space: nowrap; z-index: 10; display: inline-flex; align-items: center; gap: 6px;" class="animate-float">
+                                                        @if ($lesson['is_project'])
+                                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="#facc15" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                                            <span>PROYEK +{{ $lesson['xp_reward'] }} XP</span>
+                                                        @else
+                                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="#ffffff" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                                            <span>Mulai +{{ $lesson['xp_reward'] }} XP</span>
+                                                        @endif
                                                         <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid {{ $lesson['is_project'] ? '#7e22ce' : '#2563eb' }};"></div>
                                                     </div>
                                                 @endif
 
-                                                <!-- Circular Node Button -->
+                                                <!-- Circular or Squircle Node Button -->
                                                 @php
                                                     $btnClass = 'btn-blue';
                                                     if ($lesson['is_completed']) {
                                                         $btnClass = 'btn-green';
                                                     } elseif ($lesson['is_project']) {
-                                                        $btnClass = 'btn-purple';
+                                                        $btnClass = 'btn-purple' . ($lesson['is_current'] ? ' pulse-active-project' : '');
                                                     } elseif ($lesson['is_current']) {
                                                         $btnClass = 'btn-blue pulse-active-node';
                                                     }
                                                 @endphp
-                                                <div class="node-circle btn-3d {{ $btnClass }}" style="{{ $lesson['is_project'] ? 'border-color: #d8b4fe; box-shadow: 0 6px 0 #581c87;' : '' }}">
+                                                <div class="node-circle btn-3d {{ $lesson['is_project'] ? 'project-node' : '' }} {{ $btnClass }}">
                                                     @if ($lesson['is_completed'])
                                                         <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                                     @elseif ($lesson['is_project'])
-                                                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="#fde047" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                                     @elseif ($lesson['is_current'])
                                                         <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                                     @else
@@ -228,21 +260,27 @@
                                             </a>
                                         @else
                                             <!-- Locked Node Button -->
-                                            <div class="node-circle btn-gray" style="cursor: not-allowed; {{ $lesson['is_project'] ? 'border: 2px dashed #94a3b8;' : '' }}">
+                                            <div class="node-circle btn-gray {{ $lesson['is_project'] ? 'project-node' : '' }}" style="cursor: not-allowed;">
                                                 @if ($lesson['is_project'])
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                                 @else
-                                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                                 @endif
                                             </div>
                                         @endif
                                     </div>
 
-                                    <div style="font-size: 13px; font-weight: 800; color: {{ $lesson['is_unlocked'] ? ($lesson['is_project'] ? '#7e22ce' : '#0f172a') : '#94a3b8' }}; margin-top: 10px; text-align: center; max-width: 160px; line-height: 1.3;">
+                                    <!-- Node Title and Badges -->
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 12px; max-width: 170px; text-align: center;">
                                         @if ($lesson['is_project'])
-                                            <div style="font-size: 10px; font-weight: 900; color: #7e22ce; text-transform: uppercase; margin-bottom: 2px;">PROYEK AKHIR</div>
+                                            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 900; background: {{ $lesson['is_unlocked'] ? '#f3e8ff' : '#f1f5f9' }}; color: {{ $lesson['is_unlocked'] ? '#7e22ce' : '#64748b' }}; border: 1.5px solid {{ $lesson['is_unlocked'] ? '#d8b4fe' : '#cbd5e1' }}; padding: 3px 10px; border-radius: 9999px; letter-spacing: 0.5px; text-transform: uppercase;">
+                                                <svg width="11" height="11" viewBox="0 0 24 24" fill="{{ $lesson['is_unlocked'] ? '#9333ea' : '#64748b' }}" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                                PROYEK AKHIR
+                                            </span>
                                         @endif
-                                        {{ $lesson['title'] }}
+                                        <span style="font-size: 13px; font-weight: 800; color: {{ $lesson['is_unlocked'] ? ($lesson['is_project'] ? '#6b21a8' : '#0f172a') : '#94a3b8' }}; line-height: 1.3;">
+                                            {{ $lesson['title'] }}
+                                        </span>
                                     </div>
                                 </div>
                             @endforeach

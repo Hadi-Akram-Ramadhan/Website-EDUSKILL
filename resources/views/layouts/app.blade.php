@@ -115,6 +115,15 @@
             box-shadow: 0 0 0 var(--accent-red-shadow);
         }
 
+        .btn-purple {
+            background: #8b5cf6;
+            color: #ffffff;
+            box-shadow: 0 4px 0 #6d28d9;
+        }
+        .btn-purple:active {
+            box-shadow: 0 0 0 #6d28d9;
+        }
+
         .btn-gray {
             background: #e2e8f0;
             color: #64748b;
@@ -161,6 +170,16 @@
 
         .pulse-active-node {
             animation: pulse-ring 2s infinite cubic-bezier(0.45, 0, 0.55, 1);
+        }
+
+        @keyframes pulse-project {
+            0% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.6); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 16px rgba(147, 51, 234, 0); }
+            100% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
+        }
+
+        .pulse-active-project {
+            animation: pulse-project 2s infinite cubic-bezier(0.45, 0, 0.55, 1);
         }
 
         /* Desktop & Tablet Sidebar */
