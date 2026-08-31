@@ -765,7 +765,135 @@
             margin-bottom: 24px;
         }
 
+        /* Mascot Showcase Banner Card (Naufal Academy / Duolingo Style) */
+        .mascot-banner-wrapper {
+            max-width: 1080px;
+            margin: 40px auto 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .mascot-banner-card {
+            background: #ffffff;
+            border: 2.5px solid #dbeafe;
+            border-radius: 32px;
+            padding: 32px;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            align-items: center;
+            gap: 36px;
+            box-shadow: 0 16px 40px -10px rgba(37, 99, 235, 0.12), 0 6px 0 #bfdbfe;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .mascot-banner-card:hover {
+            box-shadow: 0 20px 48px -10px rgba(37, 99, 235, 0.16), 0 8px 0 #93c5fd;
+        }
+
+        .mascot-img-box {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            border: 2px solid #e2e8f0;
+            line-height: 0;
+            aspect-ratio: 4/3;
+        }
+
+        .mascot-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .mascot-img-box:hover img {
+            transform: scale(1.04);
+        }
+
+        .mascot-floating-tag {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            line-height: 1.2;
+        }
+
+        .mascot-text-box h2 {
+            font-size: 28px;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: -0.6px;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+
+        .mascot-text-box p {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+
+        .mascot-pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eff6ff;
+            border: 1.5px solid #bfdbfe;
+            color: var(--primary-blue);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        .mascot-stats-grid {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 14px;
+        }
+
+        .mascot-stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #475569;
+        }
+
         /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .mascot-banner-card {
+                grid-template-columns: 1fr;
+                padding: 24px;
+                gap: 20px;
+            }
+            .mascot-text-box h2 {
+                font-size: 22px;
+            }
+        }
+
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 28px;
@@ -978,6 +1106,51 @@
                     </div>
                 </div>
 
+            </div>
+
+            <!-- CUTE MASCOT SHOWCASE BANNER (Naufal Academy / Duolingo Style) -->
+            <div class="mascot-banner-wrapper">
+                <div class="mascot-banner-card">
+                    <div class="mascot-img-box">
+                        <img src="/images/mascot.jpg" alt="EduSkill Mascot Otter Kiko">
+                        <div class="mascot-floating-tag">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            <span>Maskot EduSkill: Kiko Si Berang-Berang Pintar</span>
+                        </div>
+                    </div>
+                    <div class="mascot-text-box">
+                        <div class="mascot-pill-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            Gamifikasi Belajar Coding
+                        </div>
+                        <h2>Udah Saatnya Belajar Coding Jadi Seru &amp; Gak Ngebosenin!</h2>
+                        <p>Gabung sekarang bareng <strong>10.000+ pelajar SMP &amp; SMA</strong> lainnya yang udah asyik taklukkan logika coding dari nol sampai siap bikin aplikasi impian.</p>
+                        
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <a href="{{ route('register') }}" class="btn-3d btn-blue" style="font-size: 14px; padding: 14px 28px;">
+                                Mulai Sekarang (Gratis)
+                            </a>
+                            <a href="#languages" class="btn-3d btn-outline" style="font-size: 14px; padding: 14px 20px; background: #ffffff;">
+                                Jelajahi Kursus
+                            </a>
+                        </div>
+
+                        <div class="mascot-stats-grid">
+                            <div class="mascot-stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>100% Interaktif</span>
+                            </div>
+                            <div class="mascot-stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <span>5 Menit / Hari</span>
+                            </div>
+                            <div class="mascot-stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <span>Sertifikat Digital</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -1397,6 +1570,7 @@
                   .from("#hero-subtext", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3")
                   .from("#hero-ctas .btn-3d", { y: 15, opacity: 0, stagger: 0.1, duration: 0.5 }, "-=0.2")
                   .from("#simulator-card", { scale: 0.95, opacity: 0, duration: 0.7, ease: "back.out(1.2)" }, "-=0.4")
+                  .from(".mascot-banner-card", { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, "-=0.3")
                   .from(".float-item", { scale: 0.5, opacity: 0, stagger: 0.08, duration: 0.6, ease: "back.out(1.7)" }, "-=0.3");
             }
         });
