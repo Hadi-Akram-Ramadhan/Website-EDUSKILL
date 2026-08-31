@@ -52,13 +52,20 @@
         }
 
         .action-bar-inner {
-            max-width: 1100px;
+            max-width: 1080px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
+        }
+
+        .action-buttons-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .btn-3d {
@@ -72,7 +79,7 @@
             border-radius: 14px;
             border: none;
             cursor: pointer;
-            padding: 10px 20px;
+            padding: 10px 18px;
             font-size: 13px;
             text-decoration: none;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -111,30 +118,26 @@
             box-shadow: 0 0 0 #cbd5e1;
         }
 
-        /* Certificate Stage & Non-Responsive Landscape Canvas */
-        .cert-stage-wrapper {
+        /* Certificate Stage & Proportional Auto-Scale Viewport */
+        .cert-viewport-wrapper {
             width: 100%;
+            max-width: 1040px;
+            margin: 0 auto;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 32px 16px 64px 16px;
-            overflow-x: auto; /* Allows smooth horizontal swipe on small screens without breaking the certificate */
+            justify-content: center;
+            align-items: flex-start;
+            padding: 24px 16px 48px 16px;
+            box-sizing: border-box;
         }
 
-        .mobile-hint {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #64748b;
-            background: #e2e8f0;
-            padding: 6px 14px;
-            border-radius: 9999px;
-            margin-bottom: 16px;
+        .cert-scaler {
+            transform-origin: top center;
+            transition: transform 0.15s ease;
+            display: flex;
+            justify-content: center;
         }
 
-        /* FIXED NON-RESPONSIVE A4 LANDSCAPE CERTIFICATE CANVAS */
+        /* FIXED NON-RESPONSIVE A4 LANDSCAPE CERTIFICATE CANVAS (980px x 690px) */
         .cert-fixed-canvas {
             width: 980px;
             min-width: 980px;
@@ -144,8 +147,8 @@
             max-height: 690px;
             background: #ffffff;
             position: relative;
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
-            border-radius: 6px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.06);
+            border-radius: 8px;
             box-sizing: border-box;
             padding: 24px;
             overflow: hidden;
@@ -278,6 +281,35 @@
             font-family: 'Fira Code', monospace;
         }
 
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            .top-action-bar {
+                padding: 10px 14px;
+            }
+            .action-bar-inner {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .action-buttons-group {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px !important;
+                width: 100%;
+            }
+            .action-buttons-group .btn-3d {
+                width: 100%;
+                padding: 9px 12px;
+                font-size: 12px;
+            }
+            .btn-span-full {
+                grid-column: span 2;
+            }
+            .cert-viewport-wrapper {
+                padding: 16px 8px 32px 8px;
+            }
+        }
+
         /* Print Media Styles for 100% Crisp A4 Landscape Printing */
         @media print {
             @page {
@@ -292,10 +324,16 @@
             .no-print {
                 display: none !important;
             }
-            .cert-stage-wrapper {
+            .cert-viewport-wrapper {
                 padding: 0 !important;
                 margin: 0 !important;
                 overflow: visible !important;
+                height: auto !important;
+            }
+            .cert-scaler {
+                transform: none !important;
+                width: 100% !important;
+                height: 100% !important;
             }
             .cert-fixed-canvas {
                 box-shadow: none !important;
@@ -310,12 +348,6 @@
                 page-break-inside: avoid;
             }
         }
-
-        @media (max-width: 1024px) {
-            .mobile-hint {
-                display: inline-flex;
-            }
-        }
     </style>
 </head>
 <body>
@@ -324,18 +356,18 @@
     <header class="top-action-bar no-print">
         <div class="action-bar-inner">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff;">
+                <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 </div>
                 <div>
-                    <div style="font-size: 14px; font-weight: 900; color: #0f172a;">Sertifikat Digital Terverifikasi</div>
+                    <div style="font-size: 14px; font-weight: 900; color: #0f172a; line-height: 1.2;">Sertifikat Digital Terverifikasi</div>
                     <div style="font-size: 11px; font-weight: 700; color: #64748b;">Serial: {{ $certificate->cert_code }}</div>
                 </div>
             </div>
 
             <!-- Action Buttons -->
-            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <button onclick="downloadCertificatePDF()" id="btn-export-pdf" class="btn-3d btn-green" title="Download Sertifikat dalam format PDF A4 Landscape">
+            <div class="action-buttons-group">
+                <button onclick="downloadCertificatePDF()" id="btn-export-pdf" class="btn-3d btn-green btn-span-full" title="Download Sertifikat dalam format PDF A4 Landscape">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     <span>Unduh PDF (A4)</span>
                 </button>
@@ -353,132 +385,156 @@
         </div>
     </header>
 
-    <!-- Stage Wrapper with Horizontal Scroll -->
-    <main class="cert-stage-wrapper">
-        
-        <!-- Mobile swipe hint -->
-        <div class="mobile-hint no-print">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            <span>Geser horizontal untuk melihat bentuk sertifikat secara utuh</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </div>
-
-        <!-- FIXED NON-RESPONSIVE A4 LANDSCAPE CERTIFICATE -->
-        <div class="cert-fixed-canvas" id="certificate-render-canvas">
+    <!-- Certificate Viewport with Dynamic Proportional Scale -->
+    <main class="cert-viewport-wrapper">
+        <div class="cert-scaler" id="cert-scaler">
             
-            <div class="cert-outer-border">
-                <div class="cert-inner-border">
-                    
-                    <!-- 4 Ornate Vector Corners -->
-                    <div class="corner-ornament corner-tl">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h10v3H3v7H0V0zm6 6h4v2H8v2H6V6z"></path></svg>
-                    </div>
-                    <div class="corner-ornament corner-tr">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M24 0h-10v3h7v7h3V0zm-6 6h-4v2h2v2h2V6z"></path></svg>
-                    </div>
-                    <div class="corner-ornament corner-bl">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M0 24h10v-3H3v-7H0v10zm6-6h4v-2H8v-2H6v4z"></path></svg>
-                    </div>
-                    <div class="corner-ornament corner-br">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M24 24h-10v-3h7v-7h3v10zm-6-6h-4v-2h2v-2h2v4z"></path></svg>
-                    </div>
-
-                    <!-- Header Brand & Serial -->
-                    <div class="cert-heading-brand">
-                        <div class="brand-logo-wrap">
-                            <div style="width: 36px; height: 36px; background: #1e3a8a; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fde047;">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                            </div>
-                            <div>
-                                <div style="font-size: 16px; font-weight: 900; color: #1e3a8a; letter-spacing: 1px; line-height: 1;">EDUSKILL</div>
-                                <div style="font-size: 8px; font-weight: 800; color: #d97706; letter-spacing: 1.5px; text-transform: uppercase;">Learning Platform</div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Nomor Sertifikat Resmi</div>
-                            <div class="code-font" style="font-size: 13px; font-weight: 700; color: #1e3a8a;">{{ $certificate->cert_code }}</div>
-                        </div>
-
-                        <div style="display: flex; align-items: center; gap: 6px; background: #ecfdf5; border: 1.5px solid #a7f3d0; padding: 4px 12px; border-radius: 9999px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            <span style="font-size: 10px; font-weight: 900; color: #065f46; text-transform: uppercase; letter-spacing: 0.5px;">Resmi & Terverifikasi</span>
-                        </div>
-                    </div>
-
-                    <!-- Title & Certificate Body -->
-                    <div style="text-align: center; margin-top: 14px;">
-                        <div class="cert-main-title">SERTIFIKAT RESMI KELULUSAN</div>
-                        <div class="cert-main-subtitle">CERTIFICATE OF COMPLETION & EXCELLENCE</div>
-                    </div>
-
-                    <div class="recipient-section">
-                        <div style="font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px;">Diberikan dengan bangga kepada:</div>
-                        <div class="recipient-name">{{ $certificate->recipient_name }}</div>
-                        <div style="font-size: 13px; color: #475569; max-width: 680px; margin: 4px auto 0 auto; line-height: 1.5;">
-                            Telah berhasil menuntaskan seluruh modul kurikulum, praktik kode, mini project, dan evaluasi pemahaman pada kursus:
-                        </div>
-                        <div style="font-size: 20px; font-weight: 900; color: #1e3a8a; margin-top: 6px; letter-spacing: 0.5px;">
-                            {{ $certificate->course_title }}
-                        </div>
-                    </div>
-
-                    <!-- Footer 3-Column: Signature, Gold Medallion & Grade, QR Code Verification -->
-                    <div class="cert-footer-grid">
+            <!-- FIXED NON-RESPONSIVE A4 LANDSCAPE CERTIFICATE CANVAS (980px x 690px) -->
+            <div class="cert-fixed-canvas" id="certificate-render-canvas">
+                
+                <div class="cert-outer-border">
+                    <div class="cert-inner-border">
                         
-                        <!-- Left: Instructor Signature -->
-                        <div class="signature-box">
-                            <div class="signature-name">{{ $certificate->mentor_name }}</div>
-                            <div class="signature-line"></div>
-                            <div style="font-size: 12px; font-weight: 900; color: #0f172a;">{{ $certificate->mentor_name }}</div>
-                            <div style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase;">Lead Mentor & Instruktur</div>
+                        <!-- 4 Ornate Vector Corners -->
+                        <div class="corner-ornament corner-tl">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h10v3H3v7H0V0zm6 6h4v2H8v2H6V6z"></path></svg>
+                        </div>
+                        <div class="corner-ornament corner-tr">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M24 0h-10v3h7v7h3V0zm-6 6h-4v2h2v2h2V6z"></path></svg>
+                        </div>
+                        <div class="corner-ornament corner-bl">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M0 24h10v-3H3v-7H0v10zm6-6h4v-2H8v-2H6v4z"></path></svg>
+                        </div>
+                        <div class="corner-ornament corner-br">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M24 24h-10v-3h7v-7h3v10zm-6-6h-4v-2h2v-2h2v4z"></path></svg>
                         </div>
 
-                        <!-- Middle: Gold Seal & Score Badge -->
-                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                            <!-- Medallion Ribbon Vector -->
-                            <div style="width: 58px; height: 58px; background: radial-gradient(circle, #fde047 30%, #d97706 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.35); border: 2px solid #ffffff; margin-bottom: 6px;">
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                            </div>
-                            
-                            <div style="font-size: 13px; font-weight: 900; color: #0f172a;">
-                                Rata-rata Skor: <span style="color: {{ $certificate->grade_info['badge_color'] }};">{{ number_format($certificate->score_average, 1) }} / 100</span>
-                            </div>
-
-                            <div style="margin-top: 3px;">
-                                <span style="font-size: 10px; font-weight: 900; background: {{ $certificate->grade_info['badge_bg'] }}; color: {{ $certificate->grade_info['badge_color'] }}; border: 1.5px solid {{ $certificate->grade_info['badge_border'] }}; padding: 2px 10px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px;">
-                                    Grade {{ $certificate->grade_info['grade'] }} &bull; {{ $certificate->grade_info['predicate'] }}
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Right: QR Code & Verification Data -->
-                        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 12px;">
-                            <div style="text-align: right;">
-                                <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase;">Diterbitkan:</div>
-                                <div style="font-size: 11px; font-weight: 800; color: #0f172a;">{{ Carbon\Carbon::parse($certificate->issue_date)->translatedFormat('d F Y') }}</div>
-                                <div style="font-size: 8px; color: #94a3b8; margin-top: 4px; max-width: 120px; word-break: break-all;" class="code-font" title="{{ $certificate->cert_hash }}">
-                                    SHA256: {{ substr($certificate->cert_hash, 0, 14) }}...
+                        <!-- Header Brand & Serial -->
+                        <div class="cert-heading-brand">
+                            <div class="brand-logo-wrap">
+                                <div style="width: 36px; height: 36px; background: #1e3a8a; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fde047;">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                </div>
+                                <div>
+                                    <div style="font-size: 16px; font-weight: 900; color: #1e3a8a; letter-spacing: 1px; line-height: 1;">EDUSKILL</div>
+                                    <div style="font-size: 8px; font-weight: 800; color: #d97706; letter-spacing: 1.5px; text-transform: uppercase;">Learning Platform</div>
                                 </div>
                             </div>
 
-                            <div style="text-align: center;">
-                                <img src="{{ $certificate->qr_code_url }}" alt="QR Code" style="width: 72px; height: 72px; border-radius: 8px; border: 1.5px solid #cbd5e1; padding: 2px; background: #fff; display: block;">
-                                <div style="font-size: 8px; font-weight: 800; color: #64748b; margin-top: 2px; letter-spacing: 0.5px;">VERIFIKASI</div>
+                            <div>
+                                <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Nomor Sertifikat Resmi</div>
+                                <div class="code-font" style="font-size: 13px; font-weight: 700; color: #1e3a8a;">{{ $certificate->cert_code }}</div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 6px; background: #ecfdf5; border: 1.5px solid #a7f3d0; padding: 4px 12px; border-radius: 9999px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span style="font-size: 10px; font-weight: 900; color: #065f46; text-transform: uppercase; letter-spacing: 0.5px;">Resmi & Terverifikasi</span>
                             </div>
                         </div>
 
-                    </div>
+                        <!-- Title & Certificate Body -->
+                        <div style="text-align: center; margin-top: 14px;">
+                            <div class="cert-main-title">SERTIFIKAT RESMI KELULUSAN</div>
+                            <div class="cert-main-subtitle">CERTIFICATE OF COMPLETION & EXCELLENCE</div>
+                        </div>
 
+                        <div class="recipient-section">
+                            <div style="font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px;">Diberikan dengan bangga kepada:</div>
+                            <div class="recipient-name">{{ $certificate->recipient_name }}</div>
+                            <div style="font-size: 13px; color: #475569; max-width: 680px; margin: 4px auto 0 auto; line-height: 1.5;">
+                                Telah berhasil menuntaskan seluruh modul kurikulum, praktik kode, mini project, dan evaluasi pemahaman pada kursus:
+                            </div>
+                            <div style="font-size: 20px; font-weight: 900; color: #1e3a8a; margin-top: 6px; letter-spacing: 0.5px;">
+                                {{ $certificate->course_title }}
+                            </div>
+                        </div>
+
+                        <!-- Footer 3-Column: Signature, Gold Medallion & Grade, QR Code Verification -->
+                        <div class="cert-footer-grid">
+                            
+                            <!-- Left: Instructor Signature -->
+                            <div class="signature-box">
+                                <div class="signature-name">{{ $certificate->mentor_name }}</div>
+                                <div class="signature-line"></div>
+                                <div style="font-size: 12px; font-weight: 900; color: #0f172a;">{{ $certificate->mentor_name }}</div>
+                                <div style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase;">Lead Mentor & Instruktur</div>
+                            </div>
+
+                            <!-- Middle: Gold Seal & Score Badge -->
+                            <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <!-- Medallion Ribbon Vector -->
+                                <div style="width: 58px; height: 58px; background: radial-gradient(circle, #fde047 30%, #d97706 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.35); border: 2px solid #ffffff; margin-bottom: 6px;">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </div>
+                                
+                                <div style="font-size: 13px; font-weight: 900; color: #0f172a;">
+                                    Rata-rata Skor: <span style="color: {{ $certificate->grade_info['badge_color'] }};">{{ number_format($certificate->score_average, 1) }} / 100</span>
+                                </div>
+
+                                <div style="margin-top: 3px;">
+                                    <span style="font-size: 10px; font-weight: 900; background: {{ $certificate->grade_info['badge_bg'] }}; color: {{ $certificate->grade_info['badge_color'] }}; border: 1.5px solid {{ $certificate->grade_info['badge_border'] }}; padding: 2px 10px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        Grade {{ $certificate->grade_info['grade'] }} &bull; {{ $certificate->grade_info['predicate'] }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Right: QR Code & Verification Data -->
+                            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 12px;">
+                                <div style="text-align: right;">
+                                    <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase;">Diterbitkan:</div>
+                                    <div style="font-size: 11px; font-weight: 800; color: #0f172a;">{{ Carbon\Carbon::parse($certificate->issue_date)->translatedFormat('d F Y') }}</div>
+                                    <div style="font-size: 8px; color: #94a3b8; margin-top: 4px; max-width: 120px; word-break: break-all;" class="code-font" title="{{ $certificate->cert_hash }}">
+                                        SHA256: {{ substr($certificate->cert_hash, 0, 14) }}...
+                                    </div>
+                                </div>
+
+                                <div style="text-align: center;">
+                                    <img src="{{ $certificate->qr_code_url }}" alt="QR Code" style="width: 72px; height: 72px; border-radius: 8px; border: 1.5px solid #cbd5e1; padding: 2px; background: #fff; display: block;">
+                                    <div style="font-size: 8px; font-weight: 800; color: #64748b; margin-top: 2px; letter-spacing: 0.5px;">VERIFIKASI</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
+
             </div>
 
         </div>
-
     </main>
 
-    <!-- Client-Side Export PDF Script -->
+    <!-- Client-Side Auto-Fit Scaler & Export PDF Script -->
     <script>
+        function fitCertificateToScreen() {
+            const scaler = document.getElementById('cert-scaler');
+            const wrapper = document.querySelector('.cert-viewport-wrapper');
+            const canvas = document.getElementById('certificate-render-canvas');
+            if (!scaler || !wrapper || !canvas) return;
+
+            const availableWidth = wrapper.clientWidth - 16;
+            const baseWidth = 980;
+            const baseHeight = 690;
+
+            if (availableWidth < baseWidth) {
+                const scale = Math.max(availableWidth / baseWidth, 0.28);
+                scaler.style.transform = `scale(${scale})`;
+                scaler.style.width = `${baseWidth}px`;
+                scaler.style.height = `${baseHeight}px`;
+                wrapper.style.height = `${Math.ceil(baseHeight * scale) + 12}px`;
+            } else {
+                scaler.style.transform = 'scale(1)';
+                scaler.style.width = `${baseWidth}px`;
+                scaler.style.height = `${baseHeight}px`;
+                wrapper.style.height = 'auto';
+            }
+        }
+
+        window.addEventListener('resize', fitCertificateToScreen);
+        window.addEventListener('orientationchange', fitCertificateToScreen);
+        window.addEventListener('DOMContentLoaded', fitCertificateToScreen);
+        setTimeout(fitCertificateToScreen, 50);
+
         function downloadCertificatePDF() {
             const element = document.getElementById('certificate-render-canvas');
             const btnExport = document.getElementById('btn-export-pdf');
