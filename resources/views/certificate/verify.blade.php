@@ -145,22 +145,29 @@
         <!-- Certificate Metadata Grid -->
         <div style="display: grid; grid-template-columns: 1fr 120px; gap: 24px; align-items: center; border-top: 2px dashed #e2e8f0; padding-top: 28px; margin-top: 32px;">
             <div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 13px;">
                     <div>
-                        <span style="color: var(--text-muted);">Nomor Sertifikat:</span>
+                        <span style="color: var(--text-muted); font-size: 12px;">Nomor Sertifikat:</span>
                         <div class="code-font" style="font-weight: 800; color: var(--primary-blue);">{{ $certificate->cert_code }}</div>
                     </div>
                     <div>
-                        <span style="color: var(--text-muted);">Tanggal Terbit:</span>
+                        <span style="color: var(--text-muted); font-size: 12px;">Tanggal Terbit:</span>
                         <div style="font-weight: 800;">{{ Carbon\Carbon::parse($certificate->issue_date)->translatedFormat('d F Y') }}</div>
                     </div>
                     <div>
-                        <span style="color: var(--text-muted);">Instruktur / Mentor:</span>
+                        <span style="color: var(--text-muted); font-size: 12px;">Instruktur / Mentor:</span>
                         <div style="font-weight: 800;">{{ $certificate->mentor_name }}</div>
                     </div>
                     <div>
-                        <span style="color: var(--text-muted);">Rata-rata Nilai:</span>
-                        <div style="font-weight: 800; color: #059669;">{{ number_format($certificate->score_average, 1) }} / 100</div>
+                        <span style="color: var(--text-muted); font-size: 12px;">Skor Belajar & Predikat:</span>
+                        <div style="display: flex; align-items: center; gap: 6px; margin-top: 2px; flex-wrap: wrap;">
+                            <span style="font-weight: 900; color: {{ $certificate->grade_info['badge_color'] }}; font-size: 14px;">
+                                {{ number_format($certificate->score_average, 1) }} / 100
+                            </span>
+                            <span style="font-size: 10px; font-weight: 900; background: {{ $certificate->grade_info['badge_bg'] }}; color: {{ $certificate->grade_info['badge_color'] }}; border: 1px solid {{ $certificate->grade_info['badge_border'] }}; padding: 2px 8px; border-radius: 6px;">
+                                Grade {{ $certificate->grade_info['grade'] }} &bull; {{ $certificate->grade_info['predicate'] }}
+                            </span>
+                        </div>
                     </div>
                 </div>
 

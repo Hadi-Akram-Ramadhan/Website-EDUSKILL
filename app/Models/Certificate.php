@@ -43,4 +43,45 @@ class Certificate extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    /**
+     * Get calculated grade and predicate.
+     */
+    public function getGradeInfoAttribute(): array
+    {
+        $score = (float) $this->score_average;
+        if ($score >= 90.0) {
+            return [
+                'grade' => 'A',
+                'predicate' => 'Sangat Memuaskan (Distinction)',
+                'badge_color' => '#059669',
+                'badge_bg' => '#ecfdf5',
+                'badge_border' => '#a7f3d0',
+            ];
+        } elseif ($score >= 80.0) {
+            return [
+                'grade' => 'B',
+                'predicate' => 'Memuaskan (Merit)',
+                'badge_color' => '#2563eb',
+                'badge_bg' => '#eff6ff',
+                'badge_border' => '#bfdbfe',
+            ];
+        } elseif ($score >= 70.0) {
+            return [
+                'grade' => 'C',
+                'predicate' => 'Lulus (Pass)',
+                'badge_color' => '#d97706',
+                'badge_bg' => '#fffbeb',
+                'badge_border' => '#fde68a',
+            ];
+        }
+
+        return [
+            'grade' => 'D',
+            'predicate' => 'Cukup',
+            'badge_color' => '#475569',
+            'badge_bg' => '#f1f5f9',
+            'badge_border' => '#cbd5e1',
+        ];
+    }
 }

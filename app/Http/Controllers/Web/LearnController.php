@@ -77,6 +77,8 @@ class LearnController extends Controller
                     'slug' => $lesson->slug,
                     'description' => $lesson->description,
                     'type' => $lesson->type,
+                    'is_project' => (bool) ($lesson->is_project || $lesson->type === 'project'),
+                    'project_brief' => $lesson->project_brief,
                     'xp_reward' => $lesson->xp_reward,
                     'order_index' => $lesson->order_index,
                     'is_completed' => $isCompleted,

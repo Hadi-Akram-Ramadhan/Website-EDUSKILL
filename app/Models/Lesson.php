@@ -17,6 +17,8 @@ class Lesson extends Model
         'slug',
         'description',
         'type',
+        'is_project',
+        'project_brief',
         'theory_content',
         'xp_reward',
         'order_index',
@@ -25,6 +27,7 @@ class Lesson extends Model
     protected function casts(): array
     {
         return [
+            'is_project' => 'boolean',
             'xp_reward' => 'integer',
             'order_index' => 'integer',
         ];

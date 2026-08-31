@@ -23,6 +23,21 @@
 
         <!-- Main Question Slide Arena -->
         <main class="quiz-arena">
+            @if ($lesson->is_project || $lesson->type === 'project')
+                <div style="background: linear-gradient(135deg, #faf5ff, #f3e8ff); border: 2px solid #d8b4fe; border-radius: 18px; padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 0 #d8b4fe; width: 100%;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; border-radius: 10px; background: #7e22ce; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 11px; font-weight: 900; color: #7e22ce; text-transform: uppercase;">TANTANGAN PROYEK AKHIR MODUL</div>
+                        <div style="font-size: 14px; font-weight: 900; color: #0f172a;">{{ $lesson->title }}</div>
+                        @if ($lesson->project_brief)
+                            <div style="font-size: 12px; color: #475569; margin-top: 2px;">{{ $lesson->project_brief }}</div>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
             <div id="question-card" style="width: 100%;">
                 <!-- Dynamic Question Content Injected via JS -->
             </div>

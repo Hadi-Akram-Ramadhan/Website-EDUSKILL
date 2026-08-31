@@ -38,9 +38,9 @@
 
             <!-- Quick Action Hub -->
             <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <button type="button" onclick="downloadCsvTemplate(event)" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px; background: #ffffff; cursor: pointer;">
+                <button type="button" onclick="downloadXlsxTemplate(event)" class="btn-3d btn-green" style="font-size: 12px; padding: 10px 16px; cursor: pointer;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Download Template Excel/CSV
+                    Download Template Excel (.xlsx)
                 </button>
 
                 <a href="{{ route('learn.index', ['course_id' => $course->id]) }}" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px;">
@@ -75,12 +75,15 @@
                 </div>
                 <div>
                     <h2 style="font-size: 16px; font-weight: 900; color: #0f172a; margin-bottom: 2px;">Ingin Tambah Banyak Soal Sekaligus?</h2>
-                    <p style="font-size: 13px; color: #64748b;">Gunakan fitur import Excel / CSV untuk memasukkan puluhan soal interaktif dalam sekali klik.</p>
+                    <p style="font-size: 13px; color: #64748b;">Gunakan fitur import Excel (.xlsx) / CSV untuk memasukkan puluhan soal interaktif dalam sekali klik.</p>
                 </div>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <button type="button" onclick="downloadCsvTemplate(event)" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px; background: #ffffff; cursor: pointer;">
-                    1. Download Template (.csv)
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button type="button" onclick="downloadXlsxTemplate(event)" class="btn-3d btn-green" style="font-size: 12px; padding: 10px 16px; cursor: pointer;">
+                    1. Download Template Excel (.xlsx)
+                </button>
+                <button type="button" onclick="downloadCsvTemplate(event)" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 14px; background: #ffffff; cursor: pointer;">
+                    Format CSV
                 </button>
             </div>
         </div>
@@ -132,14 +135,29 @@
                                 <!-- Lesson Header Bar -->
                                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                                     <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--primary-blue-light); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; box-shadow: 0 2px 0 #bfdbfe;">
-                                            {{ $lesson->order_index }}
+                                        <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; border-radius: 10px; background: {{ ($lesson->is_project || $lesson->type === 'project') ? '#fef3c7' : 'var(--primary-blue-light)' }}; color: {{ ($lesson->is_project || $lesson->type === 'project') ? '#b45309' : 'var(--primary-blue)' }}; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; box-shadow: 0 2px 0 {{ ($lesson->is_project || $lesson->type === 'project') ? '#fde68a' : '#bfdbfe' }}; flex-shrink: 0;">
+                                            @if ($lesson->is_project || $lesson->type === 'project')
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                            @else
+                                                {{ $lesson->order_index }}
+                                            @endif
                                         </div>
                                         <div>
-                                            <div style="font-size: 16px; font-weight: 900; color: #0f172a;">{{ $lesson->title }}</div>
-                                            <div style="font-size: 12px; color: #64748b; font-weight: 600;">
+                                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                                <span style="font-size: 16px; font-weight: 900; color: #0f172a;">{{ $lesson->title }}</span>
+                                                @if ($lesson->is_project || $lesson->type === 'project')
+                                                    <span style="font-size: 10px; font-weight: 900; color: #7e22ce; background: #f3e8ff; border: 1.5px solid #d8b4fe; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                                        MINI PROJECT (PROYEK AKHIR)
+                                                    </span>
+                                                @endif
+                                            </div>
+                                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-top: 2px;">
                                                 Reward: <span style="color: var(--primary-blue); font-weight: 800;">+{{ $lesson->xp_reward }} XP</span> &bull; 
-                                                <span style="color: #059669; font-weight: 800;">{{ $lesson->exercises->count() }} Soal Interaktif</span>
+                                                <span style="color: #059669; font-weight: 800;">{{ $lesson->exercises->count() }} Soal / Tantangan</span>
+                                                @if ($lesson->project_brief)
+                                                    &bull; <span style="color: #475569; font-style: italic;">"{{ Str::limit($lesson->project_brief, 50) }}"</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -369,13 +387,35 @@
 
                     <!-- Add Lesson Form inside Unit -->
                     <div style="background: #ffffff; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 18px;">
-                        <h3 style="font-size: 14px; font-weight: 900; color: #0f172a; margin-bottom: 10px;">+ Tambah Modul Pelajaran ke {{ $unit->title }}</h3>
-                        <form action="{{ route('mentor.lessons.store', $unit->id) }}" method="POST" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <h3 style="font-size: 14px; font-weight: 900; color: #0f172a; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            Tambah Modul Pelajaran / Mini Project ke {{ $unit->title }}
+                        </h3>
+                        <form action="{{ route('mentor.lessons.store', $unit->id) }}" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
                             @csrf
-                            <input type="text" name="title" required placeholder="Judul Modul (Contoh: Pengenalan Loop For)" style="flex: 2; min-width: 220px; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13px; font-weight: 600; outline: none;">
-                            <input type="number" name="xp_reward" value="20" min="5" max="100" placeholder="XP" style="width: 80px; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13px; font-weight: 700; outline: none;">
-                            <button type="submit" class="btn-3d btn-outline" style="padding: 10px 18px; font-size: 12px;">
-                                Simpan Modul
+                            
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <input type="text" name="title" required placeholder="Judul Modul (Contoh: Mini Project: Program Kasir Sederhana)" style="flex: 2; min-width: 240px; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13px; font-weight: 600; outline: none;">
+                                <input type="number" name="xp_reward" id="xp_reward_{{ $unit->id }}" value="20" min="5" max="100" placeholder="XP" style="width: 80px; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13px; font-weight: 700; outline: none;" title="Reward XP">
+                            </div>
+
+                            <!-- Mini Project Checkbox Option -->
+                            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; background: #f8fafc; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #e2e8f0;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: #0f172a; cursor: pointer;">
+                                    <input type="checkbox" name="is_project" value="1" onchange="toggleProjectBrief(this, '{{ $unit->id }}')" style="width: 18px; height: 18px; accent-color: #7e22ce;">
+                                    <span style="color: #7e22ce;">⭐ Jadikan Mini Project (Proyek Akhir Bab)</span>
+                                </label>
+                                <span style="font-size: 11px; color: #64748b;">(Proyek penentu evaluasi sebelum melangkah ke bab berikutnya / klaim sertifikat)</span>
+                            </div>
+
+                            <!-- Optional Project Brief (Hidden by default until checked) -->
+                            <div id="project_brief_box_{{ $unit->id }}" style="display: none;">
+                                <label style="display: block; font-size: 11px; font-weight: 800; color: #7e22ce; text-transform: uppercase; margin-bottom: 4px;">Instruksi Brief Tugas Proyek Siswa</label>
+                                <textarea name="project_brief" rows="2" placeholder="Contoh: Buatlah program kasir sederhana dengan variabel total belanja, logika diskon if-else, dan cetak struk pembayaran." style="width: 100%; padding: 10px 14px; border: 1.5px solid #d8b4fe; border-radius: 10px; font-size: 13px; outline: none; background: #faf5ff;"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-3d btn-outline" style="padding: 10px 20px; font-size: 12px; align-self: flex-start;">
+                                Simpan Modul Pelajaran
                             </button>
                         </form>
                     </div>
@@ -422,9 +462,12 @@
                     <div id="selected-file-name" style="margin-top: 10px; font-size: 13px; font-weight: 800; color: var(--primary-blue); display: none;"></div>
                 </div>
 
-                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px;">
+                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center; flex-wrap: wrap; margin-top: 6px;">
+                    <button type="button" onclick="downloadXlsxTemplate(event)" class="btn-3d btn-green" style="padding: 10px 14px; font-size: 12px; cursor: pointer;">
+                        Format Excel (.xlsx)
+                    </button>
                     <button type="button" onclick="downloadCsvTemplate(event)" class="btn-3d btn-outline" style="padding: 10px 14px; font-size: 12px; cursor: pointer; background: #ffffff;">
-                        Unduh Format Contoh
+                        Format CSV
                     </button>
                     <button type="submit" class="btn-3d btn-blue" style="padding: 10px 20px; font-size: 12px;">
                         Mulai Import Sekarang
@@ -470,17 +513,91 @@
         }
     </style>
 
+    <!-- SheetJS for Instant Native XLSX Generation & Processing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <script>
-        // Instant Client-Side CSV Download (100% Reliable without Mixed Content/Proxy issues)
+        // Instant Client-Side XLSX Excel Download (Zero Server Redirect / 100% Reliable)
+        function downloadXlsxTemplate(e) {
+            if (e) e.preventDefault();
+            try {
+                if (typeof XLSX !== 'undefined') {
+                    const wb = XLSX.utils.book_new();
+                    const ws_data = [
+                        ["question_type", "prompt", "code_snippet", "options", "answer", "explanation"],
+                        [
+                            "multiple_choice",
+                            "Tipe data manakah di Python yang digunakan untuk menyimpan nilai True atau False?",
+                            "",
+                            "bool (Boolean)|int (Integer)|str (String)|float (Desimal)",
+                            "bool (Boolean)",
+                            "Tipe data boolean hanya memiliki dua nilai: True atau False."
+                        ],
+                        [
+                            "fill_blank",
+                            "Lengkapi kode Python berikut agar menampilkan teks \"Halo Dunia\" ke layar:",
+                            "____(\"Halo Dunia\")",
+                            "print|echo|input|write",
+                            "print",
+                            "Fungsi bawaan Python untuk mencetak teks adalah print()."
+                        ],
+                        [
+                            "output_prediction",
+                            "Apa output yang dihasilkan dari kode Python berikut?",
+                            "nama = 'Andi'\nprint('Halo ' + nama)",
+                            "Halo Andi|Halo nama|Andi|Error",
+                            "Halo Andi",
+                            "Operator + menggabungkan string 'Halo ' dengan nilai variabel nama."
+                        ],
+                        [
+                            "code_ordering",
+                            "Susun baris kode berikut dengan urutan yang benar untuk membuat variabel lalu mencetaknya:",
+                            "",
+                            "umur = 15|print('Umur saya:')|print(umur)",
+                            "1|2|3",
+                            "Variabel harus dideklarasikan terlebih dahulu sebelum nilainya dicetak."
+                        ],
+                        [
+                            "matching_pair",
+                            "Cocokkan tipe data Python dengan contoh nilainya yang tepat:",
+                            "",
+                            "int => 17|str => \"Belajar\"|bool => True|float => 3.14",
+                            "int => 17|str => \"Belajar\"|bool => True|float => 3.14",
+                            "int adalah bilangan bulat, str adalah teks, bool adalah nilai kebenaran, dan float adalah bilangan desimal."
+                        ]
+                    ];
+                    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+                    
+                    // Column widths
+                    ws['!cols'] = [
+                        { wch: 18 }, // question_type
+                        { wch: 45 }, // prompt
+                        { wch: 25 }, // code_snippet
+                        { wch: 45 }, // options
+                        { wch: 25 }, // answer
+                        { wch: 45 }  // explanation
+                    ];
+
+                    XLSX.utils.book_append_sheet(wb, ws, "Template Soal EduSkill");
+                    XLSX.writeFile(wb, "template_soal_eduskill.xlsx");
+                    return;
+                }
+            } catch (err) {
+                console.warn('SheetJS error, falling back to server download:', err);
+            }
+            window.location.href = "{{ route('mentor.exercises.template', ['format' => 'xlsx']) }}";
+        }
+
+        // Instant Client-Side CSV Download
         function downloadCsvTemplate(e) {
             if (e) e.preventDefault();
             const csvData = "\uFEFF" + 
-                "tipe_soal,pertanyaan,kode_snippet,opsi_jawaban,kunci_jawaban,penjelasan\r\n" +
-                'multiple_choice,"Perintah apa yang digunakan untuk menampilkan teks ke layar di Python?","print(\\"Halo\\")","print|input|echo|write",print,"print() adalah fungsi bawaan standar Python."\r\n' +
-                'fill_blank,"Lengkapi baris kode untuk mengisi celah yang hilang:","___(\\"Belajar Coding\\")","print|echo|input|console",print,"Gunakan fungsi print untuk menampilkan teks."\r\n' +
-                'output_prediction,"Berapakah output dari kode berikut?","a = 5\\nb = 3\\nprint(a + b)","8|53|15|Error",8,"Operasi penjumlahan 5 + 3 menghasilkan 8."\r\n' +
-                'code_ordering,"Urutkan logika baris kode berikut agar benar:","","x = 10|y = 20|hasil = x + y|print(hasil)","1|2|3|4","Variabel diinisialisasi terlebih dahulu sebelum dijumlahkan dan dicetak."\r\n' +
-                'matching_pair,"Jodohkan tipe data Python dengan contoh nilainya:","","int=>100|str=>\'EduSkill\'|bool=>True|float=>3.14","int=>100|str=>\'EduSkill\'|bool=>True|float=>3.14","Tipe data int untuk bilangan bulat, str untuk teks, bool untuk boolean, dan float untuk desimal."\r\n';
+                "question_type,prompt,code_snippet,options,answer,explanation\r\n" +
+                'multiple_choice,"Tipe data manakah di Python yang digunakan untuk menyimpan nilai True atau False?","","bool (Boolean)|int (Integer)|str (String)|float (Desimal)","bool (Boolean)","Tipe data boolean hanya memiliki dua nilai: True atau False."\r\n' +
+                'fill_blank,"Lengkapi kode Python berikut agar menampilkan teks ""Halo Dunia"" ke layar:","____(""Halo Dunia"")","print|echo|input|write",print,"Fungsi bawaan Python untuk mencetak teks adalah print()."\r\n' +
+                'output_prediction,"Apa output yang dihasilkan dari kode Python berikut?","nama = \'Andi\'\\nprint(\'Halo \' + nama)","Halo Andi|Halo nama|Andi|Error","Halo Andi","Operator + menggabungkan string \'Halo \' dengan nilai variabel nama."\r\n' +
+                'code_ordering,"Susun baris kode berikut dengan urutan yang benar untuk membuat variabel lalu mencetaknya:","","umur = 15|print(\'Umur saya:\')|print(umur)","1|2|3","Variabel harus dideklarasikan terlebih dahulu sebelum nilainya dicetak."\r\n' +
+                'matching_pair,"Cocokkan tipe data Python dengan contoh nilainya yang tepat:","","int => 17|str => ""Belajar""|bool => True|float => 3.14","int => 17|str => ""Belajar""|bool => True|float => 3.14","int adalah bilangan bulat, str adalah teks, bool adalah nilai kebenaran, dan float adalah bilangan desimal."\r\n';
 
             const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
             const url = window.URL.createObjectURL(blob);
@@ -566,6 +683,22 @@
 
         function closeImportModal() {
             document.getElementById('import-modal').style.display = 'none';
+        }
+
+        function toggleProjectBrief(checkbox, unitId) {
+            const box = document.getElementById(`project_brief_box_${unitId}`);
+            const xpInput = document.getElementById(`xp_reward_${unitId}`);
+            if (checkbox.checked) {
+                box.style.display = 'block';
+                if (xpInput && xpInput.value == '20') {
+                    xpInput.value = '50';
+                }
+            } else {
+                box.style.display = 'none';
+                if (xpInput && xpInput.value == '50') {
+                    xpInput.value = '20';
+                }
+            }
         }
 
         function handleFileSelected(input) {

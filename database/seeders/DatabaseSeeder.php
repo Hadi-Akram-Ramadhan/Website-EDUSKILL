@@ -275,6 +275,35 @@ class DatabaseSeeder extends Seeder
             'order_index' => 2,
         ]);
 
+        // Lesson 3: Mini Project Unit 1
+        $lessonProject1 = Lesson::create([
+            'unit_id' => $unit1->id,
+            'title' => 'Mini Project: Kartu Profil Siswa Digital',
+            'slug' => 'mini-project-kartu-profil-siswa',
+            'description' => 'Terapkan konsep variabel dan cetak untuk membuat program profil siswa lengkap.',
+            'type' => 'project',
+            'is_project' => true,
+            'project_brief' => 'Buatlah program Python yang menyimpan data nama, umur, dan hobi siswa ke dalam variabel yang tepat, lalu mencetaknya ke layar.',
+            'theory_content' => 'Dalam proyek ini kamu mengombinasikan konsep variabel string & integer serta menyusun perintah print() berurutan.',
+            'xp_reward' => 50,
+            'order_index' => 3,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonProject1->id,
+            'question_type' => 'code_ordering',
+            'prompt' => 'Mini Project Task: Susun baris kode program profil siswa berikut agar menghasilkan output kartu pelajar yang benar:',
+            'options_json' => [
+                ['id' => '1', 'text' => 'nama = "Ahmad"'],
+                ['id' => '2', 'text' => 'umur = 16'],
+                ['id' => '3', 'text' => 'print("Nama Siswa:", nama)'],
+                ['id' => '4', 'text' => 'print("Umur Siswa:", umur)'],
+            ],
+            'answer_json' => ['1', '2', '3', '4'],
+            'explanation' => 'Inisialisasi variabel nama dan umur di awal, kemudian cetak masing-masing variabel secara berurutan.',
+            'order_index' => 1,
+        ]);
+
         // Unit 2
         $unit2 = Unit::create([
             'course_id' => $course1->id,
@@ -301,6 +330,31 @@ class DatabaseSeeder extends Seeder
             'options_json' => ['True (Kondisi Terpenuhi)', 'False (Kondisi Gagal)', 'Error', 'None'],
             'answer_json' => 'True (Kondisi Terpenuhi)',
             'explanation' => 'Karena 85 lebih besar dari atau sama dengan 75, maka kondisi bernilai True.',
+            'order_index' => 1,
+        ]);
+
+        // Lesson 4: Mini Project Unit 2
+        $lessonProject2 = Lesson::create([
+            'unit_id' => $unit2->id,
+            'title' => 'Mini Project: Sistem Cek Kelulusan Siswa',
+            'slug' => 'mini-project-sistem-cek-kelulusan',
+            'description' => 'Terapkan logika percabangan if-else untuk menentukan status kelulusan siswa secara otomatis.',
+            'type' => 'project',
+            'is_project' => true,
+            'project_brief' => 'Buatlah program penentu kelulusan: jika nilai ujian >= 75 cetak "LULUS", jika tidak cetak "REMIDIAL".',
+            'theory_content' => 'Proyek ini menguji pemahaman perbandingan angka dan percabangan if-else.',
+            'xp_reward' => 60,
+            'order_index' => 2,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonProject2->id,
+            'question_type' => 'fill_blank',
+            'prompt' => 'Mini Project Task: Lengkapi kata kunci percabangan berikut agar mencetak "LULUS" jika nilai siswa 80:',
+            'code_snippet' => "nilai = 80\n____ nilai >= 75:\n    print('LULUS')",
+            'options_json' => ['if', 'else', 'elif', 'while'],
+            'answer_json' => 'if',
+            'explanation' => 'Kata kunci "if" digunakan untuk memeriksa kondisi logika pada bahasa pemrograman Python.',
             'order_index' => 1,
         ]);
 
@@ -539,7 +593,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 5. Seed progress for Siti (Course 1 Completed -> Certificate Issued)
-        foreach ([$lesson1, $lesson2, $lesson3] as $l) {
+        foreach ([$lesson1, $lesson2, $lessonProject1, $lesson3, $lessonProject2] as $l) {
             UserProgress::create([
                 'user_id' => $siswa2->id,
                 'lesson_id' => $l->id,

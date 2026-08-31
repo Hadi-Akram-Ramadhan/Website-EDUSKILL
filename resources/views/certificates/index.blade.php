@@ -79,8 +79,8 @@
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"></path><path d="M12 2v20"></path></svg>
                                     Lihat Sertifikat ({{ $card['certificate']->cert_code }})
                                 </a>
-                                <div style="font-size: 11px; color: #059669; font-weight: 700; margin-top: 6px;">
-                                    Terbit: {{ Carbon\Carbon::parse($card['certificate']->issue_date)->format('d M Y') }}
+                                <div style="font-size: 11px; color: #059669; font-weight: 800; margin-top: 6px;">
+                                    Skor: {{ number_format($card['certificate']->score_average, 1) }}/100 (Grade {{ $card['certificate']->grade_info['grade'] }}) &bull; {{ Carbon\Carbon::parse($card['certificate']->issue_date)->format('d M Y') }}
                                 </div>
                             </div>
                         @elseif ($card['is_completed'])

@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('description')->nullable();
-            $table->enum('type', ['theory', 'quiz', 'milestone'])->default('quiz');
+            $table->enum('type', ['theory', 'quiz', 'milestone', 'project'])->default('quiz');
             $table->longText('theory_content')->nullable();
             $table->integer('xp_reward')->default(15);
             $table->integer('order_index')->default(1);

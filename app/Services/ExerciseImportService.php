@@ -5,17 +5,22 @@ namespace App\Services;
 use App\Models\Exercise;
 use App\Models\Lesson;
 use Illuminate\Http\UploadedFile;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExerciseImportService
 {
     /**
-     * Generate sample CSV template content with UTF-8 BOM.
+     * Get sample exercise template rows.
+     *
+     * @return array<int, array<int, string>>
      */
-    public function generateTemplateCsv(): string
+    public function getSampleRows(): array
     {
-        $headers = ['question_type', 'prompt', 'code_snippet', 'options', 'answer', 'explanation'];
-
-        $rows = [
+        return [
             [
                 'multiple_choice',
                 'Tipe data manakah di Python yang digunakan untuk menyimpan nilai True atau False?',
@@ -57,6 +62,61 @@ class ExerciseImportService
                 'int adalah bilangan bulat, str adalah teks, bool adalah nilai kebenaran, dan float adalah bilangan desimal.',
             ],
         ];
+    }
+
+    /**
+     * Generate native Microsoft Excel (.xlsx) template with formatted header styling.
+     */
+    public function generateTemplateXlsx(): string
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Template Soal EduSkill');
+
+        $headers = ['question_type', 'prompt', 'code_snippet', 'options', 'answer', 'explanation'];
+        $sheet->fromArray([$headers], null, 'A1');
+
+        $rows = $this->getSampleRows();
+        $sheet->fromArray($rows, null, 'A2');
+
+        // Style header row (Royal Blue Background with White Bold Text)
+        $headerStyle = [
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
+                'size' => 11,
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '2563EB'],
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+        ];
+        $sheet->getStyle('A1:F1')->applyFromArray($headerStyle);
+        $sheet->getRowDimension(1)->setRowHeight(28);
+
+        // Auto-fit column widths
+        foreach (range('A', 'F') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        ob_start();
+        $writer->save('php://output');
+
+        return (string) ob_get_clean();
+    }
+
+    /**
+     * Generate sample CSV template content with UTF-8 BOM.
+     */
+    public function generateTemplateCsv(): string
+    {
+        $headers = ['question_type', 'prompt', 'code_snippet', 'options', 'answer', 'explanation'];
+        $rows = $this->getSampleRows();
 
         $output = "\xEF\xBB\xBF"; // UTF-8 BOM for Excel
         $f = fopen('php://memory', 'r+');
@@ -74,13 +134,66 @@ class ExerciseImportService
     }
 
     /**
-     * Import exercises from uploaded CSV file into a Lesson.
+     * Import exercises from uploaded XLSX, XLS, or CSV file into a Lesson.
+     *
+     * @return array{success: int, errors: array<string>}
+     */
+    public function importFromFile(UploadedFile $file, Lesson $lesson): array
+    {
+        $ext = strtolower($file->getClientOriginalExtension());
+        $mime = strtolower($file->getMimeType() ?? '');
+        $realPath = $file->getRealPath();
+
+        $rows = [];
+
+        // Check if XLSX or XLS file
+        if ($ext === 'xlsx' || $ext === 'xls' || str_contains($mime, 'spreadsheet') || str_contains($mime, 'excel')) {
+            try {
+                $spreadsheet = IOFactory::load($realPath);
+                $sheet = $spreadsheet->getActiveSheet();
+                $rawRows = $sheet->toArray(null, true, true, false);
+
+                foreach ($rawRows as $row) {
+                    if (! empty(array_filter($row, fn ($v) => trim((string) $v) !== ''))) {
+                        $rows[] = array_map(fn ($v) => trim((string) ($v ?? '')), $row);
+                    }
+                }
+            } catch (\Throwable $e) {
+                // If PhpSpreadsheet fails, attempt fallback to CSV reader
+                $rows = $this->parseCsvRows($realPath);
+            }
+        } else {
+            $rows = $this->parseCsvRows($realPath);
+        }
+
+        if (count($rows) < 2) {
+            return ['success' => 0, 'errors' => ['File harus memiliki baris header dan minimal 1 baris soal.']];
+        }
+
+        return $this->processExtractedRows($rows, $lesson);
+    }
+
+    /**
+     * Fallback alias for backward compatibility.
      *
      * @return array{success: int, errors: array<string>}
      */
     public function importFromCsv(UploadedFile $file, Lesson $lesson): array
     {
-        $content = file_get_contents($file->getRealPath());
+        return $this->importFromFile($file, $lesson);
+    }
+
+    /**
+     * Parse rows from raw CSV/text content.
+     *
+     * @return array<int, array<int, string>>
+     */
+    protected function parseCsvRows(string $filePath): array
+    {
+        $content = file_get_contents($filePath);
+        if (! $content) {
+            return [];
+        }
 
         // Remove potential UTF-8 BOM
         if (str_starts_with($content, "\xEF\xBB\xBF")) {
@@ -89,10 +202,9 @@ class ExerciseImportService
 
         $lines = preg_split('/\r\n|\r|\n/', trim($content));
         if (empty($lines)) {
-            return ['success' => 0, 'errors' => ['File kosong atau tidak terbaca.']];
+            return [];
         }
 
-        // Detect delimiter (comma or semicolon)
         $firstLine = $lines[0];
         $delimiter = str_contains($firstLine, ';') && substr_count($firstLine, ';') > substr_count($firstLine, ',') ? ';' : ',';
 
@@ -102,18 +214,25 @@ class ExerciseImportService
         rewind($temp);
 
         while (($data = fgetcsv($temp, 0, $delimiter)) !== false) {
-            if (! empty(array_filter($data, fn ($v) => trim($v) !== ''))) {
-                $rows[] = $data;
+            if (! empty(array_filter($data, fn ($v) => trim((string) $v) !== ''))) {
+                $rows[] = array_map(fn ($v) => trim((string) ($v ?? '')), $data);
             }
         }
         fclose($temp);
 
-        if (count($rows) < 2) {
-            return ['success' => 0, 'errors' => ['File harus memiliki baris header dan minimal 1 baris soal.']];
-        }
+        return $rows;
+    }
 
+    /**
+     * Process extracted row array into Exercise model records.
+     *
+     * @param  array<int, array<int, string>>  $rows
+     * @return array{success: int, errors: array<string>}
+     */
+    protected function processExtractedRows(array $rows, Lesson $lesson): array
+    {
         // Header check & mapping
-        $header = array_map(fn ($h) => strtolower(trim($h)), $rows[0]);
+        $header = array_map(fn ($h) => strtolower(trim((string) $h)), $rows[0]);
         $typeIdx = array_search('question_type', $header);
         $promptIdx = array_search('prompt', $header);
         $codeIdx = array_search('code_snippet', $header);
@@ -122,7 +241,6 @@ class ExerciseImportService
         $expIdx = array_search('explanation', $header);
 
         if ($typeIdx === false || $promptIdx === false) {
-            // Fallback to default positional columns (0: type, 1: prompt, 2: code, 3: options, 4: answer, 5: explanation)
             $typeIdx = 0;
             $promptIdx = 1;
             $codeIdx = 2;

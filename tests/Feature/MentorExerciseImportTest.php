@@ -60,9 +60,9 @@ class MentorExerciseImportTest extends TestCase
         ]);
     }
 
-    public function test_mentor_can_download_exercise_template(): void
+    public function test_mentor_can_download_exercise_template_csv(): void
     {
-        $response = $this->actingAs($this->mentor)->get(route('mentor.exercises.template'));
+        $response = $this->actingAs($this->mentor)->get(route('mentor.exercises.template', ['format' => 'csv']));
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Disposition', 'attachment; filename="template_soal_eduskill.csv"');
@@ -71,6 +71,32 @@ class MentorExerciseImportTest extends TestCase
         $this->assertStringContainsString('fill_blank', $response->getContent());
         $this->assertStringContainsString('code_ordering', $response->getContent());
         $this->assertStringContainsString('matching_pair', $response->getContent());
+    }
+
+    public function test_mentor_can_download_exercise_template_xlsx(): void
+    {
+        $response = $this->actingAs($this->mentor)->get(route('mentor.exercises.template', ['format' => 'xlsx']));
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Disposition', 'attachment; filename="template_soal_eduskill.xlsx"');
+        $this->assertNotEmpty($response->getContent());
+    }
+
+    public function test_mentor_can_import_exercises_from_xlsx(): void
+    {
+        $service = app(\App\Services\ExerciseImportService::class);
+        $xlsxBinary = $service->generateTemplateXlsx();
+
+        $file = UploadedFile::fake()->createWithContent('template.xlsx', $xlsxBinary);
+
+        $response = $this->actingAs($this->mentor)->post(route('mentor.exercises.import', $this->lesson->id), [
+            'file' => $file,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHas('success');
+
+        $this->assertGreaterThanOrEqual(5, $this->lesson->exercises()->count());
     }
 
     public function test_mentor_can_import_exercises_from_csv(): void

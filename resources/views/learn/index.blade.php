@@ -197,16 +197,28 @@
                                                 
                                                 @if ($lesson['is_current'])
                                                     <!-- Floating Start Tooltip -->
-                                                    <div style="position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: #2563eb; color: #fff; font-size: 11px; font-weight: 900; text-transform: uppercase; padding: 6px 14px; border-radius: 12px; box-shadow: 0 4px 0 #1e40af; white-space: nowrap; z-index: 10;" class="animate-float">
-                                                        Mulai +{{ $lesson['xp_reward'] }} XP
-                                                        <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #2563eb;"></div>
+                                                    <div style="position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: {{ $lesson['is_project'] ? '#7e22ce' : '#2563eb' }}; color: #fff; font-size: 11px; font-weight: 900; text-transform: uppercase; padding: 6px 14px; border-radius: 12px; box-shadow: 0 4px 0 {{ $lesson['is_project'] ? '#581c87' : '#1e40af' }}; white-space: nowrap; z-index: 10;" class="animate-float">
+                                                        {{ $lesson['is_project'] ? '⭐ PROYEK +' . $lesson['xp_reward'] . ' XP' : 'Mulai +' . $lesson['xp_reward'] . ' XP' }}
+                                                        <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid {{ $lesson['is_project'] ? '#7e22ce' : '#2563eb' }};"></div>
                                                     </div>
                                                 @endif
 
                                                 <!-- Circular Node Button -->
-                                                <div class="node-circle btn-3d {{ $lesson['is_completed'] ? 'btn-green' : ($lesson['is_current'] ? 'btn-blue pulse-active-node' : 'btn-blue') }}">
+                                                @php
+                                                    $btnClass = 'btn-blue';
+                                                    if ($lesson['is_completed']) {
+                                                        $btnClass = 'btn-green';
+                                                    } elseif ($lesson['is_project']) {
+                                                        $btnClass = 'btn-purple';
+                                                    } elseif ($lesson['is_current']) {
+                                                        $btnClass = 'btn-blue pulse-active-node';
+                                                    }
+                                                @endphp
+                                                <div class="node-circle btn-3d {{ $btnClass }}" style="{{ $lesson['is_project'] ? 'border-color: #d8b4fe; box-shadow: 0 6px 0 #581c87;' : '' }}">
                                                     @if ($lesson['is_completed'])
                                                         <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                                    @elseif ($lesson['is_project'])
+                                                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                                     @elseif ($lesson['is_current'])
                                                         <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                                     @else
@@ -216,13 +228,20 @@
                                             </a>
                                         @else
                                             <!-- Locked Node Button -->
-                                            <div class="node-circle btn-gray" style="cursor: not-allowed;">
-                                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                            <div class="node-circle btn-gray" style="cursor: not-allowed; {{ $lesson['is_project'] ? 'border: 2px dashed #94a3b8;' : '' }}">
+                                                @if ($lesson['is_project'])
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                                @else
+                                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                                @endif
                                             </div>
                                         @endif
                                     </div>
 
-                                    <div style="font-size: 13px; font-weight: 800; color: {{ $lesson['is_unlocked'] ? '#0f172a' : '#94a3b8' }}; margin-top: 10px; text-align: center; max-width: 160px; line-height: 1.3;">
+                                    <div style="font-size: 13px; font-weight: 800; color: {{ $lesson['is_unlocked'] ? ($lesson['is_project'] ? '#7e22ce' : '#0f172a') : '#94a3b8' }}; margin-top: 10px; text-align: center; max-width: 160px; line-height: 1.3;">
+                                        @if ($lesson['is_project'])
+                                            <div style="font-size: 10px; font-weight: 900; color: #7e22ce; text-transform: uppercase; margin-bottom: 2px;">PROYEK AKHIR</div>
+                                        @endif
                                         {{ $lesson['title'] }}
                                     </div>
                                 </div>

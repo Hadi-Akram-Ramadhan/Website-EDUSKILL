@@ -95,25 +95,32 @@ class MentorLessonController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
+            'is_project' => 'nullable|boolean',
+            'project_brief' => 'nullable|string',
             'theory_content' => 'nullable|string',
             'xp_reward' => 'nullable|integer|min:5|max:100',
         ]);
 
         $maxOrder = $unit->lessons()->max('order_index') ?? 0;
         $slug = Str::slug($validated['title']).'-'.Str::random(4);
+        $isProject = $request->boolean('is_project');
 
         Lesson::create([
             'unit_id' => $unit->id,
             'title' => $validated['title'],
             'slug' => $slug,
             'description' => $validated['description'] ?? '',
-            'type' => 'quiz',
+            'type' => $isProject ? 'project' : 'quiz',
+            'is_project' => $isProject,
+            'project_brief' => $validated['project_brief'] ?? null,
             'theory_content' => $validated['theory_content'] ?? '',
-            'xp_reward' => $validated['xp_reward'] ?? 20,
+            'xp_reward' => $validated['xp_reward'] ?? ($isProject ? 50 : 20),
             'order_index' => $maxOrder + 1,
         ]);
 
-        return back()->with('success', "Modul pelajaran '{$validated['title']}' berhasil ditambahkan.");
+        $msgType = $isProject ? 'Mini Project / Proyek Akhir' : 'Modul pelajaran';
+
+        return back()->with('success', "{$msgType} '{$validated['title']}' berhasil ditambahkan.");
     }
 
     /**
@@ -234,18 +241,29 @@ class MentorLessonController extends Controller
     /**
      * Download sample Excel/CSV template for bulk question import.
      */
-    public function downloadTemplate(): Response
+    public function downloadTemplate(Request $request): Response
     {
-        $csvContent = $this->importService->generateTemplateCsv();
+        $format = strtolower((string) $request->query('format', 'xlsx'));
 
-        return response($csvContent, 200, [
-            'Content-Type' => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="template_soal_eduskill.csv"',
+        if ($format === 'csv') {
+            $csvContent = $this->importService->generateTemplateCsv();
+
+            return response($csvContent, 200, [
+                'Content-Type' => 'text/csv; charset=UTF-8',
+                'Content-Disposition' => 'attachment; filename="template_soal_eduskill.csv"',
+            ]);
+        }
+
+        $xlsxContent = $this->importService->generateTemplateXlsx();
+
+        return response($xlsxContent, 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="template_soal_eduskill.xlsx"',
         ]);
     }
 
     /**
-     * Import exercises from uploaded CSV file.
+     * Import exercises from uploaded XLSX, XLS, or CSV file.
      */
     public function importExercises(Request $request, Lesson $lesson): RedirectResponse
     {
@@ -258,7 +276,7 @@ class MentorLessonController extends Controller
             'file' => 'required|file|mimes:csv,txt,xlsx,xls|max:5120',
         ]);
 
-        $result = $this->importService->importFromCsv($request->file('file'), $lesson);
+        $result = $this->importService->importFromFile($request->file('file'), $lesson);
 
         if ($result['success'] > 0) {
             $msg = "Berhasil mengimpor {$result['success']} soal latihan ke modul '{$lesson->title}'.";
