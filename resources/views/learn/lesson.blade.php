@@ -1,5 +1,5 @@
 @php
-    $title = 'Kuis: ' . $lesson->title . ' - Kodein';
+    $title = 'Kuis: ' . $lesson->title . ' - EduSkill';
 @endphp
 
 <x-lesson-layout :title="$title">
@@ -7,7 +7,7 @@
         
         <!-- Header Progress & Lives Bar -->
         <header class="lesson-header">
-            <a href="{{ route('learn.index') }}" class="btn-close" title="Keluar">
+            <a href="{{ route('learn.index', ['course' => $lesson->unit->course_id]) }}" class="btn-close" title="Keluar">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </a>
 
@@ -23,6 +23,21 @@
 
         <!-- Main Question Slide Arena -->
         <main class="quiz-arena">
+            @if ($lesson->is_project || $lesson->type === 'project')
+                <div style="background: linear-gradient(135deg, #faf5ff, #f3e8ff); border: 2px solid #d8b4fe; border-radius: 18px; padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 0 #d8b4fe; width: 100%;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; border-radius: 10px; background: #7e22ce; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 11px; font-weight: 900; color: #7e22ce; text-transform: uppercase;">TANTANGAN PROYEK AKHIR MODUL</div>
+                        <div style="font-size: 14px; font-weight: 900; color: #0f172a;">{{ $lesson->title }}</div>
+                        @if ($lesson->project_brief)
+                            <div style="font-size: 12px; color: #475569; margin-top: 2px;">{{ $lesson->project_brief }}</div>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
             <div id="question-card" style="width: 100%;">
                 <!-- Dynamic Question Content Injected via JS -->
             </div>
@@ -45,7 +60,7 @@
 
     <!-- Victory Screen Modal (Hidden by Default) -->
     <div id="victory-modal" style="display: none; position: fixed; inset: 0; background: #ffffff; z-index: 100; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center;">
-        <div style="width: 90px; height: 90px; background: #eff6ff; border-radius: 28px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); margin-bottom: 24px; box-shadow: 0 4px 0 #bfdbfe;" class="animate-float">
+        <div style="width: 90px; height: 90px; min-width: 90px; min-height: 90px; flex-shrink: 0; background: #eff6ff; border-radius: 28px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); margin-bottom: 24px; box-shadow: 0 4px 0 #bfdbfe;" class="animate-float">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
         </div>
         <h1 style="font-size: 32px; font-weight: 900; color: #0f172a; margin-bottom: 8px;">Pelajaran Selesai!</h1>
@@ -62,7 +77,7 @@
             </div>
         </div>
 
-        <a href="{{ route('learn.index') }}" class="btn-3d btn-blue" style="font-size: 16px; padding: 16px 48px;">
+        <a href="{{ route('learn.index', ['course' => $lesson->unit->course_id]) }}" class="btn-3d btn-blue" style="font-size: 16px; padding: 16px 48px;">
             Lanjutkan ke Roadmap
         </a>
     </div>
@@ -404,7 +419,7 @@
                 if (window.SoundEngine && window.SoundEngine.playCorrect) window.SoundEngine.playCorrect();
                 drawer.className = 'action-drawer correct-state';
                 feedback.innerHTML = `
-                    <div style="width: 44px; height: 44px; border-radius: 14px; background: #10b981; color: #fff; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-shrink: 0; border-radius: 14px; background: #10b981; color: #fff; display: flex; align-items: center; justify-content: center;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                     </div>
                     <div>
@@ -421,7 +436,7 @@
 
                 drawer.className = 'action-drawer wrong-state';
                 feedback.innerHTML = `
-                    <div style="width: 44px; height: 44px; border-radius: 14px; background: #ef4444; color: #fff; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-shrink: 0; border-radius: 14px; background: #ef4444; color: #fff; display: flex; align-items: center; justify-content: center;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </div>
                     <div>

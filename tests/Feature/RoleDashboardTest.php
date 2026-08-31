@@ -83,4 +83,12 @@ class RoleDashboardTest extends TestCase
         $response = $this->actingAs($guru)->get('/admin/dashboard');
         $response->assertRedirect('/mentor/dashboard');
     }
+
+    public function test_super_admin_cannot_access_mentor_dashboard(): void
+    {
+        $admin = User::where('email', 'admin@kodein.id')->first();
+
+        $response = $this->actingAs($admin)->get('/mentor/dashboard');
+        $response->assertRedirect('/admin/dashboard');
+    }
 }

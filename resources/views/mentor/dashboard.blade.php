@@ -1,5 +1,5 @@
 @php
-    $title = 'Dashboard Mentor - Kodein';
+    $title = 'Dashboard Mentor - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">
@@ -41,7 +41,7 @@
             <div class="card-3d" style="padding: 22px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Kursus Binaan</span>
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; flex-shrink: 0; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
             <div class="card-3d" style="padding: 22px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Modul &amp; Pelajaran</span>
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; flex-shrink: 0; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
             <div class="card-3d" style="padding: 22px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Bank Soal Kuis</span>
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; flex-shrink: 0; border-radius: 10px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
             <div class="card-3d" style="padding: 22px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <span style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase;">Siswa Belajar</span>
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; flex-shrink: 0; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     </div>
                 </div>

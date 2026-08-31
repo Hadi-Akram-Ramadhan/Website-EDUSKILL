@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Masuk ke Kodein - Platform Belajar Coding</title>
+    <title>Masuk ke EduSkill - Platform Belajar Coding</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -66,6 +66,9 @@
             justify-content: center;
             width: 60px;
             height: 60px;
+            min-width: 60px;
+            min-height: 60px;
+            flex-shrink: 0;
             background: linear-gradient(135deg, #2563eb, #1d4ed8);
             border-radius: 18px;
             color: #fff;
@@ -163,7 +166,7 @@
             <div class="logo-badge">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
-            <h1 style="font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Masuk ke Kodein</h1>
+            <h1 style="font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Masuk ke EduSkill</h1>
             <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Lanjutkan petualangan coding dan jaga streak belajar kamu.</p>
         </div>
 
@@ -203,7 +206,7 @@
 
             @foreach ($demoUsers as $user)
                 <a href="{{ route('auth.quick-login', $user->id) }}" class="account-chip">
-                    <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 34px; height: 34px; border-radius: 50%; background: #e2e8f0;" alt="">
+                    <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 34px; height: 34px; min-width: 34px; min-height: 34px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: #e2e8f0;" alt="">
                     <div style="flex: 1; overflow: hidden;">
                         <div style="font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $user->name }}</div>
                         <div style="font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $user->email }}</div>

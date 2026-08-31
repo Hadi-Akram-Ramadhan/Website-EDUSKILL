@@ -13,7 +13,7 @@
                     Kembali ke Dashboard
                 </a>
                 <h1 style="font-size: 26px; font-weight: 900; color: #0f172a;">Master Kurikulum &amp; Kursus</h1>
-                <p style="color: #64748b; font-size: 14px;">Kelola semua topik kursus yang tersedia di platform Kodein.</p>
+                <p style="color: #64748b; font-size: 14px;">Kelola semua topik kursus yang tersedia di platform EduSkill.</p>
             </div>
 
             <a href="{{ route('admin.courses.create') }}" class="btn-3d btn-blue" style="font-size: 13px; padding: 12px 20px;">
@@ -38,9 +38,22 @@
                             <span style="font-size: 11px; font-weight: 800; color: var(--primary-blue); background: #eff6ff; padding: 3px 8px; border-radius: 6px;">
                                 {{ $c->category }}
                             </span>
-                            <span style="font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; background: {{ $c->is_published ? '#ecfdf5' : '#f1f5f9' }}; color: {{ $c->is_published ? '#059669' : '#64748b' }};">
-                                {{ $c->is_published ? 'PUBLISHED' : 'DRAFT' }}
-                            </span>
+                            @if (!$c->is_published)
+                                <span style="font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; display: inline-flex; align-items: center; gap: 4px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #94a3b8;"></span>
+                                    DRAFT (DIARSIPKAN)
+                                </span>
+                            @elseif ($c->is_upcoming)
+                                <span style="font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; background: #fffbeb; color: #b45309; border: 1px solid #fde68a; display: inline-flex; align-items: center; gap: 4px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #f59e0b;"></span>
+                                    ROADMAP MENDATANG
+                                </span>
+                            @else
+                                <span style="font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; display: inline-flex; align-items: center; gap: 4px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
+                                    AKTIF (SIAP BELAJAR)
+                                </span>
+                            @endif
                         </div>
                         <h2 style="font-size: 18px; font-weight: 900; color: #0f172a; margin-bottom: 4px;">{{ $c->title }}</h2>
                         <div style="font-size: 13px; color: #64748b;">
@@ -53,17 +66,13 @@
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <form action="{{ route('admin.courses.toggle-publish', $c->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-3d {{ $c->is_published ? 'btn-outline' : 'btn-green' }}" style="padding: 10px 14px; font-size: 12px;">
+                            <button type="submit" class="btn-3d {{ $c->is_published ? 'btn-outline' : 'btn-blue' }}" style="padding: 10px 14px; font-size: 12px;">
                                 {{ $c->is_published ? 'Arsipkan (Draft)' : 'Publikasikan' }}
                             </button>
                         </form>
 
-                        <a href="{{ route('mentor.courses.manage', $c->id) }}" class="btn-3d btn-blue" style="padding: 10px 14px; font-size: 12px;">
-                            Kelola Kurikulum
-                        </a>
-
-                        <a href="{{ route('admin.courses.edit', $c->id) }}" class="btn-3d btn-outline" style="padding: 10px 14px; font-size: 12px;">
-                            Edit
+                        <a href="{{ route('admin.courses.edit', $c->id) }}" class="btn-3d btn-blue" style="padding: 10px 14px; font-size: 12px;">
+                            Edit Info &amp; Mentor
                         </a>
 
                         <form action="{{ route('admin.courses.destroy', $c->id) }}" method="POST" onsubmit="return confirm('Hapus kursus ini beserta seluruh unit dan modulnya?')">

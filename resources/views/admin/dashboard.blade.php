@@ -1,5 +1,5 @@
 @php
-    $title = 'Dashboard Super Admin - Kodein';
+    $title = 'Dashboard Super Admin - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">
@@ -28,7 +28,7 @@
                     Panel Kontrol Utama
                 </div>
                 <h1 style="font-size: 26px; font-weight: 900; color: #0f172a;">Dashboard Super Admin</h1>
-                <p style="color: #64748b; font-size: 14px; margin-top: 2px;">Ringkasan metrik pengguna, kurikulum aktif, dan sertifikat yang diterbitkan di platform Kodein.</p>
+                <p style="color: #64748b; font-size: 14px; margin-top: 2px;">Ringkasan metrik pengguna, kurikulum aktif, dan sertifikat yang diterbitkan di platform EduSkill.</p>
             </div>
 
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -56,7 +56,7 @@
             <div class="card-3d" style="padding: 20px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Total Pengguna</span>
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; flex-shrink: 0; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
             <div class="card-3d" style="padding: 20px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Kursus &amp; Modul</span>
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; flex-shrink: 0; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
             <div class="card-3d" style="padding: 20px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Sertifikat Terbit</span>
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; flex-shrink: 0; border-radius: 10px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
             <div class="card-3d" style="padding: 20px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Akumulasi XP</span>
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; flex-shrink: 0; border-radius: 10px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                 <div style="display: flex; flex-direction: column; gap: 10px;">
                     @foreach ($recentUsers as $u)
                         <div style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0;">
-                            <img src="{{ $u->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $u->id }}" style="width: 34px; height: 34px; border-radius: 50%; background: #e2e8f0;" alt="">
+                            <img src="{{ $u->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $u->id }}" style="width: 34px; height: 34px; min-width: 34px; min-height: 34px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: #e2e8f0;" alt="">
                             <div style="flex: 1; overflow: hidden;">
                                 <div style="font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $u->name }}</div>
                                 <div style="font-size: 11px; color: #64748b;">{{ $u->email }}</div>

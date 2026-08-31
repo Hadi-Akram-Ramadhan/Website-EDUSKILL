@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun Baru - Kodein</title>
+    <title>Daftar Akun Baru - EduSkill</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -144,10 +144,10 @@
 <body>
     <div class="auth-card">
         <div style="text-align: center; margin-bottom: 24px;">
-            <div style="width: 52px; height: 52px; margin: 0 auto 12px auto; background: var(--primary-blue-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue);">
+            <div style="width: 52px; height: 52px; min-width: 52px; min-height: 52px; flex-shrink: 0; margin: 0 auto 12px auto; background: var(--primary-blue-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue);">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
             </div>
-            <h1 style="font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Buat Akun Kodein</h1>
+            <h1 style="font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Buat Akun EduSkill</h1>
             <p style="color: var(--text-muted); font-size: 14px;">Mulai belajar pemrograman dasar dengan metode interaktif.</p>
         </div>
 

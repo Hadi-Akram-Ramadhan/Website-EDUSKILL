@@ -14,6 +14,7 @@ use App\Models\UserStreak;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +23,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Truncate tables for clean, idempotent seeding
+        Schema::disableForeignKeyConstraints();
+        Certificate::truncate();
+        UserProgress::truncate();
+        UserStreak::truncate();
+        UserBadge::truncate();
+        Exercise::truncate();
+        Lesson::truncate();
+        Unit::truncate();
+        Course::truncate();
+        User::truncate();
+        Schema::enableForeignKeyConstraints();
+
         // 1. Users (Super Admin, Mentors/Teachers, Students)
         $admin = User::create([
             'name' => 'Super Admin',
@@ -275,6 +289,35 @@ class DatabaseSeeder extends Seeder
             'order_index' => 2,
         ]);
 
+        // Lesson 3: Mini Project Unit 1
+        $lessonProject1 = Lesson::create([
+            'unit_id' => $unit1->id,
+            'title' => 'Mini Project: Kartu Profil Siswa Digital',
+            'slug' => 'mini-project-kartu-profil-siswa',
+            'description' => 'Terapkan konsep variabel dan cetak untuk membuat program profil siswa lengkap.',
+            'type' => 'project',
+            'is_project' => true,
+            'project_brief' => 'Buatlah program Python yang menyimpan data nama, umur, dan hobi siswa ke dalam variabel yang tepat, lalu mencetaknya ke layar.',
+            'theory_content' => 'Dalam proyek ini kamu mengombinasikan konsep variabel string & integer serta menyusun perintah print() berurutan.',
+            'xp_reward' => 50,
+            'order_index' => 3,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonProject1->id,
+            'question_type' => 'code_ordering',
+            'prompt' => 'Mini Project Task: Susun baris kode program profil siswa berikut agar menghasilkan output kartu pelajar yang benar:',
+            'options_json' => [
+                ['id' => '1', 'text' => 'nama = "Ahmad"'],
+                ['id' => '2', 'text' => 'umur = 16'],
+                ['id' => '3', 'text' => 'print("Nama Siswa:", nama)'],
+                ['id' => '4', 'text' => 'print("Umur Siswa:", umur)'],
+            ],
+            'answer_json' => ['1', '2', '3', '4'],
+            'explanation' => 'Inisialisasi variabel nama dan umur di awal, kemudian cetak masing-masing variabel secara berurutan.',
+            'order_index' => 1,
+        ]);
+
         // Unit 2
         $unit2 = Unit::create([
             'course_id' => $course1->id,
@@ -301,6 +344,31 @@ class DatabaseSeeder extends Seeder
             'options_json' => ['True (Kondisi Terpenuhi)', 'False (Kondisi Gagal)', 'Error', 'None'],
             'answer_json' => 'True (Kondisi Terpenuhi)',
             'explanation' => 'Karena 85 lebih besar dari atau sama dengan 75, maka kondisi bernilai True.',
+            'order_index' => 1,
+        ]);
+
+        // Lesson 4: Mini Project Unit 2
+        $lessonProject2 = Lesson::create([
+            'unit_id' => $unit2->id,
+            'title' => 'Mini Project: Sistem Cek Kelulusan Siswa',
+            'slug' => 'mini-project-sistem-cek-kelulusan',
+            'description' => 'Terapkan logika percabangan if-else untuk menentukan status kelulusan siswa secara otomatis.',
+            'type' => 'project',
+            'is_project' => true,
+            'project_brief' => 'Buatlah program penentu kelulusan: jika nilai ujian >= 75 cetak "LULUS", jika tidak cetak "REMIDIAL".',
+            'theory_content' => 'Proyek ini menguji pemahaman perbandingan angka dan percabangan if-else.',
+            'xp_reward' => 60,
+            'order_index' => 2,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonProject2->id,
+            'question_type' => 'fill_blank',
+            'prompt' => 'Mini Project Task: Lengkapi kata kunci percabangan berikut agar mencetak "LULUS" jika nilai siswa 80:',
+            'code_snippet' => "nilai = 80\n____ nilai >= 75:\n    print('LULUS')",
+            'options_json' => ['if', 'else', 'elif', 'while'],
+            'answer_json' => 'if',
+            'explanation' => 'Kata kunci "if" digunakan untuk memeriksa kondisi logika pada bahasa pemrograman Python.',
             'order_index' => 1,
         ]);
 
@@ -369,6 +437,34 @@ class DatabaseSeeder extends Seeder
             'order_index' => 1,
         ]);
 
+        // Lesson 3: Mini Project Web Unit 1
+        $lessonWebProject1 = Lesson::create([
+            'unit_id' => $unitWeb1->id,
+            'title' => 'Mini Project: Halaman Profil Biodata HTML',
+            'slug' => 'mini-project-biodata-html',
+            'description' => 'Susun halaman web biodata lengkap dengan judul, paragraf deskripsi, dan tautan media.',
+            'type' => 'project',
+            'is_project' => true,
+            'project_brief' => 'Buat struktur dokumen HTML lengkap: gunakan <h1> untuk nama, <p> untuk hobi & cita-cita, serta <a> untuk tautan profil.',
+            'theory_content' => 'Proyek ini menggabungkan tag teks h1, p, dan tag tautan <a> menjadi sebuah halaman web pribadi.',
+            'xp_reward' => 50,
+            'order_index' => 3,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonWebProject1->id,
+            'question_type' => 'code_ordering',
+            'prompt' => 'Mini Project Task: Susun baris kode HTML berikut dengan urutan dokumen yang benar:',
+            'options_json' => [
+                ['id' => '1', 'text' => '<h1>Profil Siswa</h1>'],
+                ['id' => '2', 'text' => '<p>Saya siswa yang suka coding web.</p>'],
+                ['id' => '3', 'text' => '<a href="https://eduskill.id">Kunjungi EduSkill</a>'],
+            ],
+            'answer_json' => ['1', '2', '3'],
+            'explanation' => 'Urutan dokumen dimulai dari judul utama (h1), isi paragraf (p), kemudian tautan penutup (a).',
+            'order_index' => 1,
+        ]);
+
         // Course 2 - Unit 2
         $unitWeb2 = Unit::create([
             'course_id' => $course2->id,
@@ -395,6 +491,42 @@ class DatabaseSeeder extends Seeder
             'options_json' => ['color: blue;', 'text-color: blue;', 'font-color: blue;', 'background: blue;'],
             'answer_json' => 'color: blue;',
             'explanation' => 'Properti CSS yang tepat untuk memberi warna font teks adalah "color".',
+            'order_index' => 1,
+        ]);
+
+        // Lesson 4: Mini Project Web Unit 2
+        $lessonWebProject2 = Lesson::create([
+            'unit_id' => $unitWeb2->id,
+            'title' => 'Mini Project: Desain Komponen Kartu Siswa CSS',
+            'slug' => 'mini-project-kartu-siswa-css',
+            'description' => 'Mendesain kartu profil interaktif dengan warna cerah dan tata letak yang menarik.',
+            'type' => 'project',
+            'is_project' => true,
+            'project_brief' => 'Berikan styling CSS pada kartu profil: cocokkan pasangan properti CSS dengan fungsinya.',
+            'theory_content' => 'Proyek ini menguji pemahaman properti dasar styling CSS pada elemen website.',
+            'xp_reward' => 60,
+            'order_index' => 2,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonWebProject2->id,
+            'question_type' => 'matching_pair',
+            'prompt' => 'Mini Project Task: Cocokkan properti CSS di sebelah kiri dengan fungsinya yang tepat:',
+            'options_json' => [
+                'pairs' => [
+                    'color' => 'Mengatur warna teks',
+                    'background-color' => 'Mengatur warna latar',
+                    'font-size' => 'Mengatur ukuran huruf',
+                    'border-radius' => 'Membuat sudut melengkung',
+                ],
+            ],
+            'answer_json' => [
+                'color' => 'Mengatur warna teks',
+                'background-color' => 'Mengatur warna latar',
+                'font-size' => 'Mengatur ukuran huruf',
+                'border-radius' => 'Membuat sudut melengkung',
+            ],
+            'explanation' => 'Setiap properti CSS memiliki fungsi spesifik dalam mengatur tampilan visual halaman web.',
             'order_index' => 1,
         ]);
 
@@ -466,6 +598,34 @@ class DatabaseSeeder extends Seeder
             'order_index' => 1,
         ]);
 
+        // Lesson 3: Mini Project Algo Unit 1
+        $lessonAlgoProject1 = Lesson::create([
+            'unit_id' => $unitAlgo1->id,
+            'title' => 'Mini Project: Rancang Algoritma Kasir Toko Buku',
+            'slug' => 'mini-project-algoritma-kasir',
+            'description' => 'Menyusun alur komputasi sekuensial perhitungan total harga belanjaan buku dan diskon.',
+            'type' => 'project',
+            'is_project' => true,
+            'project_brief' => 'Rancang urutan langkah logis transaksi: terima input jumlah buku, hitung total harga, lalu cetak struk.',
+            'theory_content' => 'Proyek ini mengasah kemampuan berpikir komputasional dengan dekomposisi masalah transaksi belanja.',
+            'xp_reward' => 50,
+            'order_index' => 3,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonAlgoProject1->id,
+            'question_type' => 'code_ordering',
+            'prompt' => 'Mini Project Task: Susun urutan langkah algoritma kasir toko buku berikut secara runtut:',
+            'options_json' => [
+                ['id' => '1', 'text' => 'Input: Masukkan jumlah buku yang dibeli'],
+                ['id' => '2', 'text' => 'Proses: Hitung total = jumlah * harga_satuan'],
+                ['id' => '3', 'text' => 'Output: Cetak struk dan total tagihan belanja'],
+            ],
+            'answer_json' => ['1', '2', '3'],
+            'explanation' => 'Siklus algoritma komputasi selalu diawali oleh Input, dilanjutkan Proses perhitungan, dan diakhiri Output.',
+            'order_index' => 1,
+        ]);
+
         // Course 3 - Unit 2
         $unitAlgo2 = Unit::create([
             'course_id' => $course3->id,
@@ -495,8 +655,76 @@ class DatabaseSeeder extends Seeder
             'order_index' => 1,
         ]);
 
+        // Lesson 4: Mini Project Algo Unit 2
+        $lessonAlgoProject2 = Lesson::create([
+            'unit_id' => $unitAlgo2->id,
+            'title' => 'Mini Project: Sistem Pengecekan Tiket Wahana Bermain',
+            'slug' => 'mini-project-sistem-tiket-wahana',
+            'description' => 'Menerapkan percabangan kondisi logika untuk menyaring pengunjung berdasarkan syarat wahana.',
+            'type' => 'project',
+            'is_project' => true,
+            'project_brief' => 'Pahami alur logika: jika tinggi badan >= 140 dan usia >= 12 maka diizinkan naik wahana.',
+            'theory_content' => 'Proyek ini menguji pemahaman operator logika Boolean ganda dalam pengambilan keputusan.',
+            'xp_reward' => 60,
+            'order_index' => 2,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lessonAlgoProject2->id,
+            'question_type' => 'output_prediction',
+            'prompt' => 'Mini Project Task: Apa output yang dihasilkan jika tinggi_badan = 145 dan usia = 10 ?',
+            'code_snippet' => "tinggi = 145\nusia = 10\nif tinggi >= 140 and usia >= 12:\n    print('BOLEH NAIK')\nelse:\n    print('DILARANG NAIK')",
+            'options_json' => ['BOLEH NAIK', 'DILARANG NAIK', 'Error', 'None'],
+            'answer_json' => 'DILARANG NAIK',
+            'explanation' => 'Operator "and" mengharuskan kedua syarat terpenuhi. Karena usia 10 < 12, maka kondisi bernilai False dan blok else yang dieksekusi.',
+            'order_index' => 1,
+        ]);
+
+        // Upcoming Courses Roadmap (Can be edited/managed by Admin & Mentors)
+        $upcomingCourse1 = Course::create([
+            'mentor_id' => $guru2->id,
+            'title' => 'JavaScript Interaktif & Web App',
+            'slug' => 'javascript-interaktif',
+            'description' => 'Jadikan website hidup dengan tombol interaktif, animasi dinamis, dan manipulasi elemen web secara real-time.',
+            'category' => 'JavaScript',
+            'target_audience' => 'Siswa SMP & SMA',
+            'thumbnail' => 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=600&auto=format&fit=crop&q=80',
+            'level' => 'intermediate',
+            'total_xp' => 200,
+            'is_published' => true,
+            'is_upcoming' => true,
+        ]);
+
+        $upcomingCourse2 = Course::create([
+            'mentor_id' => $guru1->id,
+            'title' => 'C++ & Olimpiade Komputer (OSN)',
+            'slug' => 'cpp-olimpiade-komputer',
+            'description' => 'Asah kemampuan logika pemecahan masalah tingkat kompetisi sains dan olimpiade informatika nasional.',
+            'category' => 'C++',
+            'target_audience' => 'Siswa SMA',
+            'thumbnail' => 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600&auto=format&fit=crop&q=80',
+            'level' => 'advanced',
+            'total_xp' => 300,
+            'is_published' => true,
+            'is_upcoming' => true,
+        ]);
+
+        $upcomingCourse3 = Course::create([
+            'mentor_id' => $guru2->id,
+            'title' => 'SQL & Manajemen Basis Data',
+            'slug' => 'sql-basis-data',
+            'description' => 'Pahami cara menyimpan, mencari, dan mengolah data dalam jumlah besar dengan query basis data relasional.',
+            'category' => 'Database',
+            'target_audience' => 'Siswa SMP & SMA',
+            'thumbnail' => 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&auto=format&fit=crop&q=80',
+            'level' => 'intermediate',
+            'total_xp' => 180,
+            'is_published' => true,
+            'is_upcoming' => true,
+        ]);
+
         // 5. Seed progress for Siti (Course 1 Completed -> Certificate Issued)
-        foreach ([$lesson1, $lesson2, $lesson3] as $l) {
+        foreach ([$lesson1, $lesson2, $lessonProject1, $lesson3, $lessonProject2] as $l) {
             UserProgress::create([
                 'user_id' => $siswa2->id,
                 'lesson_id' => $l->id,

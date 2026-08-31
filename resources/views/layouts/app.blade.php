@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>{{ $title ?? 'Kodein - Platform Belajar Coding untuk Siswa' }}</title>
+    <title>{{ $title ?? 'EduSkill - Platform Belajar Coding untuk Siswa' }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
@@ -115,6 +115,15 @@
             box-shadow: 0 0 0 var(--accent-red-shadow);
         }
 
+        .btn-purple {
+            background: #8b5cf6;
+            color: #ffffff;
+            box-shadow: 0 4px 0 #6d28d9;
+        }
+        .btn-purple:active {
+            box-shadow: 0 0 0 #6d28d9;
+        }
+
         .btn-gray {
             background: #e2e8f0;
             color: #64748b;
@@ -161,6 +170,16 @@
 
         .pulse-active-node {
             animation: pulse-ring 2s infinite cubic-bezier(0.45, 0, 0.55, 1);
+        }
+
+        @keyframes pulse-project {
+            0% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.6); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 16px rgba(147, 51, 234, 0); }
+            100% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
+        }
+
+        .pulse-active-project {
+            animation: pulse-project 2s infinite cubic-bezier(0.45, 0, 0.55, 1);
         }
 
         /* Desktop & Tablet Sidebar */
@@ -325,6 +344,25 @@
                 height: 22px;
             }
 
+            /* Mobile Top Navigation Bar */
+            .mobile-top-header {
+                display: flex !important;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-bottom: 2px solid var(--border-color);
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 40;
+                margin-bottom: 16px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            }
+
             .sidebar .nav-text {
                 display: none;
             }
@@ -333,16 +371,50 @@
 </head>
 <body>
 
+    <!-- Mobile Sticky Top Header (Visible only on mobile/tablet) -->
+    <header class="mobile-top-header" style="display: none;">
+        <a href="{{ route('learn.index') }}" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+            <div style="width: 32px; height: 32px; min-width: 32px; min-height: 32px; flex-shrink: 0; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #fff;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <span style="font-size: 17px; font-weight: 900; color: var(--primary-blue); letter-spacing: -0.5px;">EDUSKILL</span>
+        </a>
+
+        @auth
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <img src="{{ auth()->user()->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . auth()->user()->id }}" style="width: 28px; height: 28px; min-width: 28px; min-height: 28px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: #eff6ff; border: 1.5px solid #bfdbfe;" alt="">
+                    <span style="font-size: 11px; font-weight: 800; color: #0f172a; max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ auth()->user()->name }}</span>
+                </div>
+                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="btn-3d btn-outline" style="padding: 6px 10px; font-size: 11px; border-radius: 8px;" title="Keluar / Ganti Akun">
+                        Keluar
+                    </button>
+                </form>
+            </div>
+        @else
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <a href="{{ route('login') }}" class="btn-3d btn-outline" style="padding: 6px 12px; font-size: 11px; border-radius: 8px;">
+                    Masuk
+                </a>
+                <a href="{{ route('register') }}" class="btn-3d btn-blue" style="padding: 6px 12px; font-size: 11px; border-radius: 8px;">
+                    Daftar
+                </a>
+            </div>
+        @endauth
+    </header>
+
     @auth
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div class="sidebar-top" style="margin-bottom: 32px; padding: 0 8px;">
             <a href="{{ route('learn.index') }}" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-                <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 0 #1e40af;">
+                <div style="width: 42px; height: 42px; min-width: 42px; min-height: 42px; flex-shrink: 0; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 0 #1e40af;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 </div>
                 <div class="logo-text">
-                    <span style="font-size: 22px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">KODEIN</span>
+                    <span style="font-size: 22px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">EDUSKILL</span>
                     <span style="font-size: 10px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">LEARNING PLATFORM</span>
                 </div>
             </a>
@@ -417,7 +489,7 @@
 
         <div class="sidebar-bottom" style="border-top: 2px solid var(--border-color); padding-top: 16px;">
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 0 8px;">
-                <img src="{{ auth()->user()->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . auth()->user()->id }}" style="width: 38px; height: 38px; border-radius: 50%; background: #eff6ff; border: 2px solid #bfdbfe;" alt="Avatar">
+                <img src="{{ auth()->user()->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . auth()->user()->id }}" style="width: 38px; height: 38px; min-width: 38px; min-height: 38px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: #eff6ff; border: 2px solid #bfdbfe;" alt="Avatar">
                 <div style="overflow: hidden;">
                     <div style="font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main);">{{ auth()->user()->name }}</div>
                     <div style="font-size: 11px; color: var(--primary-blue); font-weight: 700; text-transform: uppercase;">{{ auth()->user()->role }}</div>

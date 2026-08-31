@@ -120,4 +120,26 @@ class MultiCourseLearnTest extends TestCase
             'course_id' => $this->course1->id,
         ]);
     }
+
+    public function test_active_course_is_persisted_after_quiz_and_lesson_completion(): void
+    {
+        // 1. Student opens Course 2 lesson
+        $response = $this->actingAs($this->student)->get(route('learn.lesson', $this->lessonC2->id));
+        $response->assertStatus(200);
+        $response->assertSessionHas('active_learn_course_id', $this->course2->id);
+
+        // 2. Student completes lesson and submits
+        $submitResponse = $this->actingAs($this->student)->postJson(route('learn.submit', $this->lessonC2->id), [
+            'answers' => [],
+        ]);
+        $submitResponse->assertStatus(200);
+        $this->assertEquals($this->course2->id, session('active_learn_course_id'));
+
+        // 3. Student navigates back to /learn without explicit query param
+        $roadmapResponse = $this->actingAs($this->student)->get(route('learn.index'));
+        $roadmapResponse->assertStatus(200);
+        // It must display Course 2 (Web HTML Basics) instead of jumping back to Course 1 (Python Basics)
+        $roadmapResponse->assertSee('Web HTML Basics');
+        $roadmapResponse->assertSee('Lesson Web 1');
+    }
 }

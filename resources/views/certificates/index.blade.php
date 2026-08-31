@@ -1,5 +1,5 @@
 @php
-    $title = 'Sertifikat Resmi - Kodein';
+    $title = 'Sertifikat Resmi - EduSkill';
 @endphp
 
 <x-app-layout :title="$title">
@@ -20,10 +20,10 @@
         
         <!-- Header Banner (Blue Theme) -->
         <div style="text-align: center; margin-bottom: 36px;">
-            <div style="width: 64px; height: 64px; margin: 0 auto 16px auto; background: var(--primary-blue-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); box-shadow: 0 4px 0 #bfdbfe;">
+            <div style="width: 64px; height: 64px; min-width: 64px; min-height: 64px; flex-shrink: 0; margin: 0 auto 16px auto; background: var(--primary-blue-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); box-shadow: 0 4px 0 #bfdbfe;">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
             </div>
-            <h1 style="font-size: 28px; font-weight: 900; color: #0f172a; letter-spacing: -0.5px;">Sertifikasi Resmi Kodein</h1>
+            <h1 style="font-size: 28px; font-weight: 900; color: #0f172a; letter-spacing: -0.5px;">Sertifikasi Resmi EduSkill</h1>
             <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Selesaikan seluruh modul pada kursus untuk mendapatkan sertifikat digital terverifikasi.</p>
         </div>
 
@@ -51,7 +51,7 @@
                                 {{ $card['course']->category }}
                             </span>
                             <span style="font-size: 12px; color: #64748b; font-weight: 700;">
-                                Mentor: {{ $card['course']->mentor->name ?? 'Tim Kodein' }}
+                                Mentor: {{ $card['course']->mentor->name ?? 'Tim EduSkill' }}
                             </span>
                         </div>
 
@@ -76,11 +76,11 @@
                         @if ($card['certificate'])
                             <div style="text-align: right;">
                                 <a href="{{ route('certificate.verify', $card['certificate']->cert_code) }}" target="_blank" class="btn-3d btn-green" style="font-size: 13px; padding: 12px 20px;">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"></path><path d="M12 2v20"></path></svg>
-                                    Lihat Sertifikat ({{ $card['certificate']->cert_code }})
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                    Lihat & Unduh PDF ({{ $card['certificate']->cert_code }})
                                 </a>
-                                <div style="font-size: 11px; color: #059669; font-weight: 700; margin-top: 6px;">
-                                    Terbit: {{ Carbon\Carbon::parse($card['certificate']->issue_date)->format('d M Y') }}
+                                <div style="font-size: 11px; color: #059669; font-weight: 800; margin-top: 6px;">
+                                    Skor: {{ number_format($card['certificate']->score_average, 1) }}/100 (Grade {{ $card['certificate']->grade_info['grade'] }}) &bull; {{ Carbon\Carbon::parse($card['certificate']->issue_date)->format('d M Y') }}
                                 </div>
                             </div>
                         @elseif ($card['is_completed'])

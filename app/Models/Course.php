@@ -23,12 +23,14 @@ class Course extends Model
         'level',
         'total_xp',
         'is_published',
+        'is_upcoming',
     ];
 
     protected function casts(): array
     {
         return [
             'is_published' => 'boolean',
+            'is_upcoming' => 'boolean',
             'total_xp' => 'integer',
         ];
     }
