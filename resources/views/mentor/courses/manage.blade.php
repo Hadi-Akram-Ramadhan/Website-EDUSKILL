@@ -447,9 +447,41 @@
                 <button type="button" onclick="closeImportModal()" style="background: none; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; padding: 4px 8px;">✕</button>
             </div>
 
-            <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 18px;">
-                Unggah file spreadsheet (.csv) berisi soal latihan. Sistem otomatis mendukung 5 jenis soal (Pilihan Ganda, Isian, Tebak Output, Susun Baris Kode/Parsons, dan Pasangan).
+            <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 14px;">
+                Unggah file spreadsheet (.xlsx / .csv) berisi soal latihan. Sistem otomatis mendukung 5 jenis soal (Pilihan Ganda, Isian, Tebak Output, Susun Baris Kode/Parsons, dan Pasangan).
             </p>
+
+            <!-- Interactive Guide Accordion Inside Modal -->
+            <details style="margin-bottom: 16px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; padding: 12px 16px;">
+                <summary style="font-size: 13px; font-weight: 800; color: var(--primary-blue); cursor: pointer; display: flex; align-items: center; gap: 8px; user-select: none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    Lihat Panduan Singkat Format Kolom & 5 Jenis Soal
+                </summary>
+                <div style="margin-top: 12px; font-size: 12px; color: #334155; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <strong style="color: #0f172a;">1. Pilihan Ganda (multiple_choice):</strong><br>
+                        <code>options:</code> Pilihan dipisah tanda pipa (contoh: <code>A|B|C|D</code>)<br>
+                        <code>answer:</code> Tulis salah satu pilihan yang tepat persis.
+                    </div>
+                    <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <strong style="color: #0f172a;">2. Isian Singkat (fill_blank):</strong><br>
+                        <code>code_snippet:</code> Beri tanda rumpang <code>____</code> (4 garis bawah)<br>
+                        <code>options:</code> Kata pengisi dipisah <code>|</code> &bull; <code>answer:</code> Kata jawaban yang tepat.
+                    </div>
+                    <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <strong style="color: #0f172a;">3. Tebak Output (output_prediction):</strong><br>
+                        <code>code_snippet:</code> Kode program &bull; <code>options:</code> Opsi tebakan dipisah <code>|</code> &bull; <code>answer:</code> Hasil output program.
+                    </div>
+                    <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <strong style="color: #0f172a;">4. Susun Kode / Parsons (code_ordering):</strong><br>
+                        <code>options:</code> Baris kode acak dipisah <code>|</code> &bull; <code>answer:</code> Urutan nomor index yang benar (contoh: <code>1|2|3</code>).
+                    </div>
+                    <div style="background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <strong style="color: #0f172a;">5. Pasangan Kiri-Kanan (matching_pair):</strong><br>
+                        <code>options:</code> dan <code>answer:</code> Format pasangan <code>Kiri => Kanan</code> dipisah <code>|</code> (contoh: <code>int => Angka|str => Teks</code>).
+                    </div>
+                </div>
+            </details>
 
             <form id="import-form" action="" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 16px;">
                 @csrf
@@ -464,7 +496,7 @@
 
                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center; flex-wrap: wrap; margin-top: 6px;">
                     <button type="button" onclick="downloadXlsxTemplate(event)" class="btn-3d btn-green" style="padding: 10px 14px; font-size: 12px; cursor: pointer;">
-                        Format Excel (.xlsx)
+                        Format Excel (.xlsx) + Panduan
                     </button>
                     <button type="button" onclick="downloadCsvTemplate(event)" class="btn-3d btn-outline" style="padding: 10px 14px; font-size: 12px; cursor: pointer; background: #ffffff;">
                         Format CSV
@@ -517,12 +549,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
-        // Instant Client-Side XLSX Excel Download (Zero Server Redirect / 100% Reliable)
+        // Instant Client-Side XLSX Excel Download with Guide Sheet
         function downloadXlsxTemplate(e) {
             if (e) e.preventDefault();
             try {
                 if (typeof XLSX !== 'undefined') {
                     const wb = XLSX.utils.book_new();
+                    
+                    // 1. Sheet: Template Soal
                     const ws_data = [
                         ["question_type", "prompt", "code_snippet", "options", "answer", "explanation"],
                         [
@@ -567,18 +601,44 @@
                         ]
                     ];
                     const ws = XLSX.utils.aoa_to_sheet(ws_data);
-                    
-                    // Column widths
                     ws['!cols'] = [
-                        { wch: 18 }, // question_type
-                        { wch: 45 }, // prompt
-                        { wch: 25 }, // code_snippet
-                        { wch: 45 }, // options
-                        { wch: 25 }, // answer
-                        { wch: 45 }  // explanation
+                        { wch: 18 }, { wch: 45 }, { wch: 25 }, { wch: 45 }, { wch: 25 }, { wch: 45 }
                     ];
+                    XLSX.utils.book_append_sheet(wb, ws, "Template Soal");
 
-                    XLSX.utils.book_append_sheet(wb, ws, "Template Soal EduSkill");
+                    // 2. Sheet: Panduan & Format Soal
+                    const guide_data = [
+                        ["PANDUAN LENGKAP PENGISIAN TEMPLATE SOAL EXCEL EDUSKILL"],
+                        ["Gunakan petunjuk di bawah ini untuk mengisi soal pada sheet 'Template Soal'."],
+                        [""],
+                        ["1. PENJELASAN KOLOM HEADER"],
+                        ["Nama Kolom", "Status", "Fungsi & Penjelasan", "Contoh Format / Isian"],
+                        ["question_type", "WAJIB", "Tipe/jenis soal interaktif yang akan dibuat.", "multiple_choice / fill_blank / output_prediction / code_ordering / matching_pair"],
+                        ["prompt", "WAJIB", "Pertanyaan, narasi, atau instruksi soal untuk siswa.", "Tipe data manakah yang digunakan untuk nilai True/False?"],
+                        ["code_snippet", "OPSIONAL", "Potongan baris kode yang ditampilkan di kotak kode sebelum opsi.", "nama = 'Andi'\\nprint('Halo ' + nama)"],
+                        ["options", "WAJIB", "Pilihan jawaban / potongan kode / pasangan (dipisah tanda pipa | ).", "bool (Boolean)|int (Integer)|str (String)|float (Desimal)"],
+                        ["answer", "WAJIB", "Kunci jawaban yang benar sesuai tipe soal.", "bool (Boolean)"],
+                        ["explanation", "OPSIONAL", "Penjelasan / pembahasan yang muncul setelah siswa menjawab.", "Tipe data boolean hanya memiliki dua nilai: True atau False."],
+                        [""],
+                        ["2. ATURAN PENULISAN 5 TIPE SOAL"],
+                        ["Tipe Soal (question_type)", "Penjelasan", "Format Kolom options", "Format Kolom answer", "Contoh Kasus"],
+                        ["multiple_choice", "Pilihan Ganda standar (A, B, C, D)", "Pisahkan tiap pilihan dengan tanda | (pipa)", "Tulis salah satu pilihan yang sama persis", "options: bool|int|str|float  -->  answer: bool"],
+                        ["fill_blank", "Melengkapi bagian kode yang rumpang", "Pisahkan opsi kata pengisi dengan |", "Tulis kata pengisi yang tepat", "code_snippet: ____(\"Halo\")  -->  options: print|echo  -->  answer: print"],
+                        ["output_prediction", "Tebak output eksekusi program", "Pisahkan opsi tebakan dengan |", "Tulis output hasil yang tepat", "code_snippet: print(2 + 3 * 2)  -->  options: 8|10|7  -->  answer: 8"],
+                        ["code_ordering", "Susun baris kode berantakan (Parsons Problem)", "Tulis baris-baris kode acak dipisah |", "Tulis urutan index baris yang benar (1|2|3)", "options: print(x)|x = 10  -->  answer: 2|1"],
+                        ["matching_pair", "Mencocokkan pasangan item kiri dan kanan", "Tulis format: Kiri => Kanan dipisah |", "Tulis sama persis dengan kolom options", "options: int => Angka|str => Teks  -->  answer: int => Angka|str => Teks"],
+                        [""],
+                        ["3. TIPS PENTING"],
+                        ["* Jangan mengubah nama kolom pada baris 1 Sheet 'Template Soal'."],
+                        ["* Anda bisa menambahkan baris soal sebanyak yang dibutuhkan."],
+                        ["* Sistem mendukung import file dalam format .xlsx, .xls, maupun .csv."]
+                    ];
+                    const ws_guide = XLSX.utils.aoa_to_sheet(guide_data);
+                    ws_guide['!cols'] = [
+                        { wch: 25 }, { wch: 45 }, { wch: 45 }, { wch: 45 }, { wch: 45 }
+                    ];
+                    XLSX.utils.book_append_sheet(wb, ws_guide, "Panduan & Format Soal");
+
                     XLSX.writeFile(wb, "template_soal_eduskill.xlsx");
                     return;
                 }

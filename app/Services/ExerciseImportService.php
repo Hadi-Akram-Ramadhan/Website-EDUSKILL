@@ -65,19 +65,23 @@ class ExerciseImportService
     }
 
     /**
-     * Generate native Microsoft Excel (.xlsx) template with formatted header styling.
+     * Generate native Microsoft Excel (.xlsx) template with formatted header styling and dedicated Guide Sheet.
      */
     public function generateTemplateXlsx(): string
     {
         $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setTitle('Template Soal EduSkill');
+
+        // -------------------------------------------------------------
+        // SHEET 1: Template Soal (Ready to fill)
+        // -------------------------------------------------------------
+        $sheet1 = $spreadsheet->getActiveSheet();
+        $sheet1->setTitle('Template Soal');
 
         $headers = ['question_type', 'prompt', 'code_snippet', 'options', 'answer', 'explanation'];
-        $sheet->fromArray([$headers], null, 'A1');
+        $sheet1->fromArray([$headers], null, 'A1');
 
         $rows = $this->getSampleRows();
-        $sheet->fromArray($rows, null, 'A2');
+        $sheet1->fromArray($rows, null, 'A2');
 
         // Style header row (Royal Blue Background with White Bold Text)
         $headerStyle = [
@@ -95,13 +99,105 @@ class ExerciseImportService
                 'vertical' => Alignment::VERTICAL_CENTER,
             ],
         ];
-        $sheet->getStyle('A1:F1')->applyFromArray($headerStyle);
-        $sheet->getRowDimension(1)->setRowHeight(28);
+        $sheet1->getStyle('A1:F1')->applyFromArray($headerStyle);
+        $sheet1->getRowDimension(1)->setRowHeight(28);
 
-        // Auto-fit column widths
+        // Auto-fit column widths for Sheet 1
         foreach (range('A', 'F') as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
+            $sheet1->getColumnDimension($col)->setAutoSize(true);
         }
+
+        // -------------------------------------------------------------
+        // SHEET 2: Panduan & Format Soal (Petunjuk Lengkap & Contoh)
+        // -------------------------------------------------------------
+        $sheet2 = $spreadsheet->createSheet();
+        $sheet2->setTitle('Panduan & Format Soal');
+
+        $guideData = [
+            ['PANDUAN LENGKAP PENGISIAN TEMPLATE SOAL EXCEL EDUSKILL'],
+            ['Gunakan petunjuk di bawah ini untuk mengisi soal pada sheet "Template Soal" sesuai format yang didukung sistem.'],
+            [''],
+            ['1. PENJELASAN KOLOM HEADER'],
+            ['Nama Kolom', 'Status', 'Fungsi & Penjelasan', 'Contoh Format / Isian'],
+            ['question_type', 'WAJIB', 'Tipe/jenis soal interaktif yang akan dibuat.', 'multiple_choice / fill_blank / output_prediction / code_ordering / matching_pair'],
+            ['prompt', 'WAJIB', 'Pertanyaan, narasi, atau instruksi soal untuk siswa.', 'Tipe data manakah yang digunakan untuk nilai True/False?'],
+            ['code_snippet', 'OPSIONAL', 'Potongan baris kode yang ditampilkan di kotak kode sebelum opsi.', "nama = 'Andi'\nprint('Halo ' + nama)"],
+            ['options', 'WAJIB', 'Pilihan jawaban / potongan kode / pasangan (dipisah tanda pipa | ).', 'bool (Boolean)|int (Integer)|str (String)|float (Desimal)'],
+            ['answer', 'WAJIB', 'Kunci jawaban yang benar sesuai tipe soal.', 'bool (Boolean)'],
+            ['explanation', 'OPSIONAL', 'Penjelasan / pembahasan yang muncul setelah siswa menjawab.', 'Tipe data boolean hanya memiliki dua nilai: True atau False.'],
+            [''],
+            ['2. ATURAN PENULISAN 5 TIPE SOAL'],
+            ['Tipe Soal (question_type)', 'Penjelasan', 'Format Kolom options', 'Format Kolom answer', 'Contoh Kasus'],
+            [
+                'multiple_choice',
+                'Pilihan Ganda standar (A, B, C, D)',
+                'Pisahkan tiap pilihan dengan tanda | (pipa)',
+                'Tulis salah satu pilihan yang sama persis dengan kolom options',
+                'options: bool|int|str|float  -->  answer: bool',
+            ],
+            [
+                'fill_blank',
+                'Melengkapi bagian kode yang rumpang',
+                'Pisahkan opsi kata pengisi dengan |',
+                'Tulis kata pengisi yang tepat',
+                'code_snippet: ____("Halo Dunia")  -->  options: print|echo|write  -->  answer: print',
+            ],
+            [
+                'output_prediction',
+                'Tebak output eksekusi program',
+                'Pisahkan opsi tebakan dengan |',
+                'Tulis output hasil yang tepat',
+                "code_snippet: print(2 + 3 * 2)  -->  options: 8|10|7|12  -->  answer: 8",
+            ],
+            [
+                'code_ordering',
+                'Susun baris kode berantakan (Parsons Problem)',
+                'Tulis baris-baris kode yang diacak dipisah |',
+                'Tulis urutan index baris yang benar (1|2|3...)',
+                'options: print(x)|x = 10|print("Selesai")  -->  answer: 2|1|3',
+            ],
+            [
+                'matching_pair',
+                'Mencocokkan pasangan item kiri dan kanan',
+                'Tulis format: Kiri => Kanan dipisah |',
+                'Tulis sama persis dengan kolom options',
+                'options: int => Angka Bulat|str => Teks|bool => Logika  -->  answer: int => Angka Bulat|str => Teks|bool => Logika',
+            ],
+            [''],
+            ['3. TIPS PENTING'],
+            ['* Jangan mengubah nama kolom pada baris 1 Sheet "Template Soal".'],
+            ['* Anda bisa menambahkan baris soal sebanyak yang dibutuhkan.'],
+            ['* Sistem mendukung import file dalam format .xlsx, .xls, maupun .csv.'],
+            ['* Karakter enter (\n) di dalam code_snippet akan otomatis dipertahankan menjadi baris baru.'],
+        ];
+
+        $sheet2->fromArray($guideData, null, 'A1');
+
+        // Style Title
+        $sheet2->getStyle('A1')->getFont()->setBold(true)->setSize(14)->getColor()->setRGB('2563EB');
+        $sheet2->getStyle('A2')->getFont()->setItalic(true)->setSize(10)->getColor()->setRGB('64748B');
+
+        // Style Section Headings
+        $sheet2->getStyle('A4')->getFont()->setBold(true)->setSize(11)->getColor()->setRGB('0F172A');
+        $sheet2->getStyle('A13')->getFont()->setBold(true)->setSize(11)->getColor()->setRGB('0F172A');
+        $sheet2->getStyle('A21')->getFont()->setBold(true)->setSize(11)->getColor()->setRGB('0F172A');
+
+        // Style Table Headers
+        $guideHeaderStyle = [
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF'], 'size' => 10],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '1E40AF']],
+            'alignment' => ['vertical' => Alignment::VERTICAL_CENTER],
+        ];
+        $sheet2->getStyle('A5:D5')->applyFromArray($guideHeaderStyle);
+        $sheet2->getStyle('A14:E14')->applyFromArray($guideHeaderStyle);
+
+        // Auto-fit column widths for Sheet 2
+        foreach (range('A', 'E') as $col) {
+            $sheet2->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // Set active sheet back to Sheet 1 (Template Soal)
+        $spreadsheet->setActiveSheetIndex(0);
 
         $writer = new Xlsx($spreadsheet);
         ob_start();
