@@ -85,6 +85,10 @@ Route::middleware(['auth', 'role:guru'])->prefix('mentor')->name('mentor.')->gro
 
     Route::post('lessons/{lesson}/exercises', [MentorLessonController::class, 'storeExercise'])->name('exercises.store');
     Route::delete('exercises/{exercise}', [MentorLessonController::class, 'destroyExercise'])->name('exercises.destroy');
+
+    // Bulk Import Exercises & Template Download
+    Route::get('exercises/download-template', [MentorLessonController::class, 'downloadTemplate'])->name('exercises.template');
+    Route::post('lessons/{lesson}/import-exercises', [MentorLessonController::class, 'importExercises'])->name('exercises.import');
 });
 
 // Protected Student / Shared Web Portal

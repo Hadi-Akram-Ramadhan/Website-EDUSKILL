@@ -7,14 +7,23 @@ use App\Models\Course;
 use App\Models\Exercise;
 use App\Models\Lesson;
 use App\Models\Unit;
+use App\Services\ExerciseImportService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class MentorLessonController extends Controller
 {
+    protected ExerciseImportService $importService;
+
+    public function __construct(ExerciseImportService $importService)
+    {
+        $this->importService = $importService;
+    }
+
     /**
      * Curriculum Builder Arena for a course.
      */
@@ -139,21 +148,41 @@ class MentorLessonController extends Controller
             'code_snippet' => 'nullable|string',
             'explanation' => 'nullable|string',
             'options_raw' => 'nullable|string',
-            'answer_raw' => 'required|string',
+            'answer_raw' => 'nullable|string',
+            'options' => 'nullable|array',
+            'ordering_lines' => 'nullable|array',
+            'pair_keys' => 'nullable|array',
+            'pair_values' => 'nullable|array',
+            'correct_choice' => 'nullable|string',
         ]);
 
         $maxOrder = $lesson->exercises()->max('order_index') ?? 0;
+        $type = $validated['question_type'];
 
-        // Parse options based on question type
+        // Determine options and answer based on form structure
         $optionsJson = null;
         $answerJson = null;
 
-        if ($validated['question_type'] === 'multiple_choice' || $validated['question_type'] === 'fill_blank' || $validated['question_type'] === 'output_prediction') {
-            $lines = array_values(array_filter(array_map('trim', explode("\n", $validated['options_raw'] ?? ''))));
-            $optionsJson = ! empty($lines) ? $lines : ['Option A', 'Option B', 'Option C', 'Option D'];
-            $answerJson = trim($validated['answer_raw']);
-        } elseif ($validated['question_type'] === 'code_ordering') {
-            $lines = array_values(array_filter(array_map('trim', explode("\n", $validated['options_raw'] ?? ''))));
+        if ($type === 'multiple_choice' || $type === 'fill_blank' || $type === 'output_prediction') {
+            if (! empty($validated['options'])) {
+                $optionsJson = array_values(array_filter(array_map('trim', $validated['options']), fn ($v) => $v !== ''));
+            } else {
+                $optionsJson = array_values(array_filter(array_map('trim', explode("\n", $validated['options_raw'] ?? '')), fn ($v) => $v !== ''));
+            }
+
+            if (empty($optionsJson)) {
+                $optionsJson = ['Pilihan A', 'Pilihan B', 'Pilihan C', 'Pilihan D'];
+            }
+
+            $answerJson = trim($validated['correct_choice'] ?? ($validated['answer_raw'] ?? ''));
+            if (empty($answerJson)) {
+                $answerJson = $optionsJson[0] ?? '';
+            }
+        } elseif ($type === 'code_ordering') {
+            $lines = ! empty($validated['ordering_lines'])
+                ? array_values(array_filter(array_map('trim', $validated['ordering_lines']), fn ($v) => $v !== ''))
+                : array_values(array_filter(array_map('trim', explode("\n", $validated['options_raw'] ?? '')), fn ($v) => $v !== ''));
+
             $optionsJson = [];
             $answerJson = [];
             foreach ($lines as $i => $line) {
@@ -161,26 +190,36 @@ class MentorLessonController extends Controller
                 $optionsJson[] = ['id' => $id, 'text' => $line];
                 $answerJson[] = $id;
             }
-        } elseif ($validated['question_type'] === 'matching_pair') {
-            // Format: Left => Right per line
-            $lines = array_values(array_filter(array_map('trim', explode("\n", $validated['options_raw'] ?? ''))));
+        } elseif ($type === 'matching_pair') {
             $pairs = [];
-            foreach ($lines as $line) {
-                if (str_contains($line, '=>')) {
-                    [$k, $v] = explode('=>', $line, 2);
-                    $pairs[trim($k)] = trim($v);
+            if (! empty($validated['pair_keys']) && ! empty($validated['pair_values'])) {
+                foreach ($validated['pair_keys'] as $idx => $k) {
+                    $v = $validated['pair_values'][$idx] ?? '';
+                    if (trim($k) !== '' && trim($v) !== '') {
+                        $pairs[trim($k)] = trim($v);
+                    }
+                }
+            } else {
+                $lines = array_values(array_filter(array_map('trim', explode("\n", $validated['options_raw'] ?? '')), fn ($v) => $v !== ''));
+                foreach ($lines as $line) {
+                    if (str_contains($line, '=>')) {
+                        [$k, $v] = explode('=>', $line, 2);
+                        $pairs[trim($k)] = trim($v);
+                    }
                 }
             }
+
             if (empty($pairs)) {
                 $pairs = ['A' => '1', 'B' => '2'];
             }
+
             $optionsJson = ['pairs' => $pairs];
             $answerJson = $pairs;
         }
 
         Exercise::create([
             'lesson_id' => $lesson->id,
-            'question_type' => $validated['question_type'],
+            'question_type' => $type,
             'prompt' => $validated['prompt'],
             'code_snippet' => $validated['code_snippet'] ?? null,
             'options_json' => $optionsJson,
@@ -190,6 +229,49 @@ class MentorLessonController extends Controller
         ]);
 
         return back()->with('success', 'Soal latihan interaktif berhasil ditambahkan.');
+    }
+
+    /**
+     * Download sample Excel/CSV template for bulk question import.
+     */
+    public function downloadTemplate(): Response
+    {
+        $csvContent = $this->importService->generateTemplateCsv();
+
+        return response($csvContent, 200, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="template_soal_eduskill.csv"',
+        ]);
+    }
+
+    /**
+     * Import exercises from uploaded CSV file.
+     */
+    public function importExercises(Request $request, Lesson $lesson): RedirectResponse
+    {
+        $user = Auth::user();
+        if ($user->role !== 'super_admin' && $lesson->unit->course->mentor_id !== $user->id) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt,xlsx,xls|max:5120',
+        ]);
+
+        $result = $this->importService->importFromCsv($request->file('file'), $lesson);
+
+        if ($result['success'] > 0) {
+            $msg = "Berhasil mengimpor {$result['success']} soal latihan ke modul '{$lesson->title}'.";
+            if (! empty($result['errors'])) {
+                $msg .= ' Catatan: beberapa baris dilewati ('.implode(', ', array_slice($result['errors'], 0, 3)).')';
+            }
+
+            return back()->with('success', $msg);
+        }
+
+        $errMsg = ! empty($result['errors']) ? implode(' ', $result['errors']) : 'Gagal mengimpor file.';
+
+        return back()->withErrors(['file' => $errMsg]);
     }
 
     /**
