@@ -7,6 +7,7 @@ use App\Models\Exercise;
 use App\Models\Lesson;
 use App\Models\Unit;
 use App\Models\User;
+use App\Services\ExerciseImportService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -84,7 +85,7 @@ class MentorExerciseImportTest extends TestCase
 
     public function test_mentor_can_import_exercises_from_xlsx(): void
     {
-        $service = app(\App\Services\ExerciseImportService::class);
+        $service = app(ExerciseImportService::class);
         $xlsxBinary = $service->generateTemplateXlsx();
 
         $file = UploadedFile::fake()->createWithContent('template.xlsx', $xlsxBinary);

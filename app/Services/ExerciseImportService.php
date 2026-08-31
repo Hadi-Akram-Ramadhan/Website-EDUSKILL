@@ -69,7 +69,7 @@ class ExerciseImportService
      */
     public function generateTemplateXlsx(): string
     {
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
 
         // -------------------------------------------------------------
         // SHEET 1: Template Soal (Ready to fill)
@@ -147,7 +147,7 @@ class ExerciseImportService
                 'Tebak output eksekusi program',
                 'Pisahkan opsi tebakan dengan |',
                 'Tulis output hasil yang tepat',
-                "code_snippet: print(2 + 3 * 2)  -->  options: 8|10|7|12  -->  answer: 8",
+                'code_snippet: print(2 + 3 * 2)  -->  options: 8|10|7|12  -->  answer: 8',
             ],
             [
                 'code_ordering',

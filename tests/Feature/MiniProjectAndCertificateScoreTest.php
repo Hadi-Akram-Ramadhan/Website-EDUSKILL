@@ -4,10 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Certificate;
 use App\Models\Course;
-use App\Models\Lesson;
 use App\Models\Unit;
 use App\Models\User;
-use App\Models\UserProgress;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

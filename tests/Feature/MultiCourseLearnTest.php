@@ -143,4 +143,3 @@ class MultiCourseLearnTest extends TestCase
         $roadmapResponse->assertSee('Lesson Web 1');
     }
 }
-

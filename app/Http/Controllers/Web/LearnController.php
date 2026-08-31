@@ -123,6 +123,7 @@ class LearnController extends Controller
 
         if ($user->hearts <= 0) {
             $courseParam = $lesson->unit ? ['course' => $lesson->unit->course_id] : [];
+
             return redirect()->route('learn.index', $courseParam)->with('error', 'Nyawa kamu habis (0/5). Isi ulang dengan gems atau tunggu sebentar!');
         }
 
