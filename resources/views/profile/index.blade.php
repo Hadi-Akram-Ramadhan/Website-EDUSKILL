@@ -24,7 +24,7 @@
         <!-- Profile Header Card (Light Blue Theme) -->
         <div class="card-3d profile-header-card" style="padding: 32px; margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 16px;">
-                <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 76px; height: 76px; border-radius: 50%; background: var(--primary-blue-light); border: 4px solid #bfdbfe;" alt="">
+                <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 76px; height: 76px; min-width: 76px; min-height: 76px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: var(--primary-blue-light); border: 4px solid #bfdbfe;" alt="">
                 <div>
                     <h1 style="font-size: 22px; font-weight: 900; color: #0f172a;">{{ $user->name }}</h1>
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap;">
@@ -115,7 +115,7 @@
                 @endphp
 
                 <div class="card-3d" style="padding: 22px 18px; text-align: center; border-color: {{ $isUnlocked ? '#bfdbfe' : 'var(--border-color)' }}; opacity: {{ $isUnlocked ? '1' : '0.55' }}; background: {{ $isUnlocked ? '#ffffff' : '#f8fafc' }};">
-                    <div style="width: 52px; height: 52px; margin: 0 auto 12px auto; background: {{ $isUnlocked ? 'var(--primary-blue-light)' : '#e2e8f0' }}; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: {{ $isUnlocked ? 'var(--primary-blue)' : '#94a3b8' }};">
+                    <div style="width: 52px; height: 52px; min-width: 52px; min-height: 52px; flex-shrink: 0; margin: 0 auto 12px auto; background: {{ $isUnlocked ? 'var(--primary-blue-light)' : '#e2e8f0' }}; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: {{ $isUnlocked ? 'var(--primary-blue)' : '#94a3b8' }};">
                         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
                     </div>
                     <div style="font-size: 15px; font-weight: 900; color: #0f172a; margin-bottom: 6px;">

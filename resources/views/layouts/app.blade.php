@@ -355,7 +355,7 @@
     <!-- Mobile Sticky Top Header (Visible only on mobile/tablet) -->
     <header class="mobile-top-header" style="display: none;">
         <a href="{{ route('learn.index') }}" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
-            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #fff;">
+            <div style="width: 32px; height: 32px; min-width: 32px; min-height: 32px; flex-shrink: 0; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #fff;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
             <span style="font-size: 17px; font-weight: 900; color: var(--primary-blue); letter-spacing: -0.5px;">EDUSKILL</span>
@@ -364,7 +364,7 @@
         @auth
             <div style="display: flex; align-items: center; gap: 8px;">
                 <div style="display: flex; align-items: center; gap: 6px;">
-                    <img src="{{ auth()->user()->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . auth()->user()->id }}" style="width: 28px; height: 28px; border-radius: 50%; background: #eff6ff; border: 1.5px solid #bfdbfe;" alt="">
+                    <img src="{{ auth()->user()->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . auth()->user()->id }}" style="width: 28px; height: 28px; min-width: 28px; min-height: 28px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: #eff6ff; border: 1.5px solid #bfdbfe;" alt="">
                     <span style="font-size: 11px; font-weight: 800; color: #0f172a; max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ auth()->user()->name }}</span>
                 </div>
                 <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
@@ -391,7 +391,7 @@
     <aside class="sidebar">
         <div class="sidebar-top" style="margin-bottom: 32px; padding: 0 8px;">
             <a href="{{ route('learn.index') }}" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-                <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 0 #1e40af;">
+                <div style="width: 42px; height: 42px; min-width: 42px; min-height: 42px; flex-shrink: 0; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 0 #1e40af;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 </div>
                 <div class="logo-text">
@@ -470,7 +470,7 @@
 
         <div class="sidebar-bottom" style="border-top: 2px solid var(--border-color); padding-top: 16px;">
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 0 8px;">
-                <img src="{{ auth()->user()->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . auth()->user()->id }}" style="width: 38px; height: 38px; border-radius: 50%; background: #eff6ff; border: 2px solid #bfdbfe;" alt="Avatar">
+                <img src="{{ auth()->user()->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . auth()->user()->id }}" style="width: 38px; height: 38px; min-width: 38px; min-height: 38px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: #eff6ff; border: 2px solid #bfdbfe;" alt="Avatar">
                 <div style="overflow: hidden;">
                     <div style="font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main);">{{ auth()->user()->name }}</div>
                     <div style="font-size: 11px; color: var(--primary-blue); font-weight: 700; text-transform: uppercase;">{{ auth()->user()->role }}</div>

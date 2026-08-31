@@ -507,6 +507,9 @@
         .lang-icon-box {
             width: 52px;
             height: 52px;
+            min-width: 52px;
+            min-height: 52px;
+            flex-shrink: 0;
             border-radius: 16px;
             display: flex;
             align-items: center;
@@ -927,7 +930,7 @@
     <header class="navbar-wrapper" id="navbar">
         <div class="navbar-inner">
             <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-                <div style="width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 3px 0 #1e40af;">
+                <div style="width: 38px; height: 38px; min-width: 38px; min-height: 38px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 3px 0 #1e40af;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 </div>
                 <div>
@@ -1306,7 +1309,7 @@
         <div class="features-grid">
             
             <div class="feature-card">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                <div style="width: 48px; height: 48px; min-width: 48px; min-height: 48px; flex-shrink: 0; border-radius: 14px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
                 </div>
                 <h3 style="font-size: 17px; font-weight: 900; margin-bottom: 8px;">Parsons Code Ordering</h3>
@@ -1314,7 +1317,7 @@
             </div>
 
             <div class="feature-card">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: #fef2f2; color: #ef4444; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                <div style="width: 48px; height: 48px; min-width: 48px; min-height: 48px; flex-shrink: 0; border-radius: 14px; background: #fef2f2; color: #ef4444; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
                 </div>
                 <h3 style="font-size: 17px; font-weight: 900; margin-bottom: 8px;">Gamifikasi Nyawa &amp; Streak</h3>
@@ -1322,7 +1325,7 @@
             </div>
 
             <div class="feature-card">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                <div style="width: 48px; height: 48px; min-width: 48px; min-height: 48px; flex-shrink: 0; border-radius: 14px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M6 2h12v7a6 6 0 0 1-12 0V2Z"></path></svg>
                 </div>
                 <h3 style="font-size: 17px; font-weight: 900; margin-bottom: 8px;">Liga &amp; Papan Peringkat</h3>
@@ -1330,7 +1333,7 @@
             </div>
 
             <div class="feature-card">
-                <div style="width: 48px; height: 48px; border-radius: 14px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                <div style="width: 48px; height: 48px; min-width: 48px; min-height: 48px; flex-shrink: 0; border-radius: 14px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
                 </div>
                 <h3 style="font-size: 17px; font-weight: 900; margin-bottom: 8px;">Sertifikat Valid QR</h3>

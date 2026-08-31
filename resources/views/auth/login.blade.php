@@ -66,6 +66,9 @@
             justify-content: center;
             width: 60px;
             height: 60px;
+            min-width: 60px;
+            min-height: 60px;
+            flex-shrink: 0;
             background: linear-gradient(135deg, #2563eb, #1d4ed8);
             border-radius: 18px;
             color: #fff;
@@ -203,7 +206,7 @@
 
             @foreach ($demoUsers as $user)
                 <a href="{{ route('auth.quick-login', $user->id) }}" class="account-chip">
-                    <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 34px; height: 34px; border-radius: 50%; background: #e2e8f0;" alt="">
+                    <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 34px; height: 34px; min-width: 34px; min-height: 34px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: #e2e8f0;" alt="">
                     <div style="flex: 1; overflow: hidden;">
                         <div style="font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $user->name }}</div>
                         <div style="font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $user->email }}</div>

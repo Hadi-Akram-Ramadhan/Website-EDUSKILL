@@ -20,7 +20,7 @@
         
         <!-- Header Banner (Blue Theme) -->
         <div style="text-align: center; margin-bottom: 36px;">
-            <div style="width: 64px; height: 64px; margin: 0 auto 16px auto; background: var(--primary-blue-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); box-shadow: 0 4px 0 #bfdbfe;">
+            <div style="width: 64px; height: 64px; min-width: 64px; min-height: 64px; flex-shrink: 0; margin: 0 auto 16px auto; background: var(--primary-blue-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); box-shadow: 0 4px 0 #bfdbfe;">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
             </div>
             <h1 style="font-size: 28px; font-weight: 900; color: #0f172a; letter-spacing: -0.5px;">Sertifikasi Resmi EduSkill</h1>

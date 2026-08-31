@@ -117,7 +117,7 @@
             <div class="card-3d" style="padding: 16px 20px; margin-bottom: 24px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
                     <div style="display: flex; align-items: center; gap: 12px; min-width: 240px; flex: 1;">
-                        <div style="width: 40px; height: 40px; border-radius: 12px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1.5px solid #bfdbfe;">
+                        <div style="width: 40px; height: 40px; min-width: 40px; min-height: 40px; border-radius: 12px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1.5px solid #bfdbfe;">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
                         </div>
                         <div>
@@ -168,7 +168,7 @@
                                     {{ $unit['description'] ?? 'Pelajari konsep dasar algoritma' }}
                                 </h2>
                             </div>
-                            <div style="width: 44px; height: 44px; background: rgba(255, 255, 255, 0.18); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0;">
+                            <div style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; background: rgba(255, 255, 255, 0.18); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0;">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
                             </div>
                         </div>

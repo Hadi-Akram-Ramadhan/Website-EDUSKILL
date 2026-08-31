@@ -38,10 +38,10 @@
 
             <!-- Quick Action Hub -->
             <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <a href="{{ route('mentor.exercises.template') }}" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px;">
+                <button type="button" onclick="downloadCsvTemplate(event)" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px; background: #ffffff; cursor: pointer;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Download Template Excel/CSV
-                </a>
+                </button>
 
                 <a href="{{ route('learn.index', ['course_id' => $course->id]) }}" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -70,7 +70,7 @@
         <!-- Quick Import Banner Card -->
         <div class="card-3d" style="padding: 20px 24px; margin-bottom: 28px; background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%); border-color: #bfdbfe; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
             <div style="display: flex; align-items: center; gap: 14px;">
-                <div style="width: 44px; height: 44px; border-radius: 14px; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 #1e40af;">
+                <div style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-shrink: 0; border-radius: 14px; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 #1e40af;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                 </div>
                 <div>
@@ -79,9 +79,9 @@
                 </div>
             </div>
             <div style="display: flex; gap: 10px;">
-                <a href="{{ route('mentor.exercises.template') }}" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px; background: #ffffff;">
+                <button type="button" onclick="downloadCsvTemplate(event)" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px; background: #ffffff; cursor: pointer;">
                     1. Download Template (.csv)
-                </a>
+                </button>
             </div>
         </div>
 
@@ -423,9 +423,9 @@
                 </div>
 
                 <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px;">
-                    <a href="{{ route('mentor.exercises.template') }}" class="btn-3d btn-outline" style="padding: 10px 14px; font-size: 12px;">
+                    <button type="button" onclick="downloadCsvTemplate(event)" class="btn-3d btn-outline" style="padding: 10px 14px; font-size: 12px; cursor: pointer; background: #ffffff;">
                         Unduh Format Contoh
-                    </a>
+                    </button>
                     <button type="submit" class="btn-3d btn-blue" style="padding: 10px 20px; font-size: 12px;">
                         Mulai Import Sekarang
                     </button>
@@ -471,6 +471,30 @@
     </style>
 
     <script>
+        // Instant Client-Side CSV Download (100% Reliable without Mixed Content/Proxy issues)
+        function downloadCsvTemplate(e) {
+            if (e) e.preventDefault();
+            const csvData = "\uFEFF" + 
+                "tipe_soal,pertanyaan,kode_snippet,opsi_jawaban,kunci_jawaban,penjelasan\r\n" +
+                'multiple_choice,"Perintah apa yang digunakan untuk menampilkan teks ke layar di Python?","print(\\"Halo\\")","print|input|echo|write",print,"print() adalah fungsi bawaan standar Python."\r\n' +
+                'fill_blank,"Lengkapi baris kode untuk mengisi celah yang hilang:","___(\\"Belajar Coding\\")","print|echo|input|console",print,"Gunakan fungsi print untuk menampilkan teks."\r\n' +
+                'output_prediction,"Berapakah output dari kode berikut?","a = 5\\nb = 3\\nprint(a + b)","8|53|15|Error",8,"Operasi penjumlahan 5 + 3 menghasilkan 8."\r\n' +
+                'code_ordering,"Urutkan logika baris kode berikut agar benar:","","x = 10|y = 20|hasil = x + y|print(hasil)","1|2|3|4","Variabel diinisialisasi terlebih dahulu sebelum dijumlahkan dan dicetak."\r\n' +
+                'matching_pair,"Jodohkan tipe data Python dengan contoh nilainya:","","int=>100|str=>\'EduSkill\'|bool=>True|float=>3.14","int=>100|str=>\'EduSkill\'|bool=>True|float=>3.14","Tipe data int untuk bilangan bulat, str untuk teks, bool untuk boolean, dan float untuk desimal."\r\n';
+
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'template_soal_eduskill.csv');
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(() => {
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            }, 200);
+        }
+
         function switchExerciseType(radio, lessonId) {
             const type = radio.value;
             const form = radio.closest('form');
