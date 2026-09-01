@@ -50,7 +50,7 @@ Route::middleware('guest')->group(function () {
 
 // Quick 1-Click login for instant demo testing
 Route::get('/auth/quick-login/{id}', [WebAuthController::class, 'quickLogin'])->name('auth.quick-login');
-Route::post('/logout', [WebAuthController::class, 'logout'])->name('logout');
+Route::match(['get', 'post'], '/logout', [WebAuthController::class, 'logout'])->name('logout');
 
 // Super Admin Area
 Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')->group(function () {

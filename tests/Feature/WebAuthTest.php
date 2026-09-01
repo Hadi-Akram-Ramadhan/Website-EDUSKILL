@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class WebAuthTest extends TestCase
@@ -78,5 +79,38 @@ class WebAuthTest extends TestCase
 
         $response->assertRedirect('/');
         $this->assertGuest();
+    }
+
+    public function test_can_logout_via_get_request(): void
+    {
+        $user = User::where('email', 'budi@smp.sch.id')->first();
+
+        $response = $this->actingAs($user)->get('/logout');
+
+        $response->assertRedirect('/');
+        $this->assertGuest();
+    }
+
+    public function test_custom_404_error_page_renders(): void
+    {
+        $response = $this->get('/halaman-acak-yang-pasti-tidak-ada-12345');
+
+        $response->assertStatus(404)
+            ->assertSee('ERROR 404')
+            ->assertSee('Halaman Tidak Ditemukan')
+            ->assertSee('Kembali ke Beranda');
+    }
+
+    public function test_custom_403_error_page_renders(): void
+    {
+        Route::get('/test-403-forbidden', function () {
+            abort(403);
+        });
+
+        $response = $this->get('/test-403-forbidden');
+
+        $response->assertStatus(403)
+            ->assertSee('ERROR 403')
+            ->assertSee('Akses Dibatasi');
     }
 }
