@@ -7,13 +7,19 @@
         
         <!-- Header Progress & Lives Bar -->
         <header class="lesson-header">
-            <a href="{{ route('learn.index', ['course' => $lesson->unit->course_id]) }}" class="btn-close" title="Keluar">
+            <a href="{{ route('learn.index', ['course' => $lesson->unit->course_id]) }}" class="btn-close" title="Keluar" onclick="if(window.EduAudio) window.EduAudio.stopBgm();">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </a>
 
             <div class="progress-track">
                 <div id="progress-bar" class="progress-fill"></div>
             </div>
+
+            <!-- Sound & Dynamic Music Toggle -->
+            <button type="button" id="btn-sound-toggle" onclick="toggleAudio()" class="btn-close" title="Toggle Musik & Suara" style="color: #2563eb; background: #eff6ff; border: 1.5px solid #bfdbfe; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <svg id="icon-sound-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                <svg id="icon-sound-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+            </button>
 
             <div class="heart-badge">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
@@ -88,6 +94,7 @@
         const lessonId = {{ $lesson->id }};
         const submitUrl = "{{ route('learn.submit', $lesson->id) }}";
         const csrfToken = "{{ csrf_token() }}";
+        const isMiniProject = {{ ($lesson->is_project || $lesson->type === 'project') ? 'true' : 'false' }};
 
         let currentIndex = 0;
         let currentAnswers = []; // Store {exercise_id, answer}
@@ -95,8 +102,57 @@
         let currentHearts = {{ $user->hearts }};
         let isDrawerAnswerChecked = false;
 
+        function updateAudioToggleUI() {
+            if (!window.EduAudio) return;
+            const isMuted = window.EduAudio.isSfxMuted && window.EduAudio.isBgmMuted;
+            const iconOn = document.getElementById('icon-sound-on');
+            const iconOff = document.getElementById('icon-sound-off');
+            const btn = document.getElementById('btn-sound-toggle');
+            if (iconOn && iconOff && btn) {
+                if (isMuted) {
+                    iconOn.style.display = 'none';
+                    iconOff.style.display = 'block';
+                    btn.style.color = '#94a3b8';
+                    btn.style.background = '#f1f5f9';
+                    btn.style.borderColor = '#cbd5e1';
+                } else {
+                    iconOn.style.display = 'block';
+                    iconOff.style.display = 'none';
+                    btn.style.color = '#2563eb';
+                    btn.style.background = '#eff6ff';
+                    btn.style.borderColor = '#bfdbfe';
+                }
+            }
+        }
+
+        function toggleAudio() {
+            if (window.EduAudio) {
+                window.EduAudio.init();
+                const unmuted = window.EduAudio.toggleAllSound();
+                if (unmuted) {
+                    window.EduAudio.startBgm(isMiniProject ? 'project' : 'quiz');
+                    window.EduAudio.playSelect();
+                }
+                updateAudioToggleUI();
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             renderCurrentQuestion();
+            updateAudioToggleUI();
+
+            // Auto-start dynamic BGM on first interaction
+            const startQuizAudio = () => {
+                if (window.EduAudio) {
+                    window.EduAudio.init();
+                    window.EduAudio.startBgm(isMiniProject ? 'project' : 'quiz');
+                    updateAudioToggleUI();
+                }
+                window.removeEventListener('click', startQuizAudio);
+                window.removeEventListener('touchstart', startQuizAudio);
+            };
+            window.addEventListener('click', startQuizAudio, { once: true });
+            window.addEventListener('touchstart', startQuizAudio, { once: true });
         });
 
         function parseOptions(raw) {
@@ -130,6 +186,11 @@
             // Update Progress Bar
             const progress = (currentIndex / exercises.length) * 100;
             document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Dynamically adapt BGM intensity
+            if (window.EduAudio && window.EduAudio.setIntensity) {
+                window.EduAudio.setIntensity(currentIndex / Math.max(1, exercises.length));
+            }
 
             const ex = exercises[currentIndex];
             const card = document.getElementById('question-card');
@@ -241,7 +302,7 @@
 
         // Single Choice / Fill Blank Selection
         function selectSingleOption(btn) {
-            if (window.SoundEngine && window.SoundEngine.playTap) window.SoundEngine.playTap();
+            if (window.EduAudio) window.EduAudio.playSelect();
             const val = btn.getAttribute('data-option');
             document.querySelectorAll('.opt-chip').forEach(c => {
                 c.style.borderColor = '#cbd5e1';
@@ -255,7 +316,7 @@
 
         // Parsons Code Ordering Move
         function moveOrderingChip(btn) {
-            if (window.SoundEngine && window.SoundEngine.playTap) window.SoundEngine.playTap();
+            if (window.EduAudio) window.EduAudio.playTap();
             const bucket = document.getElementById('ordering-bucket');
             const pool = document.getElementById('ordering-pool');
 
@@ -276,7 +337,7 @@
 
         // Matching Pairs Logic (Zero Quoting Bug & Re-pairable)
         function selectMatchPair(side, btn) {
-            if (window.SoundEngine && window.SoundEngine.playTap) window.SoundEngine.playTap();
+            if (window.EduAudio) window.EduAudio.playTap();
 
             if (side === 'left') {
                 const key = btn.getAttribute('data-key');
@@ -327,7 +388,6 @@
                                     lBtn.removeAttribute('data-paired');
                                     lBtn.style.background = '#ffffff';
                                     lBtn.style.borderColor = '#cbd5e1';
-                                    lBtn.style.color = 'var(--primary-blue)';
                                 }
                             });
                             break;
@@ -368,6 +428,8 @@
                 window._currentMatchRight.btn.style.borderColor = '#10b981';
                 window._currentMatchRight.btn.style.color = '#065f46';
                 window._currentMatchRight.btn.setAttribute('data-paired', 'true');
+
+                if (window.EduAudio) window.EduAudio.playSelect();
 
                 window._currentMatchLeft = null;
                 window._currentMatchRight = null;
@@ -416,7 +478,7 @@
             const btnAction = document.getElementById('btn-action');
 
             if (isCorrect) {
-                if (window.SoundEngine && window.SoundEngine.playCorrect) window.SoundEngine.playCorrect();
+                if (window.EduAudio) window.EduAudio.playCorrect();
                 drawer.className = 'action-drawer correct-state';
                 feedback.innerHTML = `
                     <div style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-shrink: 0; border-radius: 14px; background: #10b981; color: #fff; display: flex; align-items: center; justify-content: center;">
@@ -430,7 +492,10 @@
                 btnAction.className = 'btn-3d btn-green';
                 btnAction.innerText = 'Lanjutkan';
             } else {
-                if (window.SoundEngine && window.SoundEngine.playWrong) window.SoundEngine.playWrong();
+                if (window.EduAudio) {
+                    window.EduAudio.playWrong();
+                    window.EduAudio.playHeartLoss();
+                }
                 currentHearts = Math.max(0, currentHearts - 1);
                 document.getElementById('hearts-counter').innerText = currentHearts;
 
@@ -452,6 +517,7 @@
         }
 
         function nextQuestion() {
+            if (window.EduAudio) window.EduAudio.playTap();
             currentIndex++;
             renderCurrentQuestion();
         }
@@ -473,7 +539,10 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    if (window.SoundEngine && window.SoundEngine.playVictory) window.SoundEngine.playVictory();
+                    if (window.EduAudio) {
+                        window.EduAudio.stopBgm();
+                        window.EduAudio.playVictory();
+                    }
                     confetti({
                         particleCount: 100,
                         spread: 70,

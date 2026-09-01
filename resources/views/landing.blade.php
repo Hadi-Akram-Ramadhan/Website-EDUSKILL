@@ -1719,6 +1719,7 @@
             placeholder.innerText = choice;
 
             if (isCorrect) {
+                if (window.EduAudio) window.EduAudio.playCorrect();
                 btn.classList.add('selected-correct');
                 placeholder.style.borderColor = '#10b981';
                 placeholder.style.color = '#059669';
@@ -1734,6 +1735,7 @@
                     origin: { y: 0.65 }
                 });
             } else {
+                if (window.EduAudio) window.EduAudio.playWrong();
                 btn.classList.add('selected-wrong');
                 placeholder.style.borderColor = '#ef4444';
                 placeholder.style.color = '#dc2626';
@@ -1747,6 +1749,7 @@
 
         // Side badge pop confetti on click
         function triggerBadgePop(el) {
+            if (window.EduAudio) window.EduAudio.playSelect();
             confetti({
                 particleCount: 35,
                 spread: 45,
@@ -1761,6 +1764,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.faq-question').forEach(question => {
                 question.addEventListener('click', () => {
+                    if (window.EduAudio) window.EduAudio.playTap();
                     const item = question.closest('.faq-item');
                     const wasActive = item.classList.contains('active');
                     
@@ -1775,6 +1779,14 @@
                     }
                 });
             });
+
+            // Global tap feedback for 3D buttons on landing page
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('.btn-3d, .quiz-chip, .pill-tag, .lang-card');
+                if (target && window.EduAudio) {
+                    window.EduAudio.playTap();
+                }
+            }, { passive: true });
 
             // Entrance GSAP Animations
             if (typeof gsap !== 'undefined') {
@@ -1791,5 +1803,6 @@
             }
         });
     </script>
+    <script src="{{ asset('js/audio-engine.js') }}"></script>
 </body>
 </html>
