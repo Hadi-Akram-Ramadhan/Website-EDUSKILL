@@ -231,4 +231,39 @@ class Interactive3DQuizTest extends TestCase
         $response->assertJsonPath('data.exercises.0.question_type', 'interactive_3d');
         $response->assertJsonPath('data.exercises.0.model_3d.preset', 'memory_block');
     }
+
+    public function test_mentor_can_create_custom_3d_exercise_with_advanced_parameters(): void
+    {
+        $response = $this->actingAs($this->mentor)
+            ->post(route('mentor.exercises.store', $this->lesson->id), [
+                'question_type' => 'interactive_3d',
+                'prompt' => 'Di manakah target koordinat matrix?',
+                'options_3d' => ['[2, 1, 2]', '[0, 0, 0]'],
+                'correct_choice_3d' => '[2, 1, 2]',
+                'model_3d_type' => 'matrix_grid',
+                'model_3d_matrix_size' => 4,
+                'model_3d_target_x' => 2,
+                'model_3d_target_y' => 1,
+                'model_3d_target_z' => 2,
+                'model_3d_scale' => 1.5,
+                'model_3d_speed' => 'fast',
+                'model_3d_material' => 'glow',
+                'model_3d_color' => '#6366f1',
+                'model_3d_accent' => '#ec4899',
+            ]);
+
+        $response->assertRedirect();
+        $exercise = Exercise::where('lesson_id', $this->lesson->id)
+            ->where('prompt', 'Di manakah target koordinat matrix?')
+            ->first();
+
+        $this->assertNotNull($exercise);
+        $this->assertEquals(4, $exercise->model_3d_json['matrix_size']);
+        $this->assertEquals(2, $exercise->model_3d_json['target_x']);
+        $this->assertEquals(1, $exercise->model_3d_json['target_y']);
+        $this->assertEquals(2, $exercise->model_3d_json['target_z']);
+        $this->assertEquals(1.5, $exercise->model_3d_json['scale']);
+        $this->assertEquals('fast', $exercise->model_3d_json['speed']);
+        $this->assertEquals('glow', $exercise->model_3d_json['material']);
+    }
 }

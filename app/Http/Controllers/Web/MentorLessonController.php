@@ -170,6 +170,15 @@ class MentorLessonController extends Controller
             'model_3d_wireframe' => 'nullable|boolean',
             'model_3d_grid' => 'nullable|boolean',
             'model_3d_label' => 'nullable|string',
+            'model_3d_matrix_size' => 'nullable|integer',
+            'model_3d_target_x' => 'nullable|integer',
+            'model_3d_target_y' => 'nullable|integer',
+            'model_3d_target_z' => 'nullable|integer',
+            'model_3d_tree_depth' => 'nullable|integer',
+            'model_3d_memory_slots' => 'nullable|integer',
+            'model_3d_scale' => 'nullable|numeric',
+            'model_3d_speed' => 'nullable|string',
+            'model_3d_material' => 'nullable|string',
             'model_3d_raw_json' => 'nullable|string',
         ]);
 
@@ -215,6 +224,15 @@ class MentorLessonController extends Controller
                         'wireframe' => $request->boolean('model_3d_wireframe'),
                         'show_grid' => $request->has('model_3d_grid') ? $request->boolean('model_3d_grid') : true,
                         'label' => $request->input('model_3d_label', 'Objek 3D Komputasi'),
+                        'matrix_size' => (int) $request->input('model_3d_matrix_size', 3),
+                        'target_x' => (int) $request->input('model_3d_target_x', 1),
+                        'target_y' => (int) $request->input('model_3d_target_y', 0),
+                        'target_z' => (int) $request->input('model_3d_target_z', 1),
+                        'tree_depth' => (int) $request->input('model_3d_tree_depth', 2),
+                        'memory_slots' => (int) $request->input('model_3d_memory_slots', 4),
+                        'scale' => (float) $request->input('model_3d_scale', 1.0),
+                        'speed' => $request->input('model_3d_speed', 'normal'),
+                        'material' => $request->input('model_3d_material', 'glossy'),
                     ];
                 }
             }

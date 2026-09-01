@@ -653,6 +653,9 @@
                 _threeState.controls = null;
             }
             if (_threeState.renderer) {
+                try {
+                    _threeState.renderer.forceContextLoss();
+                } catch (e) {}
                 _threeState.renderer.dispose();
                 if (_threeState.renderer.domElement && _threeState.renderer.domElement.parentElement) {
                     _threeState.renderer.domElement.parentElement.removeChild(_threeState.renderer.domElement);
@@ -739,7 +742,7 @@
             const wireframe = !!config.wireframe;
             _threeState.wireframe = wireframe;
 
-            _build3DPreset(rootGroup, preset, baseColor, accentColor, wireframe);
+            _build3DPreset(rootGroup, preset, baseColor, accentColor, wireframe, config);
 
             _threeState.scene = scene;
             _threeState.camera = camera;
@@ -755,6 +758,7 @@
                 _threeState.animId = requestAnimationFrame(animate);
 
                 const elapsedTime = clock.getElapsedTime();
+                const speedMult = config.speed === 'slow' ? 0.5 : (config.speed === 'fast' ? 2.0 : 1.0);
 
                 if (_threeState.controls) {
                     _threeState.controls.update();
@@ -763,17 +767,18 @@
                 if (_threeState.isAnimRunning && rootGroup) {
                     const animType = config.animation || 'rotate';
                     if (animType === 'rotate') {
-                        rootGroup.rotation.y = elapsedTime * 0.35;
+                        rootGroup.rotation.y = elapsedTime * 0.35 * speedMult;
                     } else if (animType === 'pulse') {
-                        const s = 1 + Math.sin(elapsedTime * 2.5) * 0.06;
-                        rootGroup.scale.set(s, s, s);
-                        rootGroup.rotation.y = elapsedTime * 0.2;
+                        const s = 1 + Math.sin(elapsedTime * 2.5 * speedMult) * 0.06;
+                        const baseScale = config.scale || 1.0;
+                        rootGroup.scale.set(s * baseScale, s * baseScale, s * baseScale);
+                        rootGroup.rotation.y = elapsedTime * 0.2 * speedMult;
                     } else if (animType === 'hover') {
-                        rootGroup.position.y = Math.sin(elapsedTime * 2) * 0.25;
-                        rootGroup.rotation.y = elapsedTime * 0.25;
+                        rootGroup.position.y = Math.sin(elapsedTime * 2 * speedMult) * 0.25;
+                        rootGroup.rotation.y = elapsedTime * 0.25 * speedMult;
                     } else if (animType === 'orbit') {
-                        rootGroup.rotation.y = elapsedTime * 0.5;
-                        rootGroup.rotation.x = Math.sin(elapsedTime * 0.5) * 0.15;
+                        rootGroup.rotation.y = elapsedTime * 0.5 * speedMult;
+                        rootGroup.rotation.x = Math.sin(elapsedTime * 0.5 * speedMult) * 0.15;
                     }
                 }
 
@@ -781,6 +786,11 @@
             }
 
             animate();
+
+            // Apply custom scale if set
+            if (config.scale && config.scale !== 1.0) {
+                rootGroup.scale.set(config.scale, config.scale, config.scale);
+            }
 
             // Resize listener
             const resizeHandler = () => {
@@ -794,33 +804,42 @@
             window.addEventListener('resize', resizeHandler);
         }
 
-        function _build3DPreset(group, preset, baseColor, accentColor, wireframe) {
+        function _build3DPreset(group, preset, baseColor, accentColor, wireframe, config = {}) {
             _threeState.materials = [];
 
+            const isGlass = config.material === 'glass';
+            const isGlow = config.material === 'glow';
+
             if (preset === 'matrix_grid') {
-                // 3D Array Grid (3x3x3 Matrix)
+                // 3D Array Grid (Configurable N x N x N Matrix)
+                const size = parseInt(config.matrix_size) || 3;
+                const targetX = config.target_x !== undefined ? parseInt(config.target_x) : 1;
+                const targetY = config.target_y !== undefined ? parseInt(config.target_y) : 0;
+                const targetZ = config.target_z !== undefined ? parseInt(config.target_z) : 1;
+
                 const cubeGeo = new THREE.BoxGeometry(0.7, 0.7, 0.7);
-                for (let x = -1; x <= 1; x++) {
-                    for (let y = -1; y <= 1; y++) {
-                        for (let z = -1; z <= 1; z++) {
-                            const isTarget = (x === 1 && y === 0 && z === 1);
+                const half = (size - 1) / 2;
+
+                for (let x = 0; x < size; x++) {
+                    for (let y = 0; y < size; y++) {
+                        for (let z = 0; z < size; z++) {
+                            const isTarget = (x === targetX && y === targetY && z === targetZ);
                             const mat = new THREE.MeshStandardMaterial({
                                 color: isTarget ? accentColor : baseColor,
-                                roughness: 0.2,
-                                metalness: 0.5,
+                                roughness: isGlass ? 0.1 : 0.2,
+                                metalness: isGlass ? 0.1 : 0.5,
                                 wireframe: wireframe,
                                 transparent: true,
-                                opacity: isTarget ? 1.0 : 0.45,
-                                emissive: isTarget ? accentColor : 0x000000,
-                                emissiveIntensity: isTarget ? 0.4 : 0.0
+                                opacity: isTarget ? 1.0 : (isGlass ? 0.3 : 0.45),
+                                emissive: isTarget ? accentColor : (isGlow ? baseColor : 0x000000),
+                                emissiveIntensity: isTarget ? 0.5 : (isGlow ? 0.2 : 0.0)
                             });
                             _threeState.materials.push(mat);
 
                             const mesh = new THREE.Mesh(cubeGeo, mat);
-                            mesh.position.set(x * 1.0, y * 1.0, z * 1.0);
+                            mesh.position.set((x - half) * 1.0, (y - half) * 1.0, (z - half) * 1.0);
                             group.add(mesh);
 
-                            // Edges helper for high aesthetic
                             const edgeGeo = new THREE.EdgesGeometry(cubeGeo);
                             const edgeMat = new THREE.LineBasicMaterial({ color: isTarget ? 0xffffff : 0x93c5fd });
                             const edgeLine = new THREE.LineSegments(edgeGeo, edgeMat);
@@ -890,9 +909,12 @@
                 });
             } else if (preset === 'memory_block') {
                 // Vertical Stack of Memory Registers
+                const slots = parseInt(config.memory_slots) || 4;
                 const blockGeo = new THREE.BoxGeometry(2.4, 0.45, 1.4);
-                for (let i = 0; i < 4; i++) {
-                    const isTarget = (i === 2);
+                const halfSlots = (slots - 1) / 2;
+
+                for (let i = 0; i < slots; i++) {
+                    const isTarget = (i === Math.floor(slots / 2));
                     const mat = new THREE.MeshStandardMaterial({
                         color: isTarget ? accentColor : baseColor,
                         roughness: 0.3,
@@ -904,36 +926,58 @@
                     _threeState.materials.push(mat);
 
                     const mesh = new THREE.Mesh(blockGeo, mat);
-                    mesh.position.set(0, (i - 1.5) * 0.65, 0);
+                    mesh.position.set(0, (i - halfSlots) * 0.65, 0);
                     group.add(mesh);
 
                     const edgeGeo = new THREE.EdgesGeometry(blockGeo);
-                    const edgeLine = new THREE.LineSegments(edgeGeo, new THREE.LineBasicMaterial({ color: 0xffffff }));
+                    const edgeLine = new THREE.LineSegments(edgeGeo, new THREE.LineBasicMaterial({ color: isTarget ? 0x10b981 : 0xffffff }));
                     mesh.add(edgeLine);
                 }
             } else {
-                // Procedural Geometry (Cube, Cylinder, Torus, Pyramid)
+                // Rich Procedural Geometries (Cube, Sphere, Cylinder, Cone, Torus, Torus Knot, Pyramid, Capsule)
                 let geo;
-                if (preset === 'geometry_cylinder') {
+                if (preset === 'geometry_sphere') {
+                    geo = new THREE.SphereGeometry(1.3, 32, 32);
+                } else if (preset === 'geometry_cylinder') {
                     geo = new THREE.CylinderGeometry(1.0, 1.0, 2.0, 24);
+                } else if (preset === 'geometry_cone') {
+                    geo = new THREE.ConeGeometry(1.3, 2.4, 32);
                 } else if (preset === 'geometry_torus') {
                     geo = new THREE.TorusGeometry(1.2, 0.4, 16, 40);
+                } else if (preset === 'geometry_torus_knot') {
+                    geo = new THREE.TorusKnotGeometry(0.9, 0.3, 80, 16);
                 } else if (preset === 'geometry_pyramid') {
                     geo = new THREE.ConeGeometry(1.4, 2.2, 4);
+                } else if (preset === 'geometry_capsule') {
+                    geo = new THREE.CylinderGeometry(0.7, 0.7, 1.4, 20);
                 } else {
                     geo = new THREE.BoxGeometry(1.8, 1.8, 1.8);
                 }
 
                 const mat = new THREE.MeshStandardMaterial({
                     color: baseColor,
-                    roughness: 0.25,
-                    metalness: 0.6,
-                    wireframe
+                    roughness: isGlass ? 0.1 : 0.25,
+                    metalness: isGlass ? 0.1 : 0.6,
+                    wireframe,
+                    transparent: isGlass,
+                    opacity: isGlass ? 0.75 : 1.0,
+                    emissive: isGlow ? baseColor : 0x000000,
+                    emissiveIntensity: isGlow ? 0.3 : 0.0
                 });
                 _threeState.materials.push(mat);
 
                 const mesh = new THREE.Mesh(geo, mat);
                 group.add(mesh);
+
+                if (preset === 'geometry_capsule') {
+                    const sphereGeo = new THREE.SphereGeometry(0.7, 20, 20);
+                    const topSphere = new THREE.Mesh(sphereGeo, mat);
+                    topSphere.position.set(0, 0.7, 0);
+                    const botSphere = new THREE.Mesh(sphereGeo, mat);
+                    botSphere.position.set(0, -0.7, 0);
+                    group.add(topSphere);
+                    group.add(botSphere);
+                }
 
                 const edgeGeo = new THREE.EdgesGeometry(geo);
                 const edgeLine = new THREE.LineSegments(edgeGeo, new THREE.LineBasicMaterial({ color: accentColor }));
