@@ -16,6 +16,7 @@ class Exercise extends Model
         'prompt',
         'code_snippet',
         'options_json',
+        'model_3d_json',
         'answer_json',
         'explanation',
         'order_index',
@@ -25,6 +26,7 @@ class Exercise extends Model
     {
         return [
             'options_json' => 'array',
+            'model_3d_json' => 'array',
             'answer_json' => 'array',
             'order_index' => 'integer',
         ];

@@ -289,6 +289,25 @@ class DatabaseSeeder extends Seeder
             'order_index' => 2,
         ]);
 
+        Exercise::create([
+            'lesson_id' => $lesson2->id,
+            'question_type' => 'interactive_3d',
+            'prompt' => 'Perhatikan visualisasi 3D Matrix Grid [3x3x3] berikut. Elemen yang disorot warna hijau neon berada pada koordinat X=1, Y=0, Z=1. Bagaimana cara mengakses elemen tersebut dalam array multi-dimensi?',
+            'options_json' => ['matriks[1][0][1]', 'matriks[0][1][1]', 'matriks[1][1][0]', 'matriks[2][1][2]'],
+            'answer_json' => 'matriks[1][0][1]',
+            'model_3d_json' => [
+                'preset' => 'matrix_grid',
+                'color' => '#2563eb',
+                'accent_color' => '#10b981',
+                'animation' => 'rotate',
+                'wireframe' => false,
+                'show_grid' => true,
+                'label' => 'Visualisasi Struktur Data Array 3D [3x3x3]',
+            ],
+            'explanation' => 'Dalam array 3 dimensi, setiap elemen diakses melalui urutan tiga indeks koordinat [X][Y][Z], yaitu matriks[1][0][1].',
+            'order_index' => 3,
+        ]);
+
         // Lesson 3: Mini Project Unit 1
         $lessonProject1 = Lesson::create([
             'unit_id' => $unit1->id,
@@ -345,6 +364,25 @@ class DatabaseSeeder extends Seeder
             'answer_json' => 'True (Kondisi Terpenuhi)',
             'explanation' => 'Karena 85 lebih besar dari atau sama dengan 75, maka kondisi bernilai True.',
             'order_index' => 1,
+        ]);
+
+        Exercise::create([
+            'lesson_id' => $lesson3->id,
+            'question_type' => 'interactive_3d',
+            'prompt' => 'Perhatikan visualisasi sistem koordinat 3D pada robotika berikut. Robot bergerak menuju bola target hijau neon (+X, +Y, +Z). Jika kita ingin mengecek kondisi robot sudah mencapai target menggunakan if, kondisi logika mana yang benar?',
+            'options_json' => ['if pos_x >= target_x and pos_y >= target_y and pos_z >= target_z:', 'if pos_x == 0 or pos_y == 0:', 'if pos_x < target_x and pos_y < target_y:', 'if not pos_z:'],
+            'answer_json' => 'if pos_x >= target_x and pos_y >= target_y and pos_z >= target_z:',
+            'model_3d_json' => [
+                'preset' => 'robot_axis',
+                'color' => '#2563eb',
+                'accent_color' => '#10b981',
+                'animation' => 'hover',
+                'wireframe' => false,
+                'show_grid' => true,
+                'label' => 'Sistem Koordinat 3D Robot Navigasi',
+            ],
+            'explanation' => 'Untuk memastikan robot mencapai koordinat 3 dimensi, semua sumbu (X, Y, dan Z) harus memenuhi batas target menggunakan operator logika and.',
+            'order_index' => 2,
         ]);
 
         // Lesson 4: Mini Project Unit 2
@@ -749,5 +787,8 @@ class DatabaseSeeder extends Seeder
             'qr_code_url' => 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data='.urlencode(url("/verify/{$certCode}")),
             'is_valid' => true,
         ]);
+
+        // 6. Call Dedicated 3D Interactive Quiz Seeder
+        $this->call(Interactive3DQuizSeeder::class);
     }
 }

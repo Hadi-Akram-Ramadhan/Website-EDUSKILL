@@ -61,6 +61,14 @@ class ExerciseImportService
                 'int => 17|str => "Belajar"|bool => True|float => 3.14',
                 'int adalah bilangan bulat, str adalah teks, bool adalah nilai kebenaran, dan float adalah bilangan desimal.',
             ],
+            [
+                'interactive_3d',
+                'Perhatikan matriks balok 3D berikut. Jika koordinat awal berada di [0, 0, 0] dan balok target berwarna hijau berada di [2, 1, 3], berapa total perpindahan langkah sumbu Z?',
+                '# Sumbu 3D: X (Kanan), Y (Atas), Z (Kedalaman)',
+                '3 Langkah|1 Langkah|2 Langkah|0 Langkah',
+                '3 Langkah',
+                'Perpindahan pada sumbu Z dari indeks 0 ke indeks 3 adalah sejauh 3 langkah kedalaman.',
+            ],
         ];
     }
 
@@ -373,6 +381,19 @@ class ExerciseImportService
 
             [$optionsJson, $answerJson] = $this->parseOptionsAndAnswer($questionType, $rawOptions, $rawAnswer);
 
+            $model3dJson = null;
+            if ($questionType === 'interactive_3d') {
+                $model3dJson = [
+                    'preset' => 'matrix_grid',
+                    'color' => '#2563eb',
+                    'accent_color' => '#10b981',
+                    'animation' => 'rotate',
+                    'wireframe' => false,
+                    'show_grid' => true,
+                    'label' => 'Objek 3D Komputasi',
+                ];
+            }
+
             $maxOrder++;
             Exercise::create([
                 'lesson_id' => $lesson->id,
@@ -380,6 +401,7 @@ class ExerciseImportService
                 'prompt' => $prompt,
                 'code_snippet' => $codeSnippet ?: null,
                 'options_json' => $optionsJson,
+                'model_3d_json' => $model3dJson,
                 'answer_json' => $answerJson,
                 'explanation' => $explanation,
                 'order_index' => $maxOrder,
@@ -407,6 +429,7 @@ class ExerciseImportService
             'output_prediction', 'tebak_output', 'output', 'predict_output' => 'output_prediction',
             'code_ordering', 'susun_kode', 'parsons', 'parsons_problem', 'ordering' => 'code_ordering',
             'matching_pair', 'cocokkan_pasangan', 'pasangan', 'matching', 'match' => 'matching_pair',
+            'interactive_3d', 'soal_3d', '3d', 'model_3d', 'three_d' => 'interactive_3d',
             default => null,
         };
     }
@@ -421,7 +444,7 @@ class ExerciseImportService
         // Split options by pipe '|' or newline
         $optItems = array_values(array_filter(array_map('trim', preg_split('/[|\n]+/', $rawOptions)), fn ($v) => $v !== ''));
 
-        if ($type === 'multiple_choice' || $type === 'fill_blank' || $type === 'output_prediction') {
+        if ($type === 'multiple_choice' || $type === 'fill_blank' || $type === 'output_prediction' || $type === 'interactive_3d') {
             $optionsJson = ! empty($optItems) ? $optItems : ['Option A', 'Option B', 'Option C', 'Option D'];
             $answerJson = trim($rawAnswer) ?: ($optionsJson[0] ?? '');
 

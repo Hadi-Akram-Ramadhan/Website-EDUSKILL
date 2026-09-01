@@ -190,6 +190,7 @@
                                                     'output_prediction' => '#f3e8ff',
                                                     'code_ordering' => '#ecfdf5',
                                                     'matching_pair' => '#fff1f2',
+                                                    'interactive_3d' => '#e0e7ff',
                                                     default => '#f1f5f9'
                                                 };
                                                 $typeBadgeColor = match($ex->question_type) {
@@ -198,6 +199,7 @@
                                                     'output_prediction' => '#7e22ce',
                                                     'code_ordering' => '#047857',
                                                     'matching_pair' => '#be123c',
+                                                    'interactive_3d' => '#4338ca',
                                                     default => '#475569'
                                                 };
                                                 $typeLabel = match($ex->question_type) {
@@ -206,6 +208,7 @@
                                                     'output_prediction' => 'TEBAK OUTPUT',
                                                     'code_ordering' => 'PARSONS (SUSUN KODE)',
                                                     'matching_pair' => 'COCOKKAN PASANGAN',
+                                                    'interactive_3d' => '3D INTERAKTIF',
                                                     default => strtoupper($ex->question_type)
                                                 };
                                             @endphp
@@ -241,7 +244,7 @@
                                         <!-- Question Type Switcher -->
                                         <div>
                                             <label style="display: block; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 8px;">PILIH TIPE SOAL INTERAKTIF</label>
-                                            <div class="type-selector-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px;">
+                                            <div class="type-selector-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
                                                 
                                                 <label class="type-card-label">
                                                     <input type="radio" name="question_type" value="multiple_choice" checked onchange="switchExerciseType(this, '{{ $lesson->id }}')">
@@ -255,7 +258,7 @@
                                                     <input type="radio" name="question_type" value="fill_blank" onchange="switchExerciseType(this, '{{ $lesson->id }}')">
                                                     <div class="type-card-content">
                                                         <div class="type-card-title">Isian Kosong</div>
-                                                        <div class="type-card-desc">Isi celah titik-titik kode</div>
+                                                        <div class="type-card-desc">Isi celah kode</div>
                                                     </div>
                                                 </label>
 
@@ -263,23 +266,31 @@
                                                     <input type="radio" name="question_type" value="output_prediction" onchange="switchExerciseType(this, '{{ $lesson->id }}')">
                                                     <div class="type-card-content">
                                                         <div class="type-card-title">Tebak Output</div>
-                                                        <div class="type-card-desc">Tebak hasil cetak kode</div>
+                                                        <div class="type-card-desc">Hasil cetak kode</div>
                                                     </div>
                                                 </label>
 
                                                 <label class="type-card-label">
                                                     <input type="radio" name="question_type" value="code_ordering" onchange="switchExerciseType(this, '{{ $lesson->id }}')">
                                                     <div class="type-card-content">
-                                                        <div class="type-card-title">Susun Kode (Parsons)</div>
-                                                        <div class="type-card-desc">Puzzle urutan baris kode</div>
+                                                        <div class="type-card-title">Susun Kode</div>
+                                                        <div class="type-card-desc">Parsons puzzle</div>
                                                     </div>
                                                 </label>
 
                                                 <label class="type-card-label">
                                                     <input type="radio" name="question_type" value="matching_pair" onchange="switchExerciseType(this, '{{ $lesson->id }}')">
                                                     <div class="type-card-content">
-                                                        <div class="type-card-title">Cocokkan Pasangan</div>
-                                                        <div class="type-card-desc">Jodohkan item Kiri &bull; Kanan</div>
+                                                        <div class="type-card-title">Pasangan</div>
+                                                        <div class="type-card-desc">Jodohkan item</div>
+                                                    </div>
+                                                </label>
+
+                                                <label class="type-card-label">
+                                                    <input type="radio" name="question_type" value="interactive_3d" onchange="switchExerciseType(this, '{{ $lesson->id }}')">
+                                                    <div class="type-card-content">
+                                                        <div class="type-card-title" style="color: #4338ca;">⚡ 3D Interaktif</div>
+                                                        <div class="type-card-desc">Visual Spasial &amp; 3D</div>
                                                     </div>
                                                 </label>
 
@@ -363,6 +374,98 @@
                                                     <input type="text" name="pair_values[]" placeholder="Pasangan Kanan (contoh: 'Belajar')" style="padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 600; background: #ffffff;">
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <!-- Dynamic Section 5: 3D Interactive Builder & Live Preview -->
+                                        <div id="section-3d-{{ $lesson->id }}" class="type-section" style="display: none; background: #f8fafc; border: 2px solid #c7d2fe; border-radius: 16px; padding: 18px;">
+                                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                    <span style="background: #4338ca; color: #fff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px;">3D GENERATOR</span>
+                                                    <span style="font-size: 13px; font-weight: 800; color: #0f172a;">Konfigurasi Visual Spasial &amp; Elemen 3D</span>
+                                                </div>
+                                                <button type="button" onclick="refreshMentor3DPreview('{{ $lesson->id }}')" style="background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 4px 10px; font-size: 11px; border-radius: 8px; font-weight: 800; cursor: pointer;">
+                                                    🔄 Refresh Preview
+                                                </button>
+                                            </div>
+
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="display: block; font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">Preset Objek 3D</label>
+                                                    <select name="model_3d_type" id="model_3d_type_{{ $lesson->id }}" onchange="refreshMentor3DPreview('{{ $lesson->id }}')" style="width: 100%; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 700; background: #ffffff;">
+                                                        <option value="matrix_grid">3D Matrix Grid (Array 3D)</option>
+                                                        <option value="robot_axis">Robot / Drone XYZ Axis Coordinates</option>
+                                                        <option value="binary_tree">3D Binary Tree Nodes &amp; Graph</option>
+                                                        <option value="memory_block">3D CPU Memory Register Stack</option>
+                                                        <option value="geometry_cube">Geometri: Kubus Data</option>
+                                                        <option value="geometry_cylinder">Geometri: Silinder Buffer</option>
+                                                        <option value="geometry_torus">Geometri: Torus Ring</option>
+                                                        <option value="geometry_pyramid">Geometri: Piramida Data</option>
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <label style="display: block; font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">Gaya Animasi</label>
+                                                    <select name="model_3d_animation" id="model_3d_anim_{{ $lesson->id }}" onchange="refreshMentor3DPreview('{{ $lesson->id }}')" style="width: 100%; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 700; background: #ffffff;">
+                                                        <option value="rotate">Putar Berkelanjutan (Rotate Y)</option>
+                                                        <option value="pulse">Denyut Skala (Pulse / Scale)</option>
+                                                        <option value="hover">Mengambang Halus (Hover Float)</option>
+                                                        <option value="orbit">Orbit Diagonal (Orbit Angle)</option>
+                                                        <option value="none">Statis (Tanpa Animasi)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="display: block; font-size: 11px; font-weight: 800; color: #475569; margin-bottom: 4px;">Warna Objek</label>
+                                                    <input type="color" name="model_3d_color" id="model_3d_color_{{ $lesson->id }}" value="#2563eb" onchange="refreshMentor3DPreview('{{ $lesson->id }}')" style="width: 100%; height: 38px; border: 1.5px solid #cbd5e1; border-radius: 8px; cursor: pointer; padding: 2px; background: #ffffff;">
+                                                </div>
+
+                                                <div>
+                                                    <label style="display: block; font-size: 11px; font-weight: 800; color: #475569; margin-bottom: 4px;">Warna Target</label>
+                                                    <input type="color" name="model_3d_accent" id="model_3d_accent_{{ $lesson->id }}" value="#10b981" onchange="refreshMentor3DPreview('{{ $lesson->id }}')" style="width: 100%; height: 38px; border: 1.5px solid #cbd5e1; border-radius: 8px; cursor: pointer; padding: 2px; background: #ffffff;">
+                                                </div>
+
+                                                <div style="display: flex; flex-direction: column; justify-content: center; gap: 6px;">
+                                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #0f172a; cursor: pointer;">
+                                                        <input type="checkbox" name="model_3d_wireframe" id="model_3d_wireframe_{{ $lesson->id }}" value="1" onchange="refreshMentor3DPreview('{{ $lesson->id }}')">
+                                                        Mode Wireframe
+                                                    </label>
+                                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #0f172a; cursor: pointer;">
+                                                        <input type="checkbox" name="model_3d_grid" id="model_3d_grid_{{ $lesson->id }}" value="1" checked onchange="refreshMentor3DPreview('{{ $lesson->id }}')">
+                                                        Tampilkan Grid Lantai
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div style="margin-bottom: 12px;">
+                                                <label style="display: block; font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">Label Judul 3D (Tampil di Header Siswa)</label>
+                                                <input type="text" name="model_3d_label" id="model_3d_label_{{ $lesson->id }}" placeholder="Contoh: Visualisasi Array 3D [3x3x3]" value="Visualisasi Objek 3D" style="width: 100%; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 600; background: #ffffff;">
+                                            </div>
+
+                                            <!-- LIVE 3D PREVIEW BOX -->
+                                            <div style="background: #0f172a; border-radius: 14px; overflow: hidden; margin-bottom: 14px; border: 1.5px solid #334155;">
+                                                <div style="background: #1e293b; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; color: #94a3b8; font-size: 11px; font-weight: 700;">
+                                                    <span>👁️ LIVE 3D PREVIEW (Dapat diputar &amp; dizoom)</span>
+                                                    <span style="color: #38bdf8;">Three.js Runtime</span>
+                                                </div>
+                                                <div id="mentor-3d-preview-{{ $lesson->id }}" style="width: 100%; height: 220px; position: relative; cursor: grab;"></div>
+                                            </div>
+
+                                            <!-- 3D Multiple Choice Answer Options -->
+                                            <div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-bottom: 8px;">
+                                                PILIHAN JAWABAN (Centang Radio untuk Kunci Jawaban yang Benar):
+                                            </div>
+                                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                                @foreach (['A', 'B', 'C', 'D'] as $idx => $opt)
+                                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                                        <input type="radio" name="correct_choice_radio_3d_{{ $lesson->id }}" value="{{ $idx === 0 ? 'Target [2, 1, 3]' : '' }}" {{ $idx === 0 ? 'checked' : '' }} onchange="updateCorrectChoice3D(this, '{{ $lesson->id }}')" style="width: 18px; height: 18px; accent-color: #10b981;">
+                                                        <span style="font-weight: 800; font-size: 13px; color: #64748b; width: 20px;">{{ $opt }}.</span>
+                                                        <input type="text" name="options_3d[]" placeholder="Pilihan jawaban {{ $opt }}..." value="{{ $idx === 0 ? 'Target [2, 1, 3]' : '' }}" class="mc-input-3d-{{ $lesson->id }}" oninput="syncRadioValues3D('{{ $lesson->id }}')" style="flex: 1; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; background: #ffffff;">
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            <input type="hidden" name="correct_choice_3d" id="correct_choice_3d_hidden_{{ $lesson->id }}" value="Target [2, 1, 3]">
                                         </div>
 
                                         <!-- Explanation Field -->
@@ -686,6 +789,11 @@
                 document.getElementById(`section-ordering-${lessonId}`).style.display = 'block';
             } else if (type === 'matching_pair') {
                 document.getElementById(`section-matching-${lessonId}`).style.display = 'block';
+            } else if (type === 'interactive_3d') {
+                document.getElementById(`section-3d-${lessonId}`).style.display = 'block';
+                setTimeout(() => {
+                    initMentor3DPreview(lessonId);
+                }, 50);
             }
         }
 
@@ -705,6 +813,194 @@
 
         function updateCorrectChoice(radio, lessonId) {
             document.getElementById(`correct_choice_hidden_${lessonId}`).value = radio.value;
+        }
+
+        function syncRadioValues3D(lessonId) {
+            const inputs = document.querySelectorAll(`.mc-input-3d-${lessonId}`);
+            const radios = document.querySelectorAll(`input[name="correct_choice_radio_3d_${lessonId}"]`);
+            
+            radios.forEach((r, idx) => {
+                if (inputs[idx]) {
+                    r.value = inputs[idx].value;
+                    if (r.checked) {
+                        document.getElementById(`correct_choice_3d_hidden_${lessonId}`).value = inputs[idx].value;
+                    }
+                }
+            });
+        }
+
+        function updateCorrectChoice3D(radio, lessonId) {
+            document.getElementById(`correct_choice_3d_hidden_${lessonId}`).value = radio.value;
+        }
+
+        // ==========================================
+        // MENTOR 3D LIVE PREVIEW CONTROLLER
+        // ==========================================
+        const _mentor3DSessions = {};
+
+        function initMentor3DPreview(lessonId) {
+            const container = document.getElementById(`mentor-3d-preview-${lessonId}`);
+            if (!container || typeof THREE === 'undefined') return;
+
+            // Dispose old preview instance if exists
+            if (_mentor3DSessions[lessonId]) {
+                const s = _mentor3DSessions[lessonId];
+                if (s.animId) cancelAnimationFrame(s.animId);
+                if (s.controls) s.controls.dispose();
+                if (s.renderer) {
+                    s.renderer.dispose();
+                    if (s.renderer.domElement && s.renderer.domElement.parentElement) {
+                        s.renderer.domElement.parentElement.removeChild(s.renderer.domElement);
+                    }
+                }
+                delete _mentor3DSessions[lessonId];
+            }
+
+            const width = container.clientWidth || 400;
+            const height = container.clientHeight || 220;
+
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0f172a);
+
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+            camera.position.set(6, 5, 7);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            let controls = null;
+            if (typeof THREE.OrbitControls !== 'undefined') {
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.08;
+            }
+
+            // Lights
+            const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambient);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+            dirLight.position.set(5, 10, 7);
+            scene.add(dirLight);
+
+            // Read form inputs
+            const preset = document.getElementById(`model_3d_type_${lessonId}`)?.value || 'matrix_grid';
+            const colorHex = document.getElementById(`model_3d_color_${lessonId}`)?.value || '#2563eb';
+            const accentHex = document.getElementById(`model_3d_accent_${lessonId}`)?.value || '#10b981';
+            const animType = document.getElementById(`model_3d_anim_${lessonId}`)?.value || 'rotate';
+            const wireframe = !!document.getElementById(`model_3d_wireframe_${lessonId}`)?.checked;
+            const showGrid = !!document.getElementById(`model_3d_grid_${lessonId}`)?.checked;
+
+            if (showGrid) {
+                const grid = new THREE.GridHelper(8, 8, 0x3b82f6, 0x334155);
+                grid.position.y = -1.5;
+                scene.add(grid);
+
+                const axes = new THREE.AxesHelper(2.5);
+                axes.position.y = -1.49;
+                scene.add(axes);
+            }
+
+            const rootGroup = new THREE.Group();
+            scene.add(rootGroup);
+
+            _renderMentorPreset(rootGroup, preset, new THREE.Color(colorHex), new THREE.Color(accentHex), wireframe);
+
+            let clock = new THREE.Clock();
+            let animId = null;
+
+            function animate() {
+                animId = requestAnimationFrame(animate);
+                const t = clock.getElapsedTime();
+                if (controls) controls.update();
+
+                if (animType === 'rotate') {
+                    rootGroup.rotation.y = t * 0.4;
+                } else if (animType === 'pulse') {
+                    const s = 1 + Math.sin(t * 2.5) * 0.08;
+                    rootGroup.scale.set(s, s, s);
+                    rootGroup.rotation.y = t * 0.2;
+                } else if (animType === 'hover') {
+                    rootGroup.position.y = Math.sin(t * 2) * 0.25;
+                    rootGroup.rotation.y = t * 0.2;
+                } else if (animType === 'orbit') {
+                    rootGroup.rotation.y = t * 0.5;
+                    rootGroup.rotation.x = Math.sin(t * 0.5) * 0.2;
+                }
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            _mentor3DSessions[lessonId] = {
+                scene, camera, renderer, controls, animId, rootGroup
+            };
+        }
+
+        function refreshMentor3DPreview(lessonId) {
+            initMentor3DPreview(lessonId);
+        }
+
+        function _renderMentorPreset(group, preset, baseColor, accentColor, wireframe) {
+            if (preset === 'matrix_grid') {
+                const cubeGeo = new THREE.BoxGeometry(0.7, 0.7, 0.7);
+                for (let x = -1; x <= 1; x++) {
+                    for (let y = -1; y <= 1; y++) {
+                        for (let z = -1; z <= 1; z++) {
+                            const isTarget = (x === 1 && y === 0 && z === 1);
+                            const mat = new THREE.MeshStandardMaterial({
+                                color: isTarget ? accentColor : baseColor,
+                                roughness: 0.2,
+                                metalness: 0.5,
+                                wireframe: wireframe,
+                                transparent: true,
+                                opacity: isTarget ? 1.0 : 0.45,
+                                emissive: isTarget ? accentColor : 0x000000,
+                                emissiveIntensity: isTarget ? 0.4 : 0.0
+                            });
+                            const mesh = new THREE.Mesh(cubeGeo, mat);
+                            mesh.position.set(x * 1.0, y * 1.0, z * 1.0);
+                            group.add(mesh);
+
+                            const edge = new THREE.LineSegments(new THREE.EdgesGeometry(cubeGeo), new THREE.LineBasicMaterial({ color: isTarget ? 0xffffff : 0x93c5fd }));
+                            mesh.add(edge);
+                        }
+                    }
+                }
+            } else if (preset === 'robot_axis') {
+                const body = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1.0, 0.5, 8), new THREE.MeshStandardMaterial({ color: baseColor, wireframe }));
+                group.add(body);
+                const target = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 16), new THREE.MeshStandardMaterial({ color: accentColor, emissive: accentColor, emissiveIntensity: 0.6, wireframe }));
+                target.position.set(1.8, 1.2, 1.8);
+                group.add(target);
+            } else if (preset === 'binary_tree') {
+                const nodeGeo = new THREE.SphereGeometry(0.4, 16, 16);
+                const coords = [[0, 1.8, 0], [-1.4, 0.5, 0.5], [1.4, 0.5, -0.5], [-2.0, -0.8, 0.8], [2.0, -0.8, -0.8]];
+                coords.forEach((p, idx) => {
+                    const isTarget = (idx === 2);
+                    const mat = new THREE.MeshStandardMaterial({ color: isTarget ? accentColor : baseColor, wireframe, emissive: isTarget ? accentColor : 0x000000, emissiveIntensity: isTarget ? 0.4 : 0 });
+                    const m = new THREE.Mesh(nodeGeo, mat);
+                    m.position.set(p[0], p[1], p[2]);
+                    group.add(m);
+                });
+            } else if (preset === 'memory_block') {
+                const blockGeo = new THREE.BoxGeometry(2.2, 0.45, 1.2);
+                for (let i = 0; i < 4; i++) {
+                    const isTarget = (i === 2);
+                    const m = new THREE.Mesh(blockGeo, new THREE.MeshStandardMaterial({ color: isTarget ? accentColor : baseColor, wireframe, emissive: isTarget ? accentColor : 0x000000, emissiveIntensity: isTarget ? 0.4 : 0 }));
+                    m.position.set(0, (i - 1.5) * 0.6, 0);
+                    group.add(m);
+                }
+            } else {
+                let geo = preset === 'geometry_cylinder' ? new THREE.CylinderGeometry(1, 1, 2, 24)
+                    : preset === 'geometry_torus' ? new THREE.TorusGeometry(1.2, 0.4, 16, 40)
+                    : preset === 'geometry_pyramid' ? new THREE.ConeGeometry(1.4, 2.2, 4)
+                    : new THREE.BoxGeometry(1.8, 1.8, 1.8);
+                const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: baseColor, roughness: 0.3, metalness: 0.5, wireframe }));
+                group.add(mesh);
+            }
         }
 
         function addOrderingRow(lessonId) {

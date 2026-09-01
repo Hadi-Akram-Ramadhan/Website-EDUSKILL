@@ -158,6 +158,7 @@ class GamificationService
             case 'multiple_choice':
             case 'fill_blank':
             case 'output_prediction':
+            case 'interactive_3d':
                 if (is_array($correctAnswer)) {
                     $expected = $correctAnswer['answer'] ?? ($correctAnswer[0] ?? '');
                 } else {

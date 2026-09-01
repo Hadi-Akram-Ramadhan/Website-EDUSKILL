@@ -150,7 +150,7 @@ class MentorLessonController extends Controller
         }
 
         $validated = $request->validate([
-            'question_type' => 'required|in:multiple_choice,fill_blank,output_prediction,code_ordering,matching_pair',
+            'question_type' => 'required|in:multiple_choice,fill_blank,output_prediction,code_ordering,matching_pair,interactive_3d',
             'prompt' => 'required|string',
             'code_snippet' => 'nullable|string',
             'explanation' => 'nullable|string',
@@ -161,6 +161,16 @@ class MentorLessonController extends Controller
             'pair_keys' => 'nullable|array',
             'pair_values' => 'nullable|array',
             'correct_choice' => 'nullable|string',
+            'correct_choice_3d' => 'nullable|string',
+            'options_3d' => 'nullable|array',
+            'model_3d_type' => 'nullable|string',
+            'model_3d_color' => 'nullable|string',
+            'model_3d_accent' => 'nullable|string',
+            'model_3d_animation' => 'nullable|string',
+            'model_3d_wireframe' => 'nullable|boolean',
+            'model_3d_grid' => 'nullable|boolean',
+            'model_3d_label' => 'nullable|string',
+            'model_3d_raw_json' => 'nullable|string',
         ]);
 
         $maxOrder = $lesson->exercises()->max('order_index') ?? 0;
@@ -169,10 +179,12 @@ class MentorLessonController extends Controller
         // Determine options and answer based on form structure
         $optionsJson = null;
         $answerJson = null;
+        $model3dJson = null;
 
-        if ($type === 'multiple_choice' || $type === 'fill_blank' || $type === 'output_prediction') {
-            if (! empty($validated['options'])) {
-                $optionsJson = array_values(array_filter(array_map('trim', $validated['options']), fn ($v) => $v !== ''));
+        if ($type === 'multiple_choice' || $type === 'fill_blank' || $type === 'output_prediction' || $type === 'interactive_3d') {
+            $inputOptions = ! empty($validated['options']) ? $validated['options'] : ($validated['options_3d'] ?? null);
+            if (! empty($inputOptions)) {
+                $optionsJson = array_values(array_filter(array_map('trim', $inputOptions), fn ($v) => $v !== ''));
             } else {
                 $optionsJson = array_values(array_filter(array_map('trim', explode("\n", $validated['options_raw'] ?? '')), fn ($v) => $v !== ''));
             }
@@ -181,9 +193,30 @@ class MentorLessonController extends Controller
                 $optionsJson = ['Pilihan A', 'Pilihan B', 'Pilihan C', 'Pilihan D'];
             }
 
-            $answerJson = trim($validated['correct_choice'] ?? ($validated['answer_raw'] ?? ''));
+            $answerJson = trim($validated['correct_choice_3d'] ?? ($validated['correct_choice'] ?? ($validated['answer_raw'] ?? '')));
             if (empty($answerJson)) {
                 $answerJson = $optionsJson[0] ?? '';
+            }
+
+            if ($type === 'interactive_3d') {
+                if (! empty($request->input('model_3d_raw_json'))) {
+                    $decoded = json_decode($request->input('model_3d_raw_json'), true);
+                    if (is_array($decoded)) {
+                        $model3dJson = $decoded;
+                    }
+                }
+
+                if (empty($model3dJson)) {
+                    $model3dJson = [
+                        'preset' => $request->input('model_3d_type', 'matrix_grid'),
+                        'color' => $request->input('model_3d_color', '#2563eb'),
+                        'accent_color' => $request->input('model_3d_accent', '#10b981'),
+                        'animation' => $request->input('model_3d_animation', 'rotate'),
+                        'wireframe' => $request->boolean('model_3d_wireframe'),
+                        'show_grid' => $request->has('model_3d_grid') ? $request->boolean('model_3d_grid') : true,
+                        'label' => $request->input('model_3d_label', 'Objek 3D Komputasi'),
+                    ];
+                }
             }
         } elseif ($type === 'code_ordering') {
             $lines = ! empty($validated['ordering_lines'])
@@ -230,6 +263,7 @@ class MentorLessonController extends Controller
             'prompt' => $validated['prompt'],
             'code_snippet' => $validated['code_snippet'] ?? null,
             'options_json' => $optionsJson,
+            'model_3d_json' => $model3dJson,
             'answer_json' => $answerJson,
             'explanation' => $validated['explanation'] ?? '',
             'order_index' => $maxOrder + 1,
