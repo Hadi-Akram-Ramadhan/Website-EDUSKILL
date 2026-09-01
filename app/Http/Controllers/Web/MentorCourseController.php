@@ -140,4 +140,30 @@ class MentorCourseController extends Controller
 
         return redirect()->route('mentor.courses.index')->with('success', "Kursus '{$title}' berhasil dihapus.");
     }
+
+    /**
+     * Release or toggle course roadmap status (Upcoming -> Active Siap Belajar).
+     */
+    public function toggleRelease(Course $course): RedirectResponse
+    {
+        $user = Auth::user();
+        if ($user->role !== 'super_admin' && $course->mentor_id !== $user->id) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        if ($course->is_upcoming || ! $course->is_published) {
+            $course->update([
+                'is_published' => true,
+                'is_upcoming' => false,
+            ]);
+
+            return back()->with('success', "🚀 Roadmap '{$course->title}' BERHASIL DIRILIS! Status kursus kini Aktif (Siap Belajar) dan dapat langsung diakses oleh seluruh siswa.");
+        } else {
+            $course->update([
+                'is_upcoming' => true,
+            ]);
+
+            return back()->with('success', "Kursus '{$course->title}' dialihkan kembali ke status 'Roadmap Mendatang'.");
+        }
+    }
 }

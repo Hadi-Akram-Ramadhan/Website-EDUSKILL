@@ -144,4 +144,34 @@ class MentorCrudTest extends TestCase
         $response = $this->actingAs($this->student)->get(route('mentor.courses.index'));
         $response->assertRedirect(route('learn.index'));
     }
+
+    public function test_mentor_can_toggle_and_release_roadmap_course(): void
+    {
+        $course = Course::create([
+            'mentor_id' => $this->mentor->id,
+            'title' => 'Kursus Mendatang',
+            'slug' => 'kursus-mendatang',
+            'category' => 'Python',
+            'level' => 'beginner',
+            'is_published' => true,
+            'is_upcoming' => true,
+        ]);
+
+        // Release upcoming course into active learning mode
+        $response = $this->actingAs($this->mentor)
+            ->post(route('mentor.courses.toggle-release', $course->id));
+
+        $response->assertRedirect();
+        $course->refresh();
+        $this->assertTrue($course->is_published);
+        $this->assertFalse($course->is_upcoming);
+
+        // Toggle back to upcoming
+        $response = $this->actingAs($this->mentor)
+            ->post(route('mentor.courses.toggle-release', $course->id));
+
+        $response->assertRedirect();
+        $course->refresh();
+        $this->assertTrue($course->is_upcoming);
+    }
 }

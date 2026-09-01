@@ -74,6 +74,7 @@ Route::middleware(['auth', 'role:guru'])->prefix('mentor')->name('mentor.')->gro
 
     // Mentor Course Management CRUD
     Route::resource('courses', MentorCourseController::class);
+    Route::post('courses/{course}/toggle-release', [MentorCourseController::class, 'toggleRelease'])->name('courses.toggle-release');
 
     // Curriculum Builder (Units, Lessons, Exercises)
     Route::get('courses/{course}/manage', [MentorLessonController::class, 'manage'])->name('courses.manage');

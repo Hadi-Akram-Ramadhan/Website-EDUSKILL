@@ -38,12 +38,30 @@
 
             <!-- Quick Action Hub -->
             <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <button type="button" onclick="downloadXlsxTemplate(event)" class="btn-3d btn-green" style="font-size: 12px; padding: 10px 16px; cursor: pointer;">
+                @if ($course->is_upcoming || !$course->is_published)
+                    <form action="{{ route('mentor.courses.toggle-release', $course->id) }}" method="POST" style="margin: 0;">
+                        @csrf
+                        <button type="submit" class="btn-3d btn-green" style="font-size: 12px; padding: 10px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="Rilis kursus ini ke siswa">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            Rilis Roadmap ke Siswa
+                        </button>
+                    </form>
+                @else
+                    <form action="{{ route('mentor.courses.toggle-release', $course->id) }}" method="POST" style="margin: 0;" onsubmit="return confirm('Alihkan kursus ini kembali ke status Roadmap Mendatang?')">
+                        @csrf
+                        <button type="submit" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: #b45309; border-color: #fde68a; background: #fffbeb;" title="Alihkan kembali ke status Roadmap Mendatang">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            Tarik ke Mendatang
+                        </button>
+                    </form>
+                @endif
+
+                <button type="button" onclick="downloadXlsxTemplate(event)" class="btn-3d btn-blue" style="font-size: 12px; padding: 10px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Download Template Excel (.xlsx)
                 </button>
 
-                <a href="{{ route('learn.index', ['course_id' => $course->id]) }}" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px;">
+                <a href="{{ route('learn.index', ['course' => $course->id]) }}" class="btn-3d btn-outline" style="font-size: 12px; padding: 10px 16px; display: inline-flex; align-items: center; gap: 6px;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     Roadmap Siswa
                 </a>
@@ -760,7 +778,8 @@
                 'fill_blank,"Lengkapi kode Python berikut agar menampilkan teks ""Halo Dunia"" ke layar:","____(""Halo Dunia"")","print|echo|input|write",print,"Fungsi bawaan Python untuk mencetak teks adalah print()."\r\n' +
                 'output_prediction,"Apa output yang dihasilkan dari kode Python berikut?","nama = \'Andi\'\\nprint(\'Halo \' + nama)","Halo Andi|Halo nama|Andi|Error","Halo Andi","Operator + menggabungkan string \'Halo \' dengan nilai variabel nama."\r\n' +
                 'code_ordering,"Susun baris kode berikut dengan urutan yang benar untuk membuat variabel lalu mencetaknya:","","umur = 15|print(\'Umur saya:\')|print(umur)","1|2|3","Variabel harus dideklarasikan terlebih dahulu sebelum nilainya dicetak."\r\n' +
-                'matching_pair,"Cocokkan tipe data Python dengan contoh nilainya yang tepat:","","int => 17|str => ""Belajar""|bool => True|float => 3.14","int => 17|str => ""Belajar""|bool => True|float => 3.14","int adalah bilangan bulat, str adalah teks, bool adalah nilai kebenaran, dan float adalah bilangan desimal."\r\n';
+                'matching_pair,"Cocokkan tipe data Python dengan contoh nilainya yang tepat:","","int => 17|str => ""Belajar""|bool => True|float => 3.14","int => 17|str => ""Belajar""|bool => True|float => 3.14","int adalah bilangan bulat, str adalah teks, bool adalah nilai kebenaran, dan float adalah bilangan desimal."\r\n' +
+                'interactive_3d,"Perhatikan visualisasi matriks balok 3D berikut. Elemen target hijau neon berada pada koordinat [2, 1, 3]. Berapa nilai perpindahan pada sumbu Z?","# Sumbu: X (Kanan), Y (Atas), Z (Kedalaman)","3 Langkah|1 Langkah|2 Langkah|0 Langkah","3 Langkah","Perpindahan pada sumbu Z dari indeks 0 ke indeks 3 adalah sejauh 3 langkah kedalaman."\r\n';
 
             const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
             const url = window.URL.createObjectURL(blob);
