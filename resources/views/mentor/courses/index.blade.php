@@ -62,7 +62,25 @@
                         </div>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        @if ($c->is_upcoming || !$c->is_published)
+                            <form action="{{ route('mentor.courses.toggle-release', $c->id) }}" method="POST" style="margin: 0;">
+                                @csrf
+                                <button type="submit" class="btn-3d btn-green" style="padding: 10px 16px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;" title="Rilis kursus ini agar aktif dan dapat langsung dipelajari oleh murid">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                    Rilis Roadmap
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('mentor.courses.toggle-release', $c->id) }}" method="POST" style="margin: 0;" onsubmit="return confirm('Alihkan kursus ini kembali ke status Roadmap Mendatang?')">
+                                @csrf
+                                <button type="submit" class="btn-3d btn-outline" style="padding: 10px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; color: #b45309; border-color: #fde68a; background: #fffbeb;" title="Alihkan kembali ke status Roadmap Mendatang">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    Jadikan Mendatang
+                                </button>
+                            </form>
+                        @endif
+
                         <a href="{{ route('mentor.courses.manage', $c->id) }}" class="btn-3d btn-blue" style="padding: 10px 16px; font-size: 12px;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                             Kelola Unit &amp; Modul Soal

@@ -136,6 +136,7 @@ class LearnController extends Controller
                 'code_snippet' => $ex->code_snippet,
                 'options_json' => $ex->options_json,
                 'options' => $ex->options_json,
+                'model_3d_json' => $ex->model_3d_json,
                 'answer_json' => $ex->answer_json,
                 'explanation' => $ex->explanation,
                 'order_index' => $ex->order_index,

@@ -133,8 +133,8 @@
         /* Dynamic Hero Wrapper & Ambient Glow Mesh */
         .hero-wrapper {
             position: relative;
-            padding-top: 48px;
-            padding-bottom: 56px;
+            padding-top: clamp(28px, 4vw, 48px);
+            padding-bottom: clamp(36px, 5vw, 56px);
             background-color: #f8fafc;
             overflow: hidden;
         }
@@ -146,7 +146,7 @@
             filter: blur(75px);
             pointer-events: none;
             z-index: 1;
-            opacity: 0.65;
+            opacity: 0.5;
             animation: pulseAmbient 9s ease-in-out infinite alternate;
         }
 
@@ -154,7 +154,7 @@
             top: -120px;
             left: 50%;
             transform: translateX(-50%);
-            width: 650px;
+            width: min(650px, 90vw);
             height: 420px;
             background: radial-gradient(circle, rgba(37, 99, 235, 0.22) 0%, rgba(37, 99, 235, 0) 70%);
         }
@@ -187,9 +187,9 @@
         }
 
         @keyframes pulseAmbient {
-            0% { transform: scale(1) translateY(0); opacity: 0.55; }
-            50% { transform: scale(1.18) translateY(-25px); opacity: 0.85; }
-            100% { transform: scale(1) translateY(0); opacity: 0.55; }
+            0% { transform: scale(1) translateY(0); opacity: 0.45; }
+            50% { transform: scale(1.18) translateY(-25px); opacity: 0.75; }
+            100% { transform: scale(1) translateY(0); opacity: 0.45; }
         }
 
         /* Modern Blueprint Matrix Dot-Grid Background */
@@ -208,14 +208,21 @@
             z-index: 2;
         }
 
-        /* Floating Code Tokens & Logic Syntax Layer */
+        /* Floating Code Tokens - only visible on wide screens to prevent clashing on laptops */
         .bg-code-token {
+            display: none;
             position: absolute;
             z-index: 3;
             pointer-events: none;
             user-select: none;
-            opacity: 0.85;
+            opacity: 0.55;
             transition: transform 0.3s ease;
+        }
+
+        @media (min-width: 1480px) {
+            .bg-code-token {
+                display: block;
+            }
         }
 
         .token-glass-badge {
@@ -271,8 +278,9 @@
 
         .hero-container {
             max-width: 1140px;
+            width: 100%;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 clamp(16px, 3vw, 24px);
             text-align: center;
             position: relative;
             z-index: 10;
@@ -291,17 +299,17 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 20px;
+            margin-bottom: clamp(14px, 2vw, 20px);
         }
 
         .hero-title {
-            font-size: 48px;
+            font-size: clamp(28px, 4.2vw, 48px);
             font-weight: 900;
-            line-height: 1.15;
-            letter-spacing: -1.2px;
+            line-height: 1.18;
+            letter-spacing: -1px;
             color: #0f172a;
             max-width: 820px;
-            margin: 0 auto 18px auto;
+            margin: 0 auto 16px auto;
         }
 
         .hero-title span {
@@ -311,24 +319,25 @@
         }
 
         .hero-subtitle {
-            font-size: 17px;
+            font-size: clamp(14px, 1.5vw, 17px);
             color: var(--text-muted);
             line-height: 1.6;
-            max-width: 620px;
-            margin: 0 auto 32px auto;
+            max-width: 640px;
+            margin: 0 auto clamp(20px, 3vw, 32px) auto;
         }
 
         .hero-cta-group {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 14px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 36px;
+            margin-bottom: clamp(24px, 3.5vw, 36px);
         }
 
-        /* Side Floating Gamified Decorations (Like Duolingo Gutters) */
+        /* Side Floating Gamified Badges - ONLY shown on ultra-wide screens to prevent laptop layout collision */
         .side-float-container {
+            display: none;
             position: absolute;
             top: 0;
             left: 0;
@@ -337,6 +346,12 @@
             pointer-events: none;
             z-index: 8;
             overflow: hidden;
+        }
+
+        @media (min-width: 1560px) {
+            .side-float-container {
+                display: block;
+            }
         }
 
         .float-item {
@@ -381,46 +396,38 @@
             50% { transform: translateY(-14px) rotate(2deg); }
         }
 
-        /* Left Side Items */
+        /* Left Side Items (Far Gutter) */
         .float-left-1 {
             top: 18%;
-            left: 3%;
+            left: max(20px, calc((100vw - 1240px) / 4));
             animation: floatSide1 4s ease-in-out infinite;
         }
         .float-left-2 {
             top: 48%;
-            left: 2%;
+            left: max(16px, calc((100vw - 1260px) / 4));
             animation: floatSide2 3.6s ease-in-out infinite 0.5s;
         }
         .float-left-3 {
             top: 76%;
-            left: 4%;
+            left: max(24px, calc((100vw - 1220px) / 4));
             animation: floatSide3 4.2s ease-in-out infinite 1s;
         }
 
-        /* Right Side Items */
+        /* Right Side Items (Far Gutter) */
         .float-right-1 {
             top: 16%;
-            right: 3%;
+            right: max(20px, calc((100vw - 1240px) / 4));
             animation: floatSide2 3.8s ease-in-out infinite 0.3s;
         }
         .float-right-2 {
             top: 46%;
-            right: 2%;
+            right: max(16px, calc((100vw - 1260px) / 4));
             animation: floatSide1 4.4s ease-in-out infinite 0.8s;
         }
         .float-right-3 {
             top: 74%;
-            right: 4%;
+            right: max(24px, calc((100vw - 1220px) / 4));
             animation: floatSide3 3.9s ease-in-out infinite 1.2s;
-        }
-
-        /* Hide side floaties and background code badges on tablet/mobile so layout is clean */
-        @media (max-width: 1140px) {
-            .side-float-container,
-            .bg-code-token {
-                display: none;
-            }
         }
 
         /* Simulator Card */
@@ -928,23 +935,25 @@
 
         /* Mascot Showcase Banner Card (Naufal Academy / Duolingo Style) */
         .mascot-banner-wrapper {
-            max-width: 1080px;
-            margin: 40px auto 0 auto;
+            max-width: 980px;
+            width: 100%;
+            margin: clamp(28px, 4vw, 44px) auto 0 auto;
             position: relative;
-            z-index: 10;
+            z-index: 20;
         }
 
         .mascot-banner-card {
             background: #ffffff;
             border: 2.5px solid #dbeafe;
-            border-radius: 32px;
-            padding: 32px;
+            border-radius: clamp(20px, 2.5vw, 32px);
+            padding: clamp(20px, 3vw, 32px);
             display: grid;
-            grid-template-columns: 400px 1fr;
+            grid-template-columns: minmax(240px, 320px) 1fr;
             align-items: center;
-            gap: 36px;
+            gap: clamp(20px, 3vw, 36px);
             box-shadow: 0 16px 40px -10px rgba(37, 99, 235, 0.12), 0 6px 0 #bfdbfe;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: left;
         }
 
         .mascot-banner-card:hover {
@@ -953,7 +962,7 @@
 
         .mascot-img-box {
             position: relative;
-            border-radius: 24px;
+            border-radius: clamp(16px, 2vw, 24px);
             overflow: hidden;
             background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
             border: 2px solid #c7d2fe;
@@ -961,6 +970,9 @@
             align-items: center;
             justify-content: center;
             aspect-ratio: 4/3;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
             box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
         }
 
@@ -996,19 +1008,19 @@
         }
 
         .mascot-text-box h2 {
-            font-size: 28px;
+            font-size: clamp(20px, 2.2vw, 28px);
             font-weight: 900;
             color: #0f172a;
             letter-spacing: -0.6px;
             line-height: 1.3;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .mascot-text-box p {
-            font-size: 14px;
+            font-size: clamp(13px, 1.3vw, 14.5px);
             color: #475569;
-            line-height: 1.65;
-            margin-bottom: 20px;
+            line-height: 1.6;
+            margin-bottom: 18px;
         }
 
         .mascot-pill-badge {
@@ -1027,12 +1039,18 @@
             margin-bottom: 12px;
         }
 
+        .mascot-cta-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
         .mascot-stats-grid {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: clamp(10px, 2vw, 16px);
             flex-wrap: wrap;
-            margin-top: 18px;
+            margin-top: 16px;
             border-top: 1px solid #f1f5f9;
             padding-top: 14px;
         }
@@ -1047,24 +1065,44 @@
         }
 
         /* Responsive Breakpoints */
-        @media (max-width: 900px) {
+        @media (max-width: 1024px) {
+            .mascot-banner-card {
+                grid-template-columns: minmax(200px, 260px) 1fr;
+                gap: 20px;
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 860px) {
             .mascot-banner-card {
                 grid-template-columns: 1fr;
-                padding: 24px;
+                text-align: center;
                 gap: 20px;
+                padding: 24px 20px;
             }
-            .mascot-text-box h2 {
-                font-size: 22px;
+            .mascot-img-box {
+                max-width: 280px;
+            }
+            .mascot-text-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .mascot-cta-group {
+                justify-content: center;
+            }
+            .mascot-stats-grid {
+                justify-content: center;
             }
         }
 
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 28px;
+                font-size: 26px;
                 letter-spacing: -0.5px;
             }
             .hero-subtitle {
-                font-size: 14px;
+                font-size: 13.5px;
             }
             .section-header-white h2,
             .section-header-dark h2 {
@@ -1073,11 +1111,17 @@
             .languages-grid {
                 grid-template-columns: 1fr;
             }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
             .simulator-body {
                 padding: 16px;
             }
             .final-cta-card {
-                padding: 36px 20px;
+                padding: 32px 18px;
             }
         }
     </style>
@@ -1342,7 +1386,7 @@
                         <h2>Udah Saatnya Belajar Coding Jadi Seru &amp; Gak Ngebosenin!</h2>
                         <p>Gabung sekarang bareng <strong>10.000+ pelajar SMP &amp; SMA</strong> lainnya yang udah asyik taklukkan logika coding dari nol sampai siap bikin aplikasi impian.</p>
                         
-                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <div class="mascot-cta-group">
                             <a href="{{ route('register') }}" class="btn-3d btn-blue" style="font-size: 14px; padding: 14px 28px;">
                                 Mulai Sekarang (Gratis)
                             </a>
@@ -1719,6 +1763,7 @@
             placeholder.innerText = choice;
 
             if (isCorrect) {
+                if (window.EduAudio) window.EduAudio.playCorrect();
                 btn.classList.add('selected-correct');
                 placeholder.style.borderColor = '#10b981';
                 placeholder.style.color = '#059669';
@@ -1734,6 +1779,7 @@
                     origin: { y: 0.65 }
                 });
             } else {
+                if (window.EduAudio) window.EduAudio.playWrong();
                 btn.classList.add('selected-wrong');
                 placeholder.style.borderColor = '#ef4444';
                 placeholder.style.color = '#dc2626';
@@ -1747,6 +1793,7 @@
 
         // Side badge pop confetti on click
         function triggerBadgePop(el) {
+            if (window.EduAudio) window.EduAudio.playSelect();
             confetti({
                 particleCount: 35,
                 spread: 45,
@@ -1761,6 +1808,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.faq-question').forEach(question => {
                 question.addEventListener('click', () => {
+                    if (window.EduAudio) window.EduAudio.playTap();
                     const item = question.closest('.faq-item');
                     const wasActive = item.classList.contains('active');
                     
@@ -1775,6 +1823,14 @@
                     }
                 });
             });
+
+            // Global tap feedback for 3D buttons on landing page
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('.btn-3d, .quiz-chip, .pill-tag, .lang-card');
+                if (target && window.EduAudio) {
+                    window.EduAudio.playTap();
+                }
+            }, { passive: true });
 
             // Entrance GSAP Animations
             if (typeof gsap !== 'undefined') {
@@ -1791,5 +1847,6 @@
             }
         });
     </script>
+    <script src="{{ asset('js/audio-engine.js') }}"></script>
 </body>
 </html>

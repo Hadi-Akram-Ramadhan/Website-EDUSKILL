@@ -50,7 +50,7 @@ Route::middleware('guest')->group(function () {
 
 // Quick 1-Click login for instant demo testing
 Route::get('/auth/quick-login/{id}', [WebAuthController::class, 'quickLogin'])->name('auth.quick-login');
-Route::post('/logout', [WebAuthController::class, 'logout'])->name('logout');
+Route::match(['get', 'post'], '/logout', [WebAuthController::class, 'logout'])->name('logout');
 
 // Super Admin Area
 Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -74,6 +74,7 @@ Route::middleware(['auth', 'role:guru'])->prefix('mentor')->name('mentor.')->gro
 
     // Mentor Course Management CRUD
     Route::resource('courses', MentorCourseController::class);
+    Route::post('courses/{course}/toggle-release', [MentorCourseController::class, 'toggleRelease'])->name('courses.toggle-release');
 
     // Curriculum Builder (Units, Lessons, Exercises)
     Route::get('courses/{course}/manage', [MentorLessonController::class, 'manage'])->name('courses.manage');

@@ -41,6 +41,7 @@ class LessonController extends BaseApiController
                 'prompt' => $ex->prompt,
                 'code_snippet' => $ex->code_snippet,
                 'options' => $ex->options_json,
+                'model_3d' => $ex->model_3d_json,
                 'order_index' => $ex->order_index,
             ];
         });

@@ -72,6 +72,7 @@ class MentorExerciseImportTest extends TestCase
         $this->assertStringContainsString('fill_blank', $response->getContent());
         $this->assertStringContainsString('code_ordering', $response->getContent());
         $this->assertStringContainsString('matching_pair', $response->getContent());
+        $this->assertStringContainsString('interactive_3d', $response->getContent());
     }
 
     public function test_mentor_can_download_exercise_template_xlsx(): void
@@ -97,7 +98,7 @@ class MentorExerciseImportTest extends TestCase
         $response->assertStatus(302);
         $response->assertSessionHas('success');
 
-        $this->assertGreaterThanOrEqual(5, $this->lesson->exercises()->count());
+        $this->assertGreaterThanOrEqual(6, $this->lesson->exercises()->count());
     }
 
     public function test_mentor_can_import_exercises_from_csv(): void
@@ -108,6 +109,7 @@ multiple_choice,"Apa tipe data angka bulat di Python?",,"int|float|str|bool","in
 fill_blank,"Lengkapi kode agar mencetak 10:","____(10)","print|echo|write","print","Fungsi print mencetak nilai."
 code_ordering,"Susun baris kode agar mencetak nama:",,"nama = 'Budi'|print(nama)","1|2","Deklarasi variabel sebelum diprint."
 matching_pair,"Jodohkan tipe data dengan contohnya:",,"int => 10|str => 'Halo'","int => 10|str => 'Halo'","int integer, str string."
+interactive_3d,"Tentukan posisi balok hijau pada matriks 3D:",,"matriks[1][0][1]|matriks[0][0][0]","matriks[1][0][1]","Akses array 3D X Y Z."
 CSV;
 
         $file = UploadedFile::fake()->createWithContent('soal_latihan.csv', $csvContent);
@@ -119,7 +121,7 @@ CSV;
         $response->assertStatus(302);
         $response->assertSessionHas('success');
 
-        $this->assertEquals(4, $this->lesson->exercises()->count());
+        $this->assertEquals(5, $this->lesson->exercises()->count());
 
         $mc = Exercise::where('lesson_id', $this->lesson->id)->where('question_type', 'multiple_choice')->first();
         $this->assertNotNull($mc);
@@ -132,6 +134,11 @@ CSV;
         $matching = Exercise::where('lesson_id', $this->lesson->id)->where('question_type', 'matching_pair')->first();
         $this->assertNotNull($matching);
         $this->assertEquals(['int' => '10', 'str' => "'Halo'"], $matching->answer_json);
+
+        $threeD = Exercise::where('lesson_id', $this->lesson->id)->where('question_type', 'interactive_3d')->first();
+        $this->assertNotNull($threeD);
+        $this->assertEquals('matriks[1][0][1]', $threeD->answer_json);
+        $this->assertIsArray($threeD->model_3d_json);
     }
 
     public function test_other_mentor_cannot_import_to_unauthorized_course(): void

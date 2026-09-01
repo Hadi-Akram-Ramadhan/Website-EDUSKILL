@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
     <style>
         :root {
@@ -512,97 +514,16 @@
         {{ $slot }}
     </main>
 
-    <!-- Web Audio Synthesizer Engine -->
+    <!-- Pure Web Audio API Synthesizer & Dynamic Audio Engine -->
+    <script src="{{ asset('js/audio-engine.js') }}"></script>
     <script>
-        window.SoundEngine = {
-            ctx: null,
-            init() {
-                if (!this.ctx) {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    if (AudioContext) this.ctx = new AudioContext();
-                }
-                if (this.ctx && this.ctx.state === 'suspended') {
-                    this.ctx.resume();
-                }
-            },
-            playCorrect() {
-                this.init();
-                if (!this.ctx) return;
-                const now = this.ctx.currentTime;
-                const notes = [523.25, 659.25, 783.99, 1046.50];
-                notes.forEach((freq, i) => {
-                    const osc = this.ctx.createOscillator();
-                    const gain = this.ctx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(freq, now + i * 0.08);
-                    gain.gain.setValueAtTime(0.2, now + i * 0.08);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
-                    osc.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    osc.start(now + i * 0.08);
-                    osc.stop(now + i * 0.08 + 0.3);
-                });
-            },
-            playWrong() {
-                this.init();
-                if (!this.ctx) return;
-                const now = this.ctx.currentTime;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(180, now);
-                osc.frequency.exponentialRampToValueAtTime(110, now + 0.25);
-                gain.gain.setValueAtTime(0.25, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.25);
-            },
-            playTap() {
-                this.init();
-                if (!this.ctx) return;
-                const now = this.ctx.currentTime;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(500, now);
-                osc.frequency.exponentialRampToValueAtTime(900, now + 0.04);
-                gain.gain.setValueAtTime(0.1, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.04);
-            },
-            playVictory() {
-                this.init();
-                if (!this.ctx) return;
-                const now = this.ctx.currentTime;
-                const fanfare = [
-                    { f: 523.25, d: 0.15, t: 0 },
-                    { f: 523.25, d: 0.15, t: 0.15 },
-                    { f: 523.25, d: 0.15, t: 0.3 },
-                    { f: 659.25, d: 0.4, t: 0.45 },
-                    { f: 783.99, d: 0.2, t: 0.9 },
-                    { f: 1046.50, d: 0.8, t: 1.1 }
-                ];
-                fanfare.forEach(n => {
-                    const osc = this.ctx.createOscillator();
-                    const gain = this.ctx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(n.f, now + n.t);
-                    gain.gain.setValueAtTime(0.25, now + n.t);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
-                    osc.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    osc.start(now + n.t);
-                    osc.stop(now + n.t + n.d);
-                });
+        // Global interactive feedback for 3D buttons, navigation, and pills
+        document.addEventListener('click', (e) => {
+            const target = e.target.closest('.btn-3d, .nav-item, .roadmap-node, .pill-tab, .opt-chip, .btn-action');
+            if (target && window.EduAudio) {
+                window.EduAudio.playTap();
             }
-        };
-
-        document.addEventListener('click', () => window.SoundEngine.init(), { once: true });
+        }, { passive: true });
     </script>
 </body>
 </html>
