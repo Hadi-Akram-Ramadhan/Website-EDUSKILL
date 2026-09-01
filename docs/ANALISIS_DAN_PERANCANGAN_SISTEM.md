@@ -301,7 +301,7 @@ erDiagram
 
 ```mermaid
 flowchart TD
-    subgraph TERMINATORS [Entitas Luar / External Entities]
+    subgraph TERMINATORS ["Entitas Luar / External Entities"]
         SISWA["👤 SISWA (STUDENT)"]
         GURU["👨‍🏫 GURU / MENTOR"]
         ADMIN["🛡️ SUPER ADMIN"]
@@ -495,16 +495,16 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start([Mulai: Buka Aplikasi EduSkill]) --> OpenLogin[/Akses Halaman Login/]
-    OpenLogin --> InputCred[/Input Email & Password/]
-    InputCred --> CheckAuth{Kredensial Valid?}
+    Start(["Mulai: Buka Aplikasi EduSkill"]) --> OpenLogin[/"Akses Halaman Login"/]
+    OpenLogin --> InputCred[/"Input Email & Password"/]
+    InputCred --> CheckAuth{"Kredensial Valid?"}
     
-    CheckAuth -- Tidak --> AlertErr[/Tampilkan Pesan 'Email atau Password Salah'/] --> OpenLogin
-    CheckAuth -- Ya --> CheckRole{Cek Hak Akses (Role)}
+    CheckAuth -- "Tidak" --> AlertErr[/"Tampilkan Pesan Error: Email atau Password Salah"/] --> OpenLogin
+    CheckAuth -- "Ya" --> CheckRole{"Cek Hak Akses (Role)"}
     
-    CheckRole -- super_admin --> DashAdmin[Redirect ke Dashboard Super Admin] --> EndAdmin([Selesai])
-    CheckRole -- guru --> DashMentor[Redirect ke Dashboard Guru / Mentor] --> EndMentor([Selesai])
-    CheckRole -- siswa --> LearnRoadmap[Redirect ke Halaman Belajar Siswa] --> EndSiswa([Selesai])
+    CheckRole -- "super_admin" --> DashAdmin["Redirect ke Dashboard Super Admin"] --> EndAdmin(["Selesai"])
+    CheckRole -- "guru" --> DashMentor["Redirect ke Dashboard Guru / Mentor"] --> EndMentor(["Selesai"])
+    CheckRole -- "siswa" --> LearnRoadmap["Redirect ke Halaman Belajar Siswa"] --> EndSiswa(["Selesai"])
 ```
 
 ---
@@ -513,39 +513,39 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start([Mulai: Siswa Memilih Modul]) --> CheckHearts{Nyawa (Hearts) > 0?}
+    Start(["Mulai: Siswa Memilih Modul"]) --> CheckHearts{"Nyawa (Hearts) > 0?"}
     
     %% Alur Habis Nyawa
-    CheckHearts -- Tidak --> CheckGems{Gems >= 20?}
-    CheckGems -- Ya --> ModalRefill[/Tampilkan Opsi: Tukar 20 Gems untuk Isi Penuh Nyawa/]
-    ModalRefill --> ConfirmRefill{Siswa Menyetujui?}
-    ConfirmRefill -- Ya --> DoRefill[Potong 20 Gems, Reset Hearts = 5] --> Start
-    ConfirmRefill -- Tidak --> WaitRefill[Tunggu Regenerasi Nyawa Otomatis] --> EndFinish([Selesai])
-    CheckGems -- Tidak --> WaitRefill
+    CheckHearts -- "Tidak" --> CheckGems{"Gems >= 20?"}
+    CheckGems -- "Ya" --> ModalRefill[/"Tampilkan Opsi: Tukar 20 Gems untuk Isi Penuh Nyawa"/]
+    ModalRefill --> ConfirmRefill{"Siswa Menyetujui?"}
+    ConfirmRefill -- "Ya" --> DoRefill["Potong 20 Gems, Reset Hearts = 5"] --> Start
+    ConfirmRefill -- "Tidak" --> WaitRefill["Tunggu Regenerasi Nyawa Otomatis"] --> EndFinish(["Selesai"])
+    CheckGems -- "Tidak" --> WaitRefill
     
     %% Alur Mulai Latihan
-    CheckHearts -- Ya --> LoadExercise[Inisialisasi Lesson Runner & Objek 3D]
-    LoadExercise --> ShowQuestion[/Tampilkan Soal, Editor Kode, & Model 3D Interaktif/]
-    ShowQuestion --> UserAnswer[/Siswa Memilih Jawaban / Mengatur Posisi 3D/]
-    UserAnswer --> ClickSubmit[/Klik Tombol 'Periksa Jawaban'/]
+    CheckHearts -- "Ya" --> LoadExercise["Inisialisasi Lesson Runner & Objek 3D"]
+    LoadExercise --> ShowQuestion[/"Tampilkan Soal, Editor Kode, & Model 3D Interaktif"/]
+    ShowQuestion --> UserAnswer[/"Siswa Memilih Jawaban / Mengatur Posisi 3D"/]
+    UserAnswer --> ClickSubmit[/"Klik Tombol 'Periksa Jawaban'"/]
     
-    ClickSubmit --> EvaluateAnswer{Jawaban Benar?}
+    ClickSubmit --> EvaluateAnswer{"Jawaban Benar?"}
     
     %% Evaluasi Salah
-    EvaluateAnswer -- Tidak --> DeductHeart[Kurangi 1 Heart, Mainkan Suara Error]
-    DeductHeart --> ShowExplain[/Tampilkan Pembahasan Soal/]
-    ShowExplain --> CheckHeartsLeft{Sisa Hearts > 0?}
-    CheckHeartsLeft -- Ya --> RetryQuestion[/Coba Kerjakan Ulang Soal/] --> ShowQuestion
-    CheckHeartsLeft -- Tidak --> ShowOutModal[/Tampilkan Modal 'Nyawa Habis'/] --> EndFinish
+    EvaluateAnswer -- "Tidak" --> DeductHeart["Kurangi 1 Heart, Mainkan Suara Error"]
+    DeductHeart --> ShowExplain[/"Tampilkan Pembahasan Soal"/]
+    ShowExplain --> CheckHeartsLeft{"Sisa Hearts > 0?"}
+    CheckHeartsLeft -- "Ya" --> RetryQuestion[/"Coba Kerjakan Ulang Soal"/] --> ShowQuestion
+    CheckHeartsLeft -- "Tidak" --> ShowOutModal[/"Tampilkan Modal 'Nyawa Habis'"/] --> EndFinish
     
     %% Evaluasi Benar
-    EvaluateAnswer -- Ya --> PlaySuccess[Mainkan Efek Suara Sukses & Animasi Kemenangan]
-    PlaySuccess --> AddRewards[Tambah XP, Catat Skor, Update Streak Harian]
-    AddRewards --> SaveProgressDB[(Database: Simpan user_progress is_completed = true)]
-    SaveProgressDB --> CheckAllCompleted{Seluruh Modul Kursus 100% Selesai?}
+    EvaluateAnswer -- "Ya" --> PlaySuccess["Mainkan Efek Suara Sukses & Animasi Kemenangan"]
+    PlaySuccess --> AddRewards["Tambah XP, Catat Skor, Update Streak Harian"]
+    AddRewards --> SaveProgressDB[("Database: Simpan user_progress is_completed = true")]
+    SaveProgressDB --> CheckAllCompleted{"Seluruh Modul Kursus 100% Selesai?"}
     
-    CheckAllCompleted -- Ya --> EnableCertClaim[/Tombol 'Klaim Sertifikat' Aktif di Roadmap/]
-    CheckAllCompleted -- Tidak --> NextModuleBtn[/Lanjut ke Modul Berikutnya di Roadmap/]
+    CheckAllCompleted -- "Ya" --> EnableCertClaim[/"Tombol 'Klaim Sertifikat' Aktif di Roadmap"/]
+    CheckAllCompleted -- "Tidak" --> NextModuleBtn[/"Lanjut ke Modul Berikutnya di Roadmap"/]
     
     EnableCertClaim --> EndFinish
     NextModuleBtn --> EndFinish
@@ -557,41 +557,41 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    StartM([Mulai: Guru Buka Kelola Kurikulum]) --> ViewManage[Buka Halaman Kursus]
-    ViewManage --> SelectAction{Pilih Aksi Guru}
+    StartM(["Mulai: Guru Buka Kelola Kurikulum"]) --> ViewManage["Buka Halaman Kursus"]
+    ViewManage --> SelectAction{"Pilih Aksi Guru"}
     
     %% Tambah Unit / Modul
-    SelectAction -- Tambah Bab / Modul --> FormUnitLesson[/Input Judul Bab & Flag Mini Project/]
-    FormUnitLesson --> SaveUnitDB[(Database: Simpan Unit & Lesson)] --> RefreshUI[Refresh Daftar Kurikulum]
+    SelectAction -- "Tambah Bab / Modul" --> FormUnitLesson[/"Input Judul Bab & Flag Mini Project"/]
+    FormUnitLesson --> SaveUnitDB[("Database: Simpan Unit & Lesson")] --> RefreshUI["Refresh Daftar Kurikulum"]
     
     %% Import Excel
-    SelectAction -- Import Excel Soal --> DownloadTemplate[/Download File Template XLSX/CSV/]
-    DownloadTemplate --> FillExcelData[/Guru Mengisi Daftar Soal di Excel/]
-    FillExcelData --> UploadExcel[/Upload File XLSX ke Modul Target/]
-    UploadExcel --> ParseExcel{Format & Header Valid?}
-    ParseExcel -- Tidak --> ShowImportError[/Tampilkan Notifikasi Baris yang Salah/] --> UploadExcel
-    ParseExcel -- Ya --> BatchInsertDB[(Database: Batch Insert Seluruh Soal)] --> RefreshUI
+    SelectAction -- "Import Excel Soal" --> DownloadTemplate[/"Download File Template XLSX/CSV"/]
+    DownloadTemplate --> FillExcelData[/"Guru Mengisi Daftar Soal di Excel"/]
+    FillExcelData --> UploadExcel[/"Upload File XLSX ke Modul Target"/]
+    UploadExcel --> ParseExcel{"Format & Header Valid?"}
+    ParseExcel -- "Tidak" --> ShowImportError[/"Tampilkan Notifikasi Baris yang Salah"/] --> UploadExcel
+    ParseExcel -- "Ya" --> BatchInsertDB[("Database: Batch Insert Seluruh Soal")] --> RefreshUI
     
     %% Buat Soal Manual & 3D Studio
-    SelectAction -- Buat Soal Interaktif --> ChooseType[/Pilih Tipe: 3D Interaktif / MCQ / Isian / Susun / Pasangan/]
-    ChooseType --> CheckIs3D{Tipe == 3D Interaktif?}
+    SelectAction -- "Buat Soal Interaktif" --> ChooseType[/"Pilih Tipe: 3D Interaktif / MCQ / Isian / Susun / Pasangan"/]
+    ChooseType --> CheckIs3D{"Tipe == 3D Interaktif?"}
     
-    CheckIs3D -- Ya --> Set3DOptions[/Pilih Preset Geometri, Animasi, Warna, Target X/Y/Z/]
-    Set3DOptions --> RealtimeRender[Three.js Engine Render Preview Real-Time]
-    RealtimeRender --> InputQuestions[/Isi Pertanyaan, Pilihan A-D, & Kunci/]
+    CheckIs3D -- "Ya" --> Set3DOptions[/"Pilih Preset Geometri, Animasi, Warna, Target X/Y/Z"/]
+    Set3DOptions --> RealtimeRender["Three.js Engine Render Preview Real-Time"]
+    RealtimeRender --> InputQuestions[/"Isi Pertanyaan, Pilihan A-D, & Kunci"/]
     
-    CheckIs3D -- Tidak --> InputStandard[/Isi Pertanyaan & Pilihan Jawaban Standar/]
+    CheckIs3D -- "Tidak" --> InputStandard[/"Isi Pertanyaan & Pilihan Jawaban Standar"/]
     
-    InputQuestions --> ClickSaveEx[/Klik Simpan Soal/]
+    InputQuestions --> ClickSaveEx[/"Klik Simpan Soal"/]
     InputStandard --> ClickSaveEx
-    ClickSaveEx --> SaveExDB[(Database: Simpan exercises)] --> RefreshUI
+    ClickSaveEx --> SaveExDB[("Database: Simpan exercises")] --> RefreshUI
     
     %% Rilis Roadmap
-    RefreshUI --> WantRelease{Rilis Kursus ke Siswa?}
-    WantRelease -- Ya --> SetPublish[Update courses: is_published = true, is_upcoming = false]
-    WantRelease -- Tidak --> SetDraft[Update courses: is_upcoming = true / Draft]
+    RefreshUI --> WantRelease{"Rilis Kursus ke Siswa?"}
+    WantRelease -- "Ya" --> SetPublish["Update courses: is_published = true, is_upcoming = false"]
+    WantRelease -- "Tidak" --> SetDraft["Update courses: is_upcoming = true / Draft"]
     
-    SetPublish --> EndM([Selesai])
+    SetPublish --> EndM(["Selesai"])
     SetDraft --> EndM
 ```
 
@@ -601,19 +601,19 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    StartA([Mulai: Super Admin Login]) --> AdminDash[Buka Admin Control Panel]
-    AdminDash --> ChooseAdminMenu{Pilih Menu Kelola}
+    StartA(["Mulai: Super Admin Login"]) --> AdminDash["Buka Admin Control Panel"]
+    AdminDash --> ChooseAdminMenu{"Pilih Menu Kelola"}
     
-    ChooseAdminMenu -- Manajemen Pengguna --> ViewUsers[/Lihat Daftar Seluruh User/]
-    ViewUsers --> UserAction{Aksi User}
-    UserAction -- Ubah Role --> ChangeRole[Ubah Role Siswa/Guru/Admin] --> SaveUserDB[(Update Database Users)]
-    UserAction -- Reset Password --> ResetPass[Generate Password Baru] --> SaveUserDB
-    UserAction -- Hapus Akun --> DeleteUser[Hapus User Beserta Relasi] --> SaveUserDB
+    ChooseAdminMenu -- "Manajemen Pengguna" --> ViewUsers[/"Lihat Daftar Seluruh User"/]
+    ViewUsers --> UserAction{"Aksi User"}
+    UserAction -- "Ubah Role" --> ChangeRole["Ubah Role Siswa/Guru/Admin"] --> SaveUserDB[("Update Database Users")]
+    UserAction -- "Reset Password" --> ResetPass["Generate Password Baru"] --> SaveUserDB
+    UserAction -- "Hapus Akun" --> DeleteUser["Hapus User Beserta Relasi"] --> SaveUserDB
     
-    ChooseAdminMenu -- Monitoring Kursus --> ViewCourses[/Lihat Seluruh Kursus Platform/]
-    ViewCourses --> CourseAction{Aksi Kursus}
-    CourseAction -- Verifikasi Kelayakan --> ApproveCourse[Setujui / Publikasikan Kursus] --> SaveCourseDB[(Update Database Courses)]
-    CourseAction -- Hapus Kursus Tidak Sesuai --> DropCourse[Hapus Kursus] --> SaveCourseDB
+    ChooseAdminMenu -- "Monitoring Kursus" --> ViewCourses[/"Lihat Seluruh Kursus Platform"/]
+    ViewCourses --> CourseAction{"Aksi Kursus"}
+    CourseAction -- "Verifikasi Kelayakan" --> ApproveCourse["Setujui / Publikasikan Kursus"] --> SaveCourseDB[("Update Database Courses")]
+    CourseAction -- "Hapus Kursus Tidak Sesuai" --> DropCourse["Hapus Kursus"] --> SaveCourseDB
     
     SaveUserDB --> AdminDash
     SaveCourseDB --> AdminDash
@@ -625,28 +625,28 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    StartV([Mulai: Pihak Ketiga Ingin Memverifikasi Sertifikat]) --> ChooseMethod{Metode Pengecekan}
+    StartV(["Mulai: Pihak Ketiga Ingin Memverifikasi Sertifikat"]) --> ChooseMethod{"Metode Pengecekan"}
     
     %% Melalui QR
-    ChooseMethod -- Scan QR Code --> ScanQR[/Scan QR Code di Sertifikat Cetak/PDF/]
-    ScanQR --> ExtractHash[Ambil URL /certificate/verify/{hash}]
+    ChooseMethod -- "Scan QR Code" --> ScanQR[/"Scan QR Code di Sertifikat Cetak/PDF"/]
+    ScanQR --> ExtractHash["Ambil URL /certificate/verify/{hash}"]
     
     %% Melalui Input Manual
-    ChooseMethod -- Input Kode / Hash --> OpenVerifyPage[/Buka Halaman Web Verifikasi Sertifikat/]
-    OpenVerifyPage --> InputHashOrCode[/Masukkan Kode Sertifikat / Hash SHA-256/]
+    ChooseMethod -- "Input Kode / Hash" --> OpenVerifyPage[/"Buka Halaman Web Verifikasi Sertifikat"/]
+    OpenVerifyPage --> InputHashOrCode[/"Masukkan Kode Sertifikat / Hash SHA-256"/]
     InputHashOrCode --> ExtractHash
     
-    ExtractHash --> QueryCert[(Database: Cari di Tabel certificates berdasarkan cert_hash / cert_code)]
-    QueryCert --> FoundCert{Data Ditemukan & is_valid == true?}
+    ExtractHash --> QueryCert[("Database: Cari di Tabel certificates berdasarkan cert_hash / cert_code")]
+    QueryCert --> FoundCert{"Data Ditemukan & is_valid == true?"}
     
     %% Hasil Valid
-    FoundCert -- Ya --> DisplayValidBadge[/Tampilkan Badge Hijau: RESMI & TERVERIFIKASI/]
-    DisplayValidBadge --> RenderDetails[/Tampilkan: Nama Siswa, Judul Kursus, Nilai Rata-rata, Tanggal Terbit, & Nama Guru/]
+    FoundCert -- "Ya" --> DisplayValidBadge[/"Tampilkan Badge Hijau: RESMI & TERVERIFIKASI"/]
+    DisplayValidBadge --> RenderDetails[/"Tampilkan: Nama Siswa, Judul Kursus, Nilai Rata-rata, Tanggal Terbit, & Nama Guru"/]
     
     %% Hasil Tidak Valid
-    FoundCert -- Tidak --> DisplayInvalidBadge[/Tampilkan Badge Merah: SERTIFIKAT TIDAK DITEMUKAN / TIDAK VALID/]
+    FoundCert -- "Tidak" --> DisplayInvalidBadge[/"Tampilkan Badge Merah: SERTIFIKAT TIDAK DITEMUKAN / TIDAK VALID"/]
     
-    RenderDetails --> EndV([Selesai])
+    RenderDetails --> EndV(["Selesai"])
     DisplayInvalidBadge --> EndV
 ```
 
