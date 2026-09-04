@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flowchart Terpadu Sistem EduSkill - Visual & Export Tool</title>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <style>
     :root {
       --primary: #4f46e5;
@@ -70,19 +69,19 @@
       transition: all 0.2s ease;
       text-decoration: none;
     }
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-    .btn-primary:hover {
-      background: var(--primary-hover);
-    }
     .btn-success {
       background: #10b981;
       color: white;
     }
     .btn-success:hover {
       background: #059669;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
     }
     .btn-secondary {
       background: white;
@@ -92,6 +91,18 @@
     .btn-secondary:hover {
       background: #f1f5f9;
     }
+    .tip-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
     .viewer-card {
       background: var(--card);
       border-radius: 12px;
@@ -100,11 +111,13 @@
       border: 1px solid var(--border);
       overflow: auto;
       text-align: center;
-      min-height: 500px;
     }
-    #diagram-container {
-      display: inline-block;
-      margin: 0 auto;
+    .flowchart-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      background: white;
     }
     #notification {
       position: fixed;
@@ -133,184 +146,28 @@
   <div class="container">
     <div class="header">
       <div>
-        <h1>Flowchart Terpadu Sistem EduSkill (Visual & Export)</h1>
-        <p>Bisa langsung salin sebagai gambar ke Microsoft Word / Google Docs atau unduh PNG beresolusi tinggi.</p>
+        <h1>Flowchart Terpadu Sistem EduSkill</h1>
+        <p>File gambar siap pakai sudah di-generate di folder <code>docs/</code>.</p>
       </div>
       <div class="actions">
-        <button class="btn-success" onclick="copyImageToClipboard()">📋 Salin Gambar ke Clipboard (Word/Docs)</button>
-        <button class="btn-primary" onclick="downloadPNG()">📥 Download PNG (HD)</button>
-        <button class="btn-secondary" onclick="downloadSVG()">📥 Download SVG (Vektor)</button>
-        <a href="https://mermaid.live" target="_blank" class="btn btn-secondary">🌐 Buka di Mermaid Live Editor</a>
+        <button class="btn-success" onclick="copyImageToClipboard()">📋 Salin Gambar ke Clipboard</button>
+        <a href="flowchart_eduskill_terpadu.png" download="flowchart_eduskill_terpadu.png" class="btn btn-primary">📥 Download PNG (HD)</a>
+        <a href="flowchart_eduskill_terpadu.svg" download="flowchart_eduskill_terpadu.svg" class="btn btn-secondary">📥 Download SVG (Vektor)</a>
       </div>
     </div>
 
+    <div class="tip-banner">
+      💡 <strong>Tips Buat Word / Google Docs:</strong> Lo bisa langsung klik kanan gambar di bawah terus pilih <em>"Copy Image"</em> (Salin Gambar), lalu tekan <strong>Ctrl + V</strong> di Microsoft Word atau Google Docs lo! Atau bisa langsung drag & drop file <code>docs/flowchart_eduskill_terpadu.png</code> ke Word.
+    </div>
+
     <div class="viewer-card">
-      <div id="diagram-container">
-        <pre class="mermaid" id="mermaid-code">
-flowchart TD
-    %% TITIK AWAL
-    Start(["Mulai: Akses Platform EduSkill"]) --> ChoiceEntry{"Akses Pengguna"}
-
-    %% ==========================================
-    %% 1. GERBANG AUTENTIKASI & AKSES
-    %% ==========================================
-    subgraph SG_AUTH ["🔐 1. Gerbang Akses & Autentikasi Sistem"]
-        ChoiceEntry -- "Akses Akun / Login" --> OpenLogin[/"Halaman Login: Input Email & Password"/]
-        OpenLogin --> CheckAuth{"Kredensial Valid?"}
-        CheckAuth -- "Tidak" --> AlertErr[/"Pesan Error: Akun / Password Tidak Cocok"/] --> OpenLogin
-        CheckAuth -- "Ya" --> CheckRole{"Cek Hak Akses (Role)"}
-    end
-
-    %% ==========================================
-    %% 2. SUB-SISTEM SUPER ADMIN
-    %% ==========================================
-    subgraph SG_ADMIN ["⚙️ 2. Sub-Sistem Super Admin (Control Panel)"]
-        CheckRole -- "Role: super_admin" --> DashAdmin["Dashboard Super Admin"]
-        DashAdmin --> ChooseAdminMenu{"Pilih Menu Kelola"}
-        
-        ChooseAdminMenu -- "Manajemen User" --> ViewUsers[/"Lihat Daftar Pengguna Platform"/]
-        ViewUsers --> UserAction{"Pilih Tindakan"}
-        UserAction -- "Ubah Role" --> ChangeRole["Ubah Role (Siswa / Guru / Admin)"] --> SaveUserDB[("Database: Update users")]
-        UserAction -- "Reset Password" --> ResetPass["Generate Ulang Password"] --> SaveUserDB
-        UserAction -- "Hapus Akun" --> DeleteUser["Hapus User & Relasi Data"] --> SaveUserDB
-        SaveUserDB --> ReturnAdminDash["Kembali ke Dashboard Admin"] --> DashAdmin
-
-        ChooseAdminMenu -- "Monitoring Kursus" --> ViewCourses[/"Review Seluruh Kursus & Modul"/]
-        ViewCourses --> CourseAction{"Pilih Status Kursus"}
-        CourseAction -- "Verifikasi & Publish" --> ApproveCourse["Set Published: Aktifkan untuk Siswa"] --> SaveCourseDB[("Database: Update courses")]
-        CourseAction -- "Hapus Kursus" --> DropCourse["Hapus Kursus Pelanggaran"] --> SaveCourseDB
-        SaveCourseDB --> ReturnAdminDash
-        
-        DashAdmin --> LogoutAdmin[/"Logout dari Sistem"/]
-    end
-
-    %% ==========================================
-    %% 3. SUB-SISTEM GURU / MENTOR
-    %% ==========================================
-    subgraph SG_MENTOR ["👨‍🏫 3. Sub-Sistem Guru & Mentor (Manajemen Konten)"]
-        CheckRole -- "Role: guru" --> DashMentor["Dashboard Guru / Mentor"]
-        DashMentor --> SelectAction{"Pilih Aksi Manajemen Kursus"}
-
-        %% Tambah Modul
-        SelectAction -- "Tambah Bab / Modul" --> FormUnitLesson[/"Input Judul Modul, Deskripsi, & Mini Project"/]
-        FormUnitLesson --> SaveUnitDB[("Database: Simpan units & lessons")] --> RefreshMentorUI["Refresh Struktur Kurikulum"]
-
-        %% Import Excel
-        SelectAction -- "Import Excel Soal" --> DownloadTemplate[/"Download Template XLSX Soal"/]
-        DownloadTemplate --> FillExcelData[/"Guru Mengisi Data Soal di Spreadsheet"/]
-        FillExcelData --> UploadExcel[/"Upload File XLSX ke Modul Target"/]
-        UploadExcel --> ParseExcel{"Validasi Kolom & Data?"}
-        ParseExcel -- "Tidak" --> ShowImportErr[/"Notifikasi Error Format Baris"/] --> UploadExcel
-        ParseExcel -- "Ya" --> BatchInsertDB[("Database: Batch Insert exercises")] --> RefreshMentorUI
-
-        %% Studio 3D & Soal Interaktif
-        SelectAction -- "Buat Soal Interaktif" --> ChooseExType[/"Pilih Tipe: 3D Interaktif / MCQ / Isian / Pasangan"/]
-        ChooseExType --> CheckIs3D{"Tipe == 3D Interaktif?"}
-        CheckIs3D -- "Ya" --> Set3DOptions[/"Atur Geometri, Animasi, Warna, & Koordinat Target"/]
-        Set3DOptions --> RealtimeRender["Three.js Engine Render Preview Interaktif"]
-        RealtimeRender --> InputQuestions[/"Input Pertanyaan, Pilihan, & Kunci Jawaban"/]
-        CheckIs3D -- "Tidak" --> InputQuestions
-        InputQuestions --> ClickSaveEx[/"Klik Simpan Soal"/]
-        ClickSaveEx --> SaveExDB[("Database: Simpan exercises")] --> RefreshMentorUI
-
-        %% Publish Roadmap
-        RefreshMentorUI --> WantRelease{"Publikasikan Kursus?"}
-        WantRelease -- "Ya" --> SetPublish["Update courses: is_published = true"] --> FinishMentorAction["Perubahan Tersimpan Aktif"]
-        WantRelease -- "Tidak" --> SetDraft["Simpan sebagai Draft"] --> FinishMentorAction
-        FinishMentorAction --> DashMentor
-        DashMentor --> LogoutMentor[/"Logout dari Sistem"/]
-    end
-
-    %% ==========================================
-    %% 4. SUB-SISTEM SISWA (BELAJAR & GAMIFIKASI)
-    %% ==========================================
-    subgraph SG_SISWA ["🎓 4. Sub-Sistem Siswa (Belajar, Kuis 3D, & Gamifikasi)"]
-        CheckRole -- "Role: siswa" --> LearnRoadmap["Buka Roadmap Belajar Kursus"]
-        LearnRoadmap --> SelectLesson[/"Pilih Modul / Level Pembelajaran"/]
-        
-        SelectLesson --> CheckHearts{"Nyawa (Hearts) > 0?"}
-        
-        %% Habis Nyawa & Refill Gems
-        CheckHearts -- "Tidak" --> CheckGems{"Gems >= 20?"}
-        CheckGems -- "Ya" --> ModalRefill[/"Opsi: Tukar 20 Gems untuk Full Hearts"/]
-        ModalRefill --> ConfirmRefill{"Setuju Tukar?"}
-        ConfirmRefill -- "Ya" --> DoRefill["Potong 20 Gems & Reset Hearts = 5"] --> CheckHearts
-        ConfirmRefill -- "Tidak" --> WaitRefill["Tunggu Timer Regenerasi Otomatis"] --> LogoutSiswa[/"Keluar Sesi Belajar"/]
-        CheckGems -- "Tidak" --> WaitRefill
-
-        %% Mulai Mengerjakan
-        CheckHearts -- "Ya" --> LoadLesson["Inisialisasi Lesson Runner & Objek 3D"]
-        LoadLesson --> ShowQuestion[/"Tampilkan Konten Teori, Soal, & Canvas 3D"/]
-        ShowQuestion --> UserAnswer[/"Siswa Mengisi / Menjawab / Manipulasi Objek 3D"/]
-        UserAnswer --> SubmitAnswer[/"Klik 'Periksa Jawaban'"/]
-        SubmitAnswer --> EvalAnswer{"Jawaban Benar?"}
-
-        %% Evaluasi Jawaban Salah
-        EvalAnswer -- "Tidak" --> DeductHeart["Hearts - 1 & Mainkan Audio Error"]
-        DeductHeart --> ShowExplanation[/"Tampilkan Pembahasan Kunci Jawaban"/]
-        ShowExplanation --> CheckHeartsLeft{"Sisa Hearts > 0?"}
-        CheckHeartsLeft -- "Ya" --> RetryQuestion[/"Ulangi / Coba Kembali Soal"/] --> ShowQuestion
-        CheckHeartsLeft -- "Tidak" --> ShowOutModal[/"Modal: Nyawa Habis!"/] --> ModalRefill
-
-        %% Evaluasi Jawaban Benar
-        EvalAnswer -- "Ya" --> RewardExp["Reward: +XP, +Streak Harian, & Audio Sukses"]
-        RewardExp --> SaveProgress[("Database: user_progress status = completed")]
-        SaveProgress --> CheckCourseDone{"Seluruh Modul Kursus Selesai (100%)?"}
-        
-        CheckCourseDone -- "Tidak" --> NextLessonBtn[/"Lanjut ke Level / Modul Berikutnya"/] --> LearnRoadmap
-        CheckCourseDone -- "Ya" --> UnlockCertClaim[/"Buka Kunci Tombol 'Klaim Sertifikat'"/]
-    end
-
-    %% ==========================================
-    %% 5. SUB-SISTEM SERTIFIKAT & VERIFIKASI PUBLIK
-    %% ==========================================
-    subgraph SG_CERT ["📜 5. Sub-Sistem Penerbitan & Verifikasi Sertifikat Digital"]
-        UnlockCertClaim --> RequestClaim[/"Siswa Klik 'Klaim Sertifikat'"/]
-        RequestClaim --> CalcScore["Hitung Skor Rata-rata & Generate Kode Sertifikat"]
-        CalcScore --> GenHashQR["Generate SHA-256 Hash Unik & Dynamic QR Code"]
-        GenHashQR --> SaveCertDB[("Database: Simpan ke tabel certificates")]
-        SaveCertDB --> DownloadCert[/"Siswa Mengunduh / Mencetak Sertifikat Ber-QR Code"/]
-        DownloadCert --> EndLearn(["Siswa Menyelesaikan Kursus"])
-
-        %% Verifikasi Publik
-        ChoiceEntry -- "Akses Publik (Verifikasi Sertifikat)" --> PublicVerify[/"Akses Halaman Verifikasi Sertifikat"/]
-        PublicVerify --> VerifyMethod{"Pilih Jalur Verifikasi"}
-        VerifyMethod -- "Scan QR Code" --> ScanQR[/"Scan QR Code pada Fisik/PDF Sertifikat"/] --> ExtractHash["Ekstrak Parameter Hash SHA-256"]
-        VerifyMethod -- "Input Manual" --> InputCode[/"Input Nomor / Kode Sertifikat di Form Web"/] --> ExtractHash
-        
-        ExtractHash --> QueryCertDB[("Database: Cari di certificates WHERE cert_hash / cert_code")]
-        QueryCertDB --> CheckCertValid{"Data Ditemukan & Status Valid?"}
-        
-        CheckCertValid -- "Ya" --> DisplayValid[/"Status: ASLI & RESMI TERVERIFIKASI<br/>Detail: Nama Siswa, Kursus, Nilai, Tanggal, & Guru"/]
-        CheckCertValid -- "Tidak" --> DisplayInvalid[/"Status: PERINGATAN! SERTIFIKAT TIDAK VALID ATAU TIDAK DITEMUKAN"/]
-    end
-
-    %% TERMINATOR SELESAI
-    LogoutAdmin --> EndSystem(["Selesai / Logout"])
-    LogoutMentor --> EndSystem
-    LogoutSiswa --> EndSystem
-    EndLearn --> EndSystem
-    DisplayValid --> EndVerify(["Selesai Verifikasi"])
-    DisplayInvalid --> EndVerify
-        </pre>
-      </div>
+      <img src="flowchart_eduskill_terpadu.png" alt="Flowchart Terpadu EduSkill" class="flowchart-img" id="flowchart-img" />
     </div>
   </div>
 
   <div id="notification">Pemberitahuan</div>
 
   <script>
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'default',
-      securityLevel: 'loose',
-      flowchart: {
-        useMaxWidth: false,
-        htmlLabels: true,
-        curve: 'basis'
-      }
-    });
-
     function showNotice(msg) {
       const el = document.getElementById('notification');
       el.textContent = msg;
@@ -318,85 +175,19 @@ flowchart TD
       setTimeout(() => el.classList.remove('show'), 3000);
     }
 
-    function getSvgElement() {
-      return document.querySelector('#diagram-container svg');
-    }
-
-    function downloadSVG() {
-      const svg = getSvgElement();
-      if (!svg) return alert('Diagram belum selesai dirender.');
-      
-      const serializer = new XMLSerializer();
-      let source = serializer.serializeToString(svg);
-      
-      if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
-        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
-      }
-
-      const blob = new Blob([source], {type: "image/svg+xml;charset=utf-8"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "flowchart_eduskill_terpadu.svg";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showNotice('SVG berhasil diunduh!');
-    }
-
-    function renderToCanvas(callback) {
-      const svg = getSvgElement();
-      if (!svg) return alert('Diagram belum selesai dirender.');
-
-      const serializer = new XMLSerializer();
-      let source = serializer.serializeToString(svg);
-      const svgBlob = new Blob([source], {type: "image/svg+xml;charset=utf-8"});
-      const url = URL.createObjectURL(svgBlob);
-
-      const img = new Image();
-      img.onload = function() {
-        const scale = 2; // High resolution
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        URL.revokeObjectURL(url);
-        callback(canvas);
-      };
-      img.src = url;
-    }
-
-    function downloadPNG() {
-      showNotice('Sedang mengonversi gambar HD...');
-      renderToCanvas((canvas) => {
-        const a = document.createElement("a");
-        a.href = canvas.toDataURL("image/png");
-        a.download = "flowchart_eduskill_terpadu.png";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        showNotice('PNG berhasil diunduh!');
-      });
-    }
-
     async function copyImageToClipboard() {
-      showNotice('Menyiapkan gambar ke clipboard...');
-      renderToCanvas(async (canvas) => {
-        try {
-          canvas.toBlob(async (blob) => {
-            await navigator.clipboard.write([
-              new ClipboardItem({ 'image/png': blob })
-            ]);
-            showNotice('Gambar berhasil disalin ke Clipboard! Tinggal Ctrl+V di Word / Docs.');
-          });
-        } catch (err) {
-          console.error(err);
-          showNotice('Gagal menyalin otomatis. Gunakan tombol Download PNG.');
-        }
-      });
+      try {
+        const img = document.getElementById('flowchart-img');
+        const response = await fetch(img.src);
+        const blob = await response.blob();
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': blob })
+        ]);
+        showNotice('✅ Gambar berhasil disalin ke Clipboard! Tinggal Ctrl + V di Word.');
+      } catch (err) {
+        console.warn('Clipboard write failed, using canvas fallback...', err);
+        showNotice('⚠️ Silakan klik kanan gambar di bawah lalu pilih "Copy Image" / "Salin Gambar".');
+      }
     }
   </script>
 </body>
