@@ -376,4 +376,84 @@ class GamificationService
             ->limit($limit)
             ->get(['id', 'name', 'avatar', 'xp', 'level', 'streak_count']);
     }
+
+    /**
+     * Get Developer League Tier Details by XP.
+     */
+    public static function getTierDetails(int $xp): array
+    {
+        if ($xp >= 3000) {
+            return [
+                'name' => 'Cyber Master',
+                'tier_code' => 'cyber_master',
+                'color' => '#9333ea',
+                'bg' => '#faf5ff',
+                'border' => '#d8b4fe',
+                'progress' => 100,
+                'target_xp' => 3000,
+                'desc' => 'Puncak Tertinggi Developer',
+                'badge_icon' => 'crown',
+            ];
+        } elseif ($xp >= 1500) {
+            return [
+                'name' => 'Diamond Hacker',
+                'tier_code' => 'diamond_hacker',
+                'color' => '#0284c7',
+                'bg' => '#f0f9ff',
+                'border' => '#7dd3fc',
+                'progress' => min(100, (int) round((($xp - 1500) / 1500) * 100)),
+                'target_xp' => 3000,
+                'desc' => (3000 - $xp).' XP menuju Cyber Master',
+                'badge_icon' => 'diamond',
+            ];
+        } elseif ($xp >= 700) {
+            return [
+                'name' => 'Platinum Architect',
+                'tier_code' => 'platinum_architect',
+                'color' => '#0d9488',
+                'bg' => '#f0fdfa',
+                'border' => '#5eead4',
+                'progress' => min(100, (int) round((($xp - 700) / 800) * 100)),
+                'target_xp' => 1500,
+                'desc' => (1500 - $xp).' XP menuju Diamond Hacker',
+                'badge_icon' => 'shield',
+            ];
+        } elseif ($xp >= 300) {
+            return [
+                'name' => 'Gold Engineer',
+                'tier_code' => 'gold_engineer',
+                'color' => '#d97706',
+                'bg' => '#fffbeb',
+                'border' => '#fde68a',
+                'progress' => min(100, (int) round((($xp - 300) / 400) * 100)),
+                'target_xp' => 700,
+                'desc' => (700 - $xp).' XP menuju Platinum Architect',
+                'badge_icon' => 'star',
+            ];
+        } elseif ($xp >= 100) {
+            return [
+                'name' => 'Silver Coder',
+                'tier_code' => 'silver_coder',
+                'color' => '#475569',
+                'bg' => '#f8fafc',
+                'border' => '#cbd5e1',
+                'progress' => min(100, (int) round((($xp - 100) / 200) * 100)),
+                'target_xp' => 300,
+                'desc' => (300 - $xp).' XP menuju Gold Engineer',
+                'badge_icon' => 'award',
+            ];
+        } else {
+            return [
+                'name' => 'Bronze Explorer',
+                'tier_code' => 'bronze_explorer',
+                'color' => '#b45309',
+                'bg' => '#fdf4ff',
+                'border' => '#fed7aa',
+                'progress' => min(100, (int) round(($xp / 100) * 100)),
+                'target_xp' => 100,
+                'desc' => (100 - $xp).' XP menuju Silver Coder',
+                'badge_icon' => 'compass',
+            ];
+        }
+    }
 }
