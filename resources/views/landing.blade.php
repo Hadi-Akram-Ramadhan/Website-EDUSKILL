@@ -1842,11 +1842,13 @@
                   .from("#hero-subtext", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3")
                   .from("#hero-ctas .btn-3d", { y: 15, opacity: 0, stagger: 0.1, duration: 0.5 }, "-=0.2")
                   .from("#simulator-card", { scale: 0.95, opacity: 0, duration: 0.7, ease: "back.out(1.2)" }, "-=0.4")
-                  .from(".mascot-banner-card", { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, "-=0.3")
-                  .from(".float-item", { scale: 0.5, opacity: 0, stagger: 0.08, duration: 0.6, ease: "back.out(1.7)" }, "-=0.3");
             }
         });
     </script>
+
+    <!-- Floating Interactive Mascot Companion -->
+    <x-mascot-companion :mode="'landing'" />
+
     <script src="{{ asset('js/audio-engine.js') }}"></script>
 </body>
 </html>

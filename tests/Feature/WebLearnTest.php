@@ -84,4 +84,32 @@ class WebLearnTest extends TestCase
         $this->assertEquals(5, $user->hearts);
         $this->assertEquals(30, $user->gems);
     }
+
+    public function test_mascot_companion_and_developer_league_render_properly(): void
+    {
+        $user = User::where('email', 'budi@smp.sch.id')->first();
+        $user->xp = 350; // Should be Gold Engineer tier
+        $user->save();
+
+        $response = $this->actingAs($user)->get('/learn');
+
+        $response->assertStatus(200)
+            ->assertSee('eduskill-mascot-widget')
+            ->assertSee('Byte • AI Companion')
+            ->assertSee('Liga Pengembang')
+            ->assertSee('Gold Engineer');
+    }
+
+    public function test_lesson_player_includes_mascot_and_combo_pill(): void
+    {
+        $user = User::where('email', 'budi@smp.sch.id')->first();
+        $lesson = Lesson::first();
+
+        $response = $this->actingAs($user)->get("/learn/lesson/{$lesson->id}");
+
+        $response->assertStatus(200)
+            ->assertSee('eduskill-mascot-widget')
+            ->assertSee('combo-streak-pill')
+            ->assertSee('victory-combo');
+    }
 }

@@ -15,6 +15,12 @@
                 <div id="progress-bar" class="progress-fill"></div>
             </div>
 
+            <!-- Dynamic Quiz Combo Streak Indicator -->
+            <div id="combo-streak-pill" style="display: none; align-items: center; gap: 6px; background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 1.5px solid #f59e0b; padding: 4px 12px; border-radius: 9999px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25); animation: pulse-project 1.5s infinite;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#d97706" stroke="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+                <span id="combo-streak-text" style="font-size: 12px; font-weight: 900; color: #b45309; letter-spacing: 0.5px;">COMBO x2</span>
+            </div>
+
             <!-- Sound & Dynamic Music Toggle -->
             <button type="button" id="btn-sound-toggle" onclick="toggleAudio()" class="btn-close" title="Toggle Musik & Suara" style="color: #2563eb; background: #eff6ff; border: 1.5px solid #bfdbfe; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                 <svg id="icon-sound-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
@@ -72,14 +78,18 @@
         <h1 style="font-size: 32px; font-weight: 900; color: #0f172a; margin-bottom: 8px;">Pelajaran Selesai!</h1>
         <p style="color: #64748b; font-size: 16px; max-width: 440px; margin-bottom: 32px;">Kamu berhasil menyelesaikan semua latihan kode dengan pemahaman yang baik.</p>
 
-        <div style="display: flex; gap: 20px; margin-bottom: 36px;">
-            <div class="card-3d" style="padding: 20px 28px; text-align: center; border-color: #bfdbfe;">
+        <div style="display: flex; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; justify-content: center;">
+            <div class="card-3d" style="padding: 18px 24px; text-align: center; border-color: #bfdbfe; min-width: 120px;">
                 <div style="font-size: 11px; font-weight: 800; color: var(--primary-blue); text-transform: uppercase;">Total XP</div>
                 <div id="victory-xp" style="font-size: 26px; font-weight: 900; color: var(--primary-blue);">+{{ $lesson->xp_reward }}</div>
             </div>
-            <div class="card-3d" style="padding: 20px 28px; text-align: center; border-color: #a7f3d0;">
+            <div class="card-3d" style="padding: 18px 24px; text-align: center; border-color: #a7f3d0; min-width: 120px;">
                 <div style="font-size: 11px; font-weight: 800; color: #059669; text-transform: uppercase;">Akurasi</div>
                 <div id="victory-accuracy" style="font-size: 26px; font-weight: 900; color: #059669;">100%</div>
+            </div>
+            <div class="card-3d" style="padding: 18px 24px; text-align: center; border-color: #fed7aa; min-width: 120px;">
+                <div style="font-size: 11px; font-weight: 800; color: #d97706; text-transform: uppercase;">Max Combo</div>
+                <div id="victory-combo" style="font-size: 26px; font-weight: 900; color: #d97706;">0x</div>
             </div>
         </div>
 
@@ -101,6 +111,8 @@
         let selectedAnswer = null;
         let currentHearts = {{ $user->hearts }};
         let isDrawerAnswerChecked = false;
+        let currentCombo = 0;
+        let maxCombo = 0;
 
         function updateAudioToggleUI() {
             if (!window.EduAudio) return;
@@ -537,26 +549,50 @@
             const drawer = document.getElementById('action-drawer');
             const feedback = document.getElementById('feedback-message');
             const btnAction = document.getElementById('btn-action');
+            const comboPill = document.getElementById('combo-streak-pill');
+            const comboText = document.getElementById('combo-streak-text');
 
             if (isCorrect) {
-                if (window.EduAudio) window.EduAudio.playCorrect();
+                currentCombo++;
+                if (currentCombo > maxCombo) maxCombo = currentCombo;
+
+                if (currentCombo >= 2) {
+                    if (comboPill && comboText) {
+                        comboPill.style.display = 'inline-flex';
+                        comboText.innerText = `COMBO x${currentCombo}!`;
+                    }
+                    if (window.EduAudio) window.EduAudio.playCombo(currentCombo);
+                    if (window.EduMascot) window.EduMascot.react('combo', `Gokil! Combo x${currentCombo} berturut-turut! Pertahankan!`);
+                } else {
+                    if (comboPill) comboPill.style.display = 'none';
+                    if (window.EduAudio) window.EduAudio.playCorrect();
+                    if (window.EduMascot) window.EduMascot.react('correct', 'Luar biasa, jawaban kamu tepat sekali!');
+                }
+
                 drawer.className = 'action-drawer correct-state';
                 feedback.innerHTML = `
                     <div style="width: 44px; height: 44px; min-width: 44px; min-height: 44px; flex-shrink: 0; border-radius: 14px; background: #10b981; color: #fff; display: flex; align-items: center; justify-content: center;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                     </div>
                     <div>
-                        <div style="font-size: 18px; font-weight: 900; color: #065f46;">Luar Biasa, Tepat Sekali!</div>
+                        <div style="font-size: 18px; font-weight: 900; color: #065f46;">${currentCombo >= 2 ? `Luar Biasa! Combo x${currentCombo} 🔥` : 'Luar Biasa, Tepat Sekali!'}</div>
                         <div style="font-size: 13px; color: #047857;">${escapeHtml(ex.explanation || 'Jawaban kamu sesuai dengan sintaks yang benar.')}</div>
                     </div>
                 `;
                 btnAction.className = 'btn-3d btn-green';
                 btnAction.innerText = 'Lanjutkan';
             } else {
+                currentCombo = 0;
+                if (comboPill) comboPill.style.display = 'none';
+
                 if (window.EduAudio) {
                     window.EduAudio.playWrong();
                     window.EduAudio.playHeartLoss();
                 }
+                if (window.EduMascot) {
+                    window.EduMascot.react('wrong', 'Santai bro, pelajari penjelasannya dan coba lagi di soal berikutnya!');
+                }
+
                 currentHearts = Math.max(0, currentHearts - 1);
                 document.getElementById('hearts-counter').innerText = currentHearts;
 
@@ -604,14 +640,19 @@
                         window.EduAudio.stopBgm();
                         window.EduAudio.playVictory();
                     }
+                    if (window.EduMascot) {
+                        window.EduMascot.react('victory', `GOKIL! Modul tuntas dengan Max Combo ${maxCombo}x!`);
+                    }
                     confetti({
-                        particleCount: 100,
-                        spread: 70,
+                        particleCount: 120,
+                        spread: 80,
                         origin: { y: 0.6 }
                     });
 
                     document.getElementById('victory-xp').innerText = `+${result.data.xp_earned} XP`;
                     document.getElementById('victory-accuracy').innerText = `${result.data.score}%`;
+                    const comboEl = document.getElementById('victory-combo');
+                    if (comboEl) comboEl.innerText = `${maxCombo}x`;
                     document.getElementById('victory-modal').style.display = 'flex';
                 } else {
                     alert(result.message || 'Gagal menyimpan kemajuan belajar.');

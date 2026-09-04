@@ -1,5 +1,50 @@
 @php
     $title = 'Roadmap Belajar - EduSkill';
+    $userXp = $user->xp ?? 0;
+
+    if ($userXp >= 3000) {
+        $tierName = 'Cyber Master';
+        $tierColor = '#9333ea';
+        $tierBg = '#faf5ff';
+        $tierBorder = '#d8b4fe';
+        $tierProgress = 100;
+        $tierDesc = 'Puncak Tertinggi Developer';
+    } elseif ($userXp >= 1500) {
+        $tierName = 'Diamond Hacker';
+        $tierColor = '#0284c7';
+        $tierBg = '#f0f9ff';
+        $tierBorder = '#7dd3fc';
+        $tierProgress = min(100, (int) round((($userXp - 1500) / 1500) * 100));
+        $tierDesc = (3000 - $userXp) . ' XP menuju Cyber Master';
+    } elseif ($userXp >= 700) {
+        $tierName = 'Platinum Architect';
+        $tierColor = '#0d9488';
+        $tierBg = '#f0fdfa';
+        $tierBorder = '#5eead4';
+        $tierProgress = min(100, (int) round((($userXp - 700) / 800) * 100));
+        $tierDesc = (1500 - $userXp) . ' XP menuju Diamond Hacker';
+    } elseif ($userXp >= 300) {
+        $tierName = 'Gold Engineer';
+        $tierColor = '#d97706';
+        $tierBg = '#fffbeb';
+        $tierBorder = '#fde68a';
+        $tierProgress = min(100, (int) round((($userXp - 300) / 400) * 100));
+        $tierDesc = (700 - $userXp) . ' XP menuju Platinum Architect';
+    } elseif ($userXp >= 100) {
+        $tierName = 'Silver Coder';
+        $tierColor = '#475569';
+        $tierBg = '#f8fafc';
+        $tierBorder = '#cbd5e1';
+        $tierProgress = min(100, (int) round((($userXp - 100) / 200) * 100));
+        $tierDesc = (300 - $userXp) . ' XP menuju Gold Engineer';
+    } else {
+        $tierName = 'Bronze Explorer';
+        $tierColor = '#b45309';
+        $tierBg = '#fdf4ff';
+        $tierBorder = '#fed7aa';
+        $tierProgress = min(100, (int) round(($userXp / 100) * 100));
+        $tierDesc = (100 - $userXp) . ' XP menuju Silver Coder';
+    }
 @endphp
 
 <x-app-layout :title="$title">
@@ -329,6 +374,41 @@
                 </div>
             </div>
 
+            <!-- Developer League & Rank Tier Card -->
+            <div class="card-3d" style="padding: 20px; border-color: {{ $tierBorder }}; background: {{ $tierBg }};">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 28px; height: 28px; border-radius: 8px; background: #ffffff; color: {{ $tierColor }}; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 0 {{ $tierBorder }};">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        </div>
+                        <h3 style="font-size: 15px; font-weight: 900; color: #0f172a;">Liga Pengembang</h3>
+                    </div>
+                    <span style="font-size: 10px; font-weight: 800; color: {{ $tierColor }}; background: #ffffff; padding: 3px 8px; border-radius: 6px; border: 1px solid {{ $tierBorder }};">LIGA AKTIF</span>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                    <!-- Tier Emblem Badge -->
+                    <div style="width: 48px; height: 48px; min-width: 48px; min-height: 48px; border-radius: 14px; background: #ffffff; border: 2px solid {{ $tierBorder }}; display: flex; align-items: center; justify-content: center; color: {{ $tierColor }}; box-shadow: 0 4px 0 {{ $tierBorder }}; flex-shrink: 0;" class="animate-float">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <div style="flex: 1; overflow: hidden;">
+                        <div style="font-size: 15px; font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $tierName }}</div>
+                        <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-top: 1px;">{{ $tierDesc }}</div>
+                    </div>
+                </div>
+
+                <!-- Progress to Next Tier -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: #475569; margin-bottom: 5px;">
+                        <span>Progres Divisi</span>
+                        <span style="color: {{ $tierColor }};">{{ $tierProgress }}%</span>
+                    </div>
+                    <div style="height: 10px; background: rgba(0, 0, 0, 0.06); border-radius: 9999px; overflow: hidden;">
+                        <div style="height: 100%; width: {{ $tierProgress }}%; background: {{ $tierColor }}; border-radius: 9999px; transition: width 0.4s ease;"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Hearts Refill Card (If not full) -->
             @if ($user->hearts < 5)
                 <div class="card-3d" style="padding: 20px; border-color: #fca5a5; background: #fef2f2;">
@@ -374,10 +454,21 @@
                 </div>
 
                 <!-- Quest 2 -->
+                <div style="margin-bottom: 14px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px;">
+                        <span>Raih Combo x3 di Kuis</span>
+                        <span style="color: var(--accent-orange);">3/3 Selesai</span>
+                    </div>
+                    <div style="height: 10px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
+                        <div style="height: 100%; width: 100%; background: var(--accent-orange); border-radius: 9999px;"></div>
+                    </div>
+                </div>
+
+                <!-- Quest 3 -->
                 <div>
                     <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px;">
                         <span>Selesaikan 1 Modul</span>
-                        <span style="color: var(--accent-green);">1/1</span>
+                        <span style="color: var(--accent-green);">1/1 Selesai</span>
                     </div>
                     <div style="height: 10px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
                         <div style="height: 100%; width: 100%; background: var(--accent-green); border-radius: 9999px;"></div>

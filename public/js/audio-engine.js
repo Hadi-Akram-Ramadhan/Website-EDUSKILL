@@ -283,6 +283,82 @@ class EduAudioEngine {
         });
     }
 
+    /**
+     * Cute Robotic Mascot Chirp (Playful high pitch greeting/bounce sound)
+     */
+    playMascotChirp() {
+        if (this.isSfxMuted) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const notes = [
+            { f1: 659.25, f2: 880.00, t: 0.00, d: 0.08 }, // E5 -> A5
+            { f1: 987.77, f2: 1318.51, t: 0.08, d: 0.12 } // B5 -> E6
+        ];
+
+        notes.forEach(n => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(n.f1, now + n.t);
+            osc.frequency.exponentialRampToValueAtTime(n.f2, now + n.t + n.d);
+
+            gain.gain.setValueAtTime(0.28, now + n.t);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
+
+            osc.connect(gain);
+            gain.connect(this.sfxGain);
+
+            osc.start(now + n.t);
+            osc.stop(now + n.t + n.d + 0.01);
+        });
+    }
+
+    /**
+     * Dynamic Combo Multiplier Chime (Ascends in pitch and adds sparkle on high combos)
+     * @param {number} comboCount 
+     */
+    playCombo(comboCount = 2) {
+        if (this.isSfxMuted) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const pitchMultiplier = Math.min(2.0, 1.0 + (comboCount * 0.12));
+
+        const baseNotes = [
+            { f: 523.25 * pitchMultiplier, t: 0.00, d: 0.18 }, // Base
+            { f: 659.25 * pitchMultiplier, t: 0.05, d: 0.20 }, // 3rd
+            { f: 783.99 * pitchMultiplier, t: 0.10, d: 0.22 }, // 5th
+            { f: 1046.50 * pitchMultiplier, t: 0.15, d: 0.35 } // Octave
+        ];
+
+        baseNotes.forEach(n => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = comboCount >= 3 ? 'square' : 'triangle';
+            osc.frequency.setValueAtTime(n.f, now + n.t);
+
+            // Filter for warm retro chiptune sound
+            const filter = this.ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(comboCount >= 3 ? 2400 : 1800, now + n.t);
+
+            gain.gain.setValueAtTime(0.28, now + n.t);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(this.sfxGain);
+
+            osc.start(now + n.t);
+            osc.stop(now + n.t + n.d + 0.02);
+        });
+    }
+
     /* -------------------------------------------------------------
      * DYNAMIC BACKGROUND MUSIC (BGM)
      * ----------------------------------------------------------- */

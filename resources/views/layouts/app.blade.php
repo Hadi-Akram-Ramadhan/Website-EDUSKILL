@@ -514,6 +514,9 @@
         {{ $slot }}
     </main>
 
+    <!-- Floating Interactive Mascot Companion -->
+    <x-mascot-companion />
+
     <!-- Pure Web Audio API Synthesizer & Dynamic Audio Engine -->
     <script src="{{ asset('js/audio-engine.js') }}"></script>
     <script>

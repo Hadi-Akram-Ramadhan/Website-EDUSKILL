@@ -256,6 +256,9 @@
 
     {{ $slot }}
 
+    <!-- Floating Interactive Mascot Companion for Lesson Arena -->
+    <x-mascot-companion :mode="'lesson'" />
+
     <!-- Pure Web Audio API Synthesizer & Dynamic BGM Engine -->
     <script src="{{ asset('js/audio-engine.js') }}"></script>
 </body>
