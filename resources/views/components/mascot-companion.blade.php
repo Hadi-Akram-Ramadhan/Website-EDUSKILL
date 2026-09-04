@@ -18,14 +18,36 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Offset for mobile navigation bar */
+        /* Responsive Mobile Layout Tuning */
         @media (max-width: 768px) {
             .mascot-root {
-                bottom: 80px;
-                right: 14px;
+                bottom: 82px;
+                right: 12px;
             }
             .mascot-root.mode-lesson {
-                bottom: 90px;
+                bottom: 88px;
+                right: 12px;
+            }
+
+            .mascot-avatar-btn {
+                width: 54px !important;
+                height: 54px !important;
+            }
+
+            .mascot-avatar-btn svg {
+                width: 54px !important;
+                height: 54px !important;
+            }
+
+            .mascot-bubble {
+                max-width: calc(100vw - 36px) !important;
+                margin-right: 0 !important;
+                padding: 10px 14px !important;
+                border-radius: 16px !important;
+            }
+
+            .mascot-bubble-text {
+                font-size: 11.5px !important;
             }
         }
 
@@ -423,8 +445,10 @@
         const bubbleText = document.getElementById('mascot-bubble-text');
         const avatar = document.getElementById('mascot-avatar');
 
-        // Apply saved minimized state
-        if (isMinimized && widget) {
+        const isMobileScreen = window.innerWidth <= 768;
+
+        // Apply saved minimized state or default minimized on small mobile screens
+        if (widget && (isMinimized || isMobileScreen)) {
             widget.classList.add('is-minimized');
         }
 
@@ -512,10 +536,10 @@
                 bubble.style.display = 'block';
 
                 if (bubbleTimeout) clearTimeout(bubbleTimeout);
-                if (duration > 0) {
+                if (window.innerWidth <= 768) {
                     bubbleTimeout = setTimeout(() => {
-                        // Keep bubble visible in regular state, only auto-cycle if needed
-                    }, duration);
+                        if (widget) widget.classList.add('is-minimized');
+                    }, duration || 4000);
                 }
             },
 
