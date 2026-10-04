@@ -160,8 +160,13 @@
         <form action="{{ route('auth.register.submit') }}" method="POST">
             @csrf
             <div class="input-group">
-                <label>Nama Lengkap</label>
-                <input type="text" name="name" value="{{ old('name') }}" class="input-field" placeholder="Nama lengkap kamu" required autofocus>
+                <label>Nama Lengkap (Tanpa Angka / Simbol)</label>
+                <input type="text" name="name" value="{{ old('name') }}" class="input-field" placeholder="Contoh: Ahmad Subagyo" required autofocus pattern="[a-zA-Z\s]+" title="Nama hanya boleh berisi huruf dan spasi">
+            </div>
+
+            <div class="input-group">
+                <label>NIS <span style="font-weight: 500; font-size: 11px; text-transform: none; color: var(--text-muted);">(Nomor Induk Siswa - Opsional)</span></label>
+                <input type="text" name="nis_nim" value="{{ old('nis_nim') }}" class="input-field" placeholder="Contoh: 202409001">
             </div>
 
             <div class="input-group">

@@ -7,6 +7,7 @@ use App\Services\GamificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ProfileWebController extends Controller
@@ -82,11 +83,17 @@ class ProfileWebController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/', 'max:255'],
+            'nis_nim' => ['nullable', 'string', 'regex:/^[0-9A-Za-z\/\-\.]+$/', 'max:30', Rule::unique('users', 'nis_nim')->ignore($user->id)],
+        ], [
+            'name.regex' => 'Nama pengguna hanya boleh berisi huruf dan spasi (tidak boleh mengandung angka atau simbol).',
+            'nis_nim.regex' => 'Format NIS tidak valid.',
+            'nis_nim.unique' => 'NIS ini sudah terdaftar oleh pengguna lain.',
         ]);
 
         $user->update([
             'name' => $validated['name'],
+            'nis_nim' => $validated['nis_nim'] ?? $user->nis_nim,
         ]);
 
         return back()->with('success', 'Profil berhasil diperbarui!');

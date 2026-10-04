@@ -784,7 +784,7 @@ class DatabaseSeeder extends Seeder
             'mentor_name' => $guru1->name,
             'score_average' => 100.0,
             'issue_date' => Carbon::now()->toDateString(),
-            'qr_code_url' => 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data='.urlencode(url("/verify/{$certCode}")),
+            'qr_code_url' => 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' . urlencode(url("/verify/{$certCode}")),
             'is_valid' => true,
         ]);
 

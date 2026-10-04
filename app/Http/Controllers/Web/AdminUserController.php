@@ -58,19 +58,26 @@ class AdminUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/', 'max:255'],
+            'nis_nim' => ['nullable', 'string', 'regex:/^[0-9A-Za-z\/\-\.]+$/', 'max:30', 'unique:users,nis_nim'],
             'email' => 'required|email|unique:users,email|max:255',
             'password' => 'required|string|min:6',
             'role' => ['required', Rule::in(['siswa', 'guru', 'super_admin'])],
             'xp' => 'nullable|integer|min:0',
             'gems' => 'nullable|integer|min:0',
             'hearts' => 'nullable|integer|min:0|max:5',
+        ], [
+            'name.regex' => 'Nama pengguna hanya boleh berisi huruf dan spasi (tidak boleh mengandung angka atau simbol).',
+            'nis_nim.regex' => 'Format NIS tidak valid.',
+            'nis_nim.unique' => 'NIS ini sudah terdaftar. Silakan gunakan NIS lain.',
+            'email.unique' => 'Email ini sudah terdaftar. Silakan gunakan email lain.',
         ]);
 
         $avatarSeed = preg_replace('/[^a-zA-Z0-9]/', '_', strtolower($validated['name']));
 
         User::create([
             'name' => $validated['name'],
+            'nis_nim' => $validated['nis_nim'] ?? null,
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
@@ -99,17 +106,24 @@ class AdminUserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/', 'max:255'],
+            'nis_nim' => ['nullable', 'string', 'regex:/^[0-9A-Za-z\/\-\.]+$/', 'max:30', Rule::unique('users', 'nis_nim')->ignore($user->id)],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => 'nullable|string|min:6',
             'role' => ['required', Rule::in(['siswa', 'guru', 'super_admin'])],
             'xp' => 'nullable|integer|min:0',
             'gems' => 'nullable|integer|min:0',
             'hearts' => 'nullable|integer|min:0|max:5',
+        ], [
+            'name.regex' => 'Nama pengguna hanya boleh berisi huruf dan spasi (tidak boleh mengandung angka atau simbol).',
+            'nis_nim.regex' => 'Format NIS tidak valid.',
+            'nis_nim.unique' => 'NIS ini sudah terdaftar oleh pengguna lain.',
+            'email.unique' => 'Email ini sudah terdaftar oleh pengguna lain.',
         ]);
 
         $updateData = [
             'name' => $validated['name'],
+            'nis_nim' => $validated['nis_nim'] ?? $user->nis_nim,
             'email' => $validated['email'],
             'role' => $validated['role'],
             'xp' => $validated['xp'] ?? $user->xp,

@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -50,8 +51,16 @@ class MentorLessonController extends Controller
         }
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('units', 'title')->where(fn ($q) => $q->where('course_id', $course->id)),
+            ],
             'description' => 'nullable|string|max:500',
+        ], [
+            'title.unique' => 'Judul unit ini sudah ada dalam kursus ini. Silakan gunakan judul lain.',
+            'title.required' => 'Judul unit wajib diisi.',
         ]);
 
         $maxOrder = $course->units()->max('order_index') ?? 0;
@@ -93,12 +102,20 @@ class MentorLessonController extends Controller
         }
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('lessons', 'title')->where(fn ($q) => $q->where('unit_id', $unit->id)),
+            ],
             'description' => 'nullable|string|max:500',
             'is_project' => 'nullable|boolean',
             'project_brief' => 'nullable|string',
             'theory_content' => 'nullable|string',
             'xp_reward' => 'nullable|integer|min:5|max:100',
+        ], [
+            'title.unique' => 'Judul modul pelajaran ini sudah ada dalam unit ini. Silakan gunakan judul lain.',
+            'title.required' => 'Judul modul wajib diisi.',
         ]);
 
         $maxOrder = $unit->lessons()->max('order_index') ?? 0;
@@ -151,7 +168,11 @@ class MentorLessonController extends Controller
 
         $validated = $request->validate([
             'question_type' => 'required|in:multiple_choice,fill_blank,output_prediction,code_ordering,matching_pair,interactive_3d',
-            'prompt' => 'required|string',
+            'prompt' => [
+                'required',
+                'string',
+                Rule::unique('exercises', 'prompt')->where(fn ($q) => $q->where('lesson_id', $lesson->id)),
+            ],
             'code_snippet' => 'nullable|string',
             'explanation' => 'nullable|string',
             'options_raw' => 'nullable|string',
@@ -180,6 +201,10 @@ class MentorLessonController extends Controller
             'model_3d_speed' => 'nullable|string',
             'model_3d_material' => 'nullable|string',
             'model_3d_raw_json' => 'nullable|string',
+        ], [
+            'prompt.unique' => 'Soal dengan pertanyaan ini sudah ada di dalam modul ini. Soal tidak boleh sama.',
+            'prompt.required' => 'Pertanyaan/Prompt soal wajib diisi.',
+            'question_type.required' => 'Tipe soal wajib dipilih.',
         ]);
 
         $maxOrder = $lesson->exercises()->max('order_index') ?? 0;

@@ -71,6 +71,64 @@ class WebAuthTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'doni@smp.sch.id']);
     }
 
+    public function test_can_register_new_student_with_nis(): void
+    {
+        $response = $this->post('/register', [
+            'name' => 'Doni Siswa Baru',
+            'nis_nim' => '202409999',
+            'email' => 'doni2@smp.sch.id',
+            'role' => 'siswa',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertRedirect('/learn');
+        $this->assertAuthenticated();
+        $this->assertDatabaseHas('users', ['email' => 'doni2@smp.sch.id', 'nis_nim' => '202409999']);
+    }
+
+    public function test_cannot_register_with_duplicate_nis(): void
+    {
+        User::where('email', 'budi@smp.sch.id')->update(['nis_nim' => '202409001']);
+
+        $response = $this->from('/register')->post('/register', [
+            'name' => 'Doni Duplikat NIS',
+            'nis_nim' => '202409001',
+            'email' => 'doninis@smp.sch.id',
+            'role' => 'siswa',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertRedirect('/register');
+        $response->assertSessionHasErrors(['nis_nim']);
+    }
+
+    public function test_cannot_register_with_existing_email(): void
+    {
+        $response = $this->from('/register')->post('/register', [
+            'name' => 'Budi Duplikat',
+            'email' => 'budi@smp.sch.id', // Already seeded
+            'role' => 'siswa',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertRedirect('/register');
+        $response->assertSessionHasErrors(['email']);
+    }
+
+    public function test_cannot_login_with_non_existent_email(): void
+    {
+        $response = $this->from('/login')->post('/login', [
+            'email' => 'tidak_ada@smp.sch.id',
+            'password' => 'password123',
+        ]);
+
+        $response->assertRedirect('/login');
+        $response->assertSessionHasErrors(['email']);
+    }
+
     public function test_can_logout_via_web(): void
     {
         $user = User::where('email', 'budi@smp.sch.id')->first();

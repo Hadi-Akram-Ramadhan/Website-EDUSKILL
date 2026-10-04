@@ -48,7 +48,7 @@ class MentorCourseController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => ['required', 'string', 'max:255', 'unique:courses,title'],
             'category' => 'required|string|max:100',
             'level' => ['required', Rule::in(['beginner', 'intermediate', 'advanced'])],
             'description' => 'nullable|string',
@@ -56,6 +56,11 @@ class MentorCourseController extends Controller
             'thumbnail' => 'nullable|url|max:500',
             'is_published' => 'nullable|boolean',
             'is_upcoming' => 'nullable|boolean',
+        ], [
+            'title.unique' => 'Judul kursus ini sudah digunakan. Silakan gunakan judul yang lain.',
+            'title.required' => 'Judul kursus wajib diisi.',
+            'category.required' => 'Kategori kursus wajib diisi.',
+            'level.required' => 'Tingkat kesulitan wajib dipilih.',
         ]);
 
         $slug = Str::slug($validated['title']).'-'.Str::random(5);
@@ -101,7 +106,7 @@ class MentorCourseController extends Controller
         }
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => ['required', 'string', 'max:255', Rule::unique('courses', 'title')->ignore($course->id)],
             'category' => 'required|string|max:100',
             'level' => ['required', Rule::in(['beginner', 'intermediate', 'advanced'])],
             'description' => 'nullable|string',
@@ -109,6 +114,11 @@ class MentorCourseController extends Controller
             'thumbnail' => 'nullable|url|max:500',
             'is_published' => 'nullable|boolean',
             'is_upcoming' => 'nullable|boolean',
+        ], [
+            'title.unique' => 'Judul kursus ini sudah digunakan. Silakan gunakan judul yang lain.',
+            'title.required' => 'Judul kursus wajib diisi.',
+            'category.required' => 'Kategori kursus wajib diisi.',
+            'level.required' => 'Tingkat kesulitan wajib dipilih.',
         ]);
 
         $course->update([
