@@ -39,7 +39,7 @@ return new class extends Migration
             Schema::table('users', function (Blueprint $table) {
                 $table->unique('nis_nim');
             });
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Index already exists or unsupported in testing env
         }
     }
