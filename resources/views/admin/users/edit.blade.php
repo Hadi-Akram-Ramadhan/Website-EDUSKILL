@@ -30,8 +30,13 @@
                 @method('PUT')
 
                 <div>
-                    <label style="display: block; font-size: 12px; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 6px;">Nama Lengkap</label>
-                    <input type="text" name="name" value="{{ old('name', $user->name) }}" required style="width: 100%; padding: 12px 16px; border: 2px solid #cbd5e1; border-radius: 14px; font-size: 14px; font-weight: 600; outline: none;">
+                    <label style="display: block; font-size: 12px; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 6px;">Nama Lengkap (Tanpa Angka / Simbol)</label>
+                    <input type="text" name="name" value="{{ old('name', $user->name) }}" required pattern="[a-zA-Z\s]+" title="Nama hanya boleh berisi huruf dan spasi" style="width: 100%; padding: 12px 16px; border: 2px solid #cbd5e1; border-radius: 14px; font-size: 14px; font-weight: 600; outline: none;">
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 800; color: #0f172a; text-transform: uppercase; margin-bottom: 6px;">NIS (Opsional)</label>
+                    <input type="text" name="nis_nim" value="{{ old('nis_nim', $user->nis_nim) }}" placeholder="Contoh: 202409001" style="width: 100%; padding: 12px 16px; border: 2px solid #cbd5e1; border-radius: 14px; font-size: 14px; font-weight: 600; outline: none;">
                 </div>
 
                 <div>

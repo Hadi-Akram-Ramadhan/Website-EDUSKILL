@@ -4,6 +4,34 @@
 
 <x-app-layout :title="$title">
     <style>
+        .profile-grid-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .profile-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 160px;
+            gap: 16px;
+            align-items: end;
+        }
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        @media (max-width: 860px) {
+            .profile-form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .profile-form-grid-button {
+                grid-column: span 2;
+            }
+        }
+
         @media (max-width: 640px) {
             .profile-header-card {
                 padding: 20px 16px !important;
@@ -16,17 +44,34 @@
                 grid-template-columns: 1fr 1fr !important;
                 gap: 10px !important;
             }
+            .profile-grid-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .profile-form-grid {
+                grid-template-columns: 1fr;
+            }
+            .profile-form-grid-button {
+                grid-column: span 1;
+            }
+            .badges-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 12px;
+            }
         }
     </style>
 
     <div style="max-width: 860px; margin: 0 auto; width: 100%;">
         
         <!-- Profile Header Card (Light Blue Theme) -->
-        <div class="card-3d profile-header-card" style="padding: 32px; margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; gap: 16px;">
+        <div class="card-3d profile-header-card" style="padding: 28px 32px; margin-bottom: 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
                 <img src="{{ $user->avatar ?? 'https://api.dicebear.com/7.x/bottts/svg?seed=' . $user->id }}" style="width: 76px; height: 76px; min-width: 76px; min-height: 76px; flex-shrink: 0; border-radius: 50%; object-fit: cover; background: var(--primary-blue-light); border: 4px solid #bfdbfe;" alt="">
                 <div>
                     <h1 style="font-size: 22px; font-weight: 900; color: #0f172a;">{{ $user->name }}</h1>
+                    @if ($user->nis_nim)
+                        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-top: 2px;">NIS: {{ $user->nis_nim }}</div>
+                    @endif
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap;">
                         <span style="background: var(--primary-blue-light); color: var(--primary-blue); font-size: 11px; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 8px; border: 1px solid #bfdbfe;">
                             {{ $user->role }}
@@ -56,7 +101,7 @@
             Statistik Belajar
         </h2>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 36px;">
+        <div class="profile-grid-stats">
             <!-- Stat 1 -->
             <div class="card-3d" style="padding: 18px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
@@ -102,35 +147,78 @@
             </div>
         </div>
 
+        <!-- Edit Profile Section -->
+        <div class="card-3d" style="padding: 24px; margin-bottom: 36px;">
+            <h2 style="font-size: 16px; font-weight: 900; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; color: #0f172a;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Perbarui Informasi Profil
+            </h2>
+
+            @if (session('success'))
+                <div style="background: #ecfdf5; border: 2px solid #a7f3d0; border-radius: 14px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; font-weight: 700; color: #065f46;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div style="background: #fef2f2; border: 2px solid #fecaca; border-radius: 14px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; font-weight: 700; color: #991b1b;">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+
+            <form action="{{ route('profile.update') }}" method="POST" class="profile-form-grid">
+                @csrf
+                @method('PUT')
+
+                <div>
+                    <label style="display: block; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 6px;">Nama Lengkap (Tanpa Angka/Simbol)</label>
+                    <input type="text" name="name" value="{{ old('name', $user->name) }}" required pattern="[a-zA-Z\s]+" title="Nama hanya boleh berisi huruf dan spasi" style="width: 100%; padding: 10px 14px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 14px; font-weight: 600; outline: none; box-sizing: border-box;">
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 6px;">NIS (Opsional)</label>
+                    <input type="text" name="nis_nim" value="{{ old('nis_nim', $user->nis_nim) }}" placeholder="Contoh: 202409001" style="width: 100%; padding: 10px 14px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 14px; font-weight: 600; outline: none; box-sizing: border-box;">
+                </div>
+
+                <div class="profile-form-grid-button">
+                    <button type="submit" class="btn-3d btn-blue" style="width: 100%; padding: 10px 16px; font-size: 13px; box-sizing: border-box;">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <!-- Badges Gallery Grid -->
         <h2 style="font-size: 18px; font-weight: 900; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
             Koleksi Lencana &amp; Pencapaian
         </h2>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
+        <div class="badges-grid">
             @foreach ($allBadges as $badgeItem)
                 @php
                     $isUnlocked = $unlockedBadges->has($badgeItem['code']);
                 @endphp
 
-                <div class="card-3d" style="padding: 22px 18px; text-align: center; border-color: {{ $isUnlocked ? '#bfdbfe' : 'var(--border-color)' }}; opacity: {{ $isUnlocked ? '1' : '0.55' }}; background: {{ $isUnlocked ? '#ffffff' : '#f8fafc' }};">
-                    <div style="width: 52px; height: 52px; min-width: 52px; min-height: 52px; flex-shrink: 0; margin: 0 auto 12px auto; background: {{ $isUnlocked ? 'var(--primary-blue-light)' : '#e2e8f0' }}; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: {{ $isUnlocked ? 'var(--primary-blue)' : '#94a3b8' }};">
-                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-                    </div>
-                    <div style="font-size: 15px; font-weight: 900; color: #0f172a; margin-bottom: 6px;">
-                        {{ $badgeItem['name'] }}
-                    </div>
-                    <div style="font-size: 12px; color: #64748b; line-height: 1.4;">
-                        {{ $badgeItem['description'] }}
+                <div class="card-3d" style="padding: 22px 18px; text-align: center; border-color: {{ $isUnlocked ? '#bfdbfe' : 'var(--border-color)' }}; opacity: {{ $isUnlocked ? '1' : '0.6' }}; background: {{ $isUnlocked ? '#ffffff' : '#f8fafc' }}; display: flex; flex-direction: column; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="width: 52px; height: 52px; min-width: 52px; min-height: 52px; flex-shrink: 0; margin: 0 auto 12px auto; background: {{ $isUnlocked ? 'var(--primary-blue-light)' : '#e2e8f0' }}; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: {{ $isUnlocked ? 'var(--primary-blue)' : '#94a3b8' }};">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        </div>
+                        <div style="font-size: 15px; font-weight: 900; color: #0f172a; margin-bottom: 6px;">
+                            {{ $badgeItem['name'] }}
+                        </div>
+                        <div style="font-size: 12px; color: #64748b; line-height: 1.4;">
+                            {{ $badgeItem['description'] }}
+                        </div>
                     </div>
 
                     @if ($isUnlocked)
-                        <div style="margin-top: 12px; font-size: 11px; font-weight: 800; color: #059669; text-transform: uppercase; background: #ecfdf5; padding: 4px 10px; border-radius: 8px; display: inline-block;">
+                        <div style="margin-top: 14px; font-size: 11px; font-weight: 800; color: #059669; text-transform: uppercase; background: #ecfdf5; padding: 4px 10px; border-radius: 8px; display: inline-block;">
                             Terbuka
                         </div>
                     @else
-                        <div style="margin-top: 12px; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; background: #e2e8f0; padding: 4px 10px; border-radius: 8px; display: inline-block;">
+                        <div style="margin-top: 14px; font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; background: #e2e8f0; padding: 4px 10px; border-radius: 8px; display: inline-block;">
                             Terkunci
                         </div>
                     @endif
@@ -138,7 +226,7 @@
             @endforeach
         </div>
 
-        <!-- Account Session / Logout Section (Especially convenient on mobile) -->
+        <!-- Account Session / Logout Section -->
         <div class="card-3d" style="padding: 24px; margin-top: 36px; margin-bottom: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-color: #fca5a5; background: #fffdfd;">
             <div>
                 <h3 style="font-size: 16px; font-weight: 900; color: #991b1b; display: flex; align-items: center; gap: 8px;">

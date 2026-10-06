@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('mentor_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('category')->default('Pemrograman Dasar');
             $table->string('target_audience')->default('SMP / SMA');
             $table->string('thumbnail')->nullable();

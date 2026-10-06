@@ -6,6 +6,7 @@ use App\Services\GamificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends BaseApiController
 {
@@ -24,8 +25,13 @@ class ProfileController extends BaseApiController
         $user = $request->user();
 
         $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|string|max:255',
+            'name' => 'sometimes|string|regex:/^[a-zA-Z\s]+$/|max:255',
+            'nis_nim' => ['sometimes', 'nullable', 'string', 'regex:/^[0-9A-Za-z\/\-\.]+$/', 'max:30', Rule::unique('users', 'nis_nim')->ignore($user->id)],
             'avatar' => 'sometimes|nullable|string',
+        ], [
+            'name.regex' => 'Nama pengguna hanya boleh berisi huruf dan spasi (tidak boleh mengandung angka atau simbol).',
+            'nis_nim.regex' => 'Format NIS tidak valid.',
+            'nis_nim.unique' => 'NIS ini sudah terdaftar oleh pengguna lain.',
         ]);
 
         if ($validator->fails()) {
@@ -34,6 +40,10 @@ class ProfileController extends BaseApiController
 
         if ($request->has('name')) {
             $user->name = $request->name;
+        }
+
+        if ($request->has('nis_nim')) {
+            $user->nis_nim = $request->nis_nim;
         }
 
         if ($request->has('avatar')) {

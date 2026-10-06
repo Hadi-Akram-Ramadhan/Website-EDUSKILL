@@ -24,10 +24,15 @@ class AuthController extends BaseApiController
     public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|regex:/^[a-zA-Z\s]+$/|max:255',
+            'nis_nim' => 'nullable|string|regex:/^[0-9A-Za-z\/\-\.]+$/|max:30|unique:users,nis_nim',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'role' => 'sometimes|string|in:siswa,guru',
+        ], [
+            'name.regex' => 'Nama pengguna hanya boleh berisi huruf dan spasi (tidak boleh mengandung angka atau simbol).',
+            'nis_nim.regex' => 'Format NIS tidak valid.',
+            'nis_nim.unique' => 'NIS ini sudah terdaftar. Silakan gunakan NIS Anda sendiri.',
         ]);
 
         if ($validator->fails()) {
@@ -36,6 +41,7 @@ class AuthController extends BaseApiController
 
         $user = User::create([
             'name' => $request->name,
+            'nis_nim' => $request->nis_nim ?? null,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role ?? 'siswa',
@@ -60,7 +66,7 @@ class AuthController extends BaseApiController
     public function login(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
+            'email' => 'required|string|email|exists:users,email',
             'password' => 'required|string',
         ]);
 
