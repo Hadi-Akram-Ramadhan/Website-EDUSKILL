@@ -1,5 +1,50 @@
 @php
     $title = 'Roadmap Belajar - EduSkill';
+    $userXp = $user->xp ?? 0;
+
+    if ($userXp >= 3000) {
+        $tierName = 'Cyber Master';
+        $tierColor = '#9333ea';
+        $tierBg = '#faf5ff';
+        $tierBorder = '#d8b4fe';
+        $tierProgress = 100;
+        $tierDesc = 'Puncak Tertinggi Developer';
+    } elseif ($userXp >= 1500) {
+        $tierName = 'Diamond Hacker';
+        $tierColor = '#0284c7';
+        $tierBg = '#f0f9ff';
+        $tierBorder = '#7dd3fc';
+        $tierProgress = min(100, (int) round((($userXp - 1500) / 1500) * 100));
+        $tierDesc = (3000 - $userXp) . ' XP menuju Cyber Master';
+    } elseif ($userXp >= 700) {
+        $tierName = 'Platinum Architect';
+        $tierColor = '#0d9488';
+        $tierBg = '#f0fdfa';
+        $tierBorder = '#5eead4';
+        $tierProgress = min(100, (int) round((($userXp - 700) / 800) * 100));
+        $tierDesc = (1500 - $userXp) . ' XP menuju Diamond Hacker';
+    } elseif ($userXp >= 300) {
+        $tierName = 'Gold Engineer';
+        $tierColor = '#d97706';
+        $tierBg = '#fffbeb';
+        $tierBorder = '#fde68a';
+        $tierProgress = min(100, (int) round((($userXp - 300) / 400) * 100));
+        $tierDesc = (700 - $userXp) . ' XP menuju Platinum Architect';
+    } elseif ($userXp >= 100) {
+        $tierName = 'Silver Coder';
+        $tierColor = '#475569';
+        $tierBg = '#f8fafc';
+        $tierBorder = '#cbd5e1';
+        $tierProgress = min(100, (int) round((($userXp - 100) / 200) * 100));
+        $tierDesc = (300 - $userXp) . ' XP menuju Gold Engineer';
+    } else {
+        $tierName = 'Bronze Explorer';
+        $tierColor = '#b45309';
+        $tierBg = '#fdf4ff';
+        $tierBorder = '#fed7aa';
+        $tierProgress = min(100, (int) round(($userXp / 100) * 100));
+        $tierDesc = (100 - $userXp) . ' XP menuju Silver Coder';
+    }
 @endphp
 
 <x-app-layout :title="$title">
@@ -329,6 +374,46 @@
                 </div>
             </div>
 
+            <!-- Developer League & Rank Tier Card -->
+            <div class="card-3d" style="padding: 20px; border-color: {{ $tierBorder }}; background: {{ $tierBg }};">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 28px; height: 28px; border-radius: 8px; background: #ffffff; color: {{ $tierColor }}; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 0 {{ $tierBorder }};">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        </div>
+                        <h3 style="font-size: 15px; font-weight: 900; color: #0f172a;">Liga Pengembang</h3>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <button type="button" onclick="openLeagueInfoModal()" style="width: 24px; height: 24px; border-radius: 50%; background: #ffffff; border: 1.5px solid {{ $tierBorder }}; color: {{ $tierColor }}; font-size: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease;" title="Panduan & Penjelasan Sistem Liga">
+                            ?
+                        </button>
+                        <span style="font-size: 10px; font-weight: 800; color: {{ $tierColor }}; background: #ffffff; padding: 3px 8px; border-radius: 6px; border: 1px solid {{ $tierBorder }};">LIGA AKTIF</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                    <!-- Tier Emblem Badge -->
+                    <div style="width: 48px; height: 48px; min-width: 48px; min-height: 48px; border-radius: 14px; background: #ffffff; border: 2px solid {{ $tierBorder }}; display: flex; align-items: center; justify-content: center; color: {{ $tierColor }}; box-shadow: 0 4px 0 {{ $tierBorder }}; flex-shrink: 0;" class="animate-float">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <div style="flex: 1; overflow: hidden;">
+                        <div style="font-size: 15px; font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $tierName }}</div>
+                        <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-top: 1px;">{{ $tierDesc }}</div>
+                    </div>
+                </div>
+
+                <!-- Progress to Next Tier -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: #475569; margin-bottom: 5px;">
+                        <span>Progres Divisi</span>
+                        <span style="color: {{ $tierColor }};">{{ $tierProgress }}%</span>
+                    </div>
+                    <div style="height: 10px; background: rgba(0, 0, 0, 0.06); border-radius: 9999px; overflow: hidden;">
+                        <div style="height: 100%; width: {{ $tierProgress }}%; background: {{ $tierColor }}; border-radius: 9999px; transition: width 0.4s ease;"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Hearts Refill Card (If not full) -->
             @if ($user->hearts < 5)
                 <div class="card-3d" style="padding: 20px; border-color: #fca5a5; background: #fef2f2;">
@@ -374,10 +459,21 @@
                 </div>
 
                 <!-- Quest 2 -->
+                <div style="margin-bottom: 14px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px;">
+                        <span>Raih Combo x3 di Kuis</span>
+                        <span style="color: var(--accent-orange);">3/3 Selesai</span>
+                    </div>
+                    <div style="height: 10px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
+                        <div style="height: 100%; width: 100%; background: var(--accent-orange); border-radius: 9999px;"></div>
+                    </div>
+                </div>
+
+                <!-- Quest 3 -->
                 <div>
                     <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px;">
                         <span>Selesaikan 1 Modul</span>
-                        <span style="color: var(--accent-green);">1/1</span>
+                        <span style="color: var(--accent-green);">1/1 Selesai</span>
                     </div>
                     <div style="height: 10px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
                         <div style="height: 100%; width: 100%; background: var(--accent-green); border-radius: 9999px;"></div>
@@ -415,8 +511,98 @@
 
     </div>
 
+    <!-- Modal Panduan Sistem Liga & Gamifikasi -->
+    <div id="league-info-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+        <div class="card-3d" style="background: #ffffff; max-width: 580px; width: 100%; border-radius: 28px; padding: 26px; max-height: 90vh; overflow-y: auto; border: 2px solid #bfdbfe; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 44px; height: 44px; border-radius: 14px; background: #eff6ff; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; border: 2px solid #bfdbfe; box-shadow: 0 4px 0 #bfdbfe;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path><path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M6 2h12v7a6 6 0 0 1-12 0V2Z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 19px; font-weight: 900; color: #0f172a;">Sistem Liga & Gamifikasi</h2>
+                        <div style="font-size: 12px; font-weight: 700; color: #64748b;">Panduan Lengkap Tingkatan Divisi & Bonus XP</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeLeagueInfoModal()" class="btn-close" style="width: 36px; height: 36px; border-radius: 10px; background: #f1f5f9;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <div style="font-size: 13px; color: #334155; line-height: 1.6; margin-bottom: 20px;">
+                <p style="margin-bottom: 12px;"><strong>Cara Kerja Liga:</strong> Divisi liga lo ditentukan otomatis berdasarkan <strong>Total XP</strong> yang lo raih dari kuis, latihan kode, misi harian, dan proyek modul.</p>
+                
+                <h4 style="font-size: 13px; font-weight: 900; color: #0f172a; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">6 Tingkatan Kasta Pengembang:</h4>
+                
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px;">
+                    <!-- Tier 1 -->
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: #fdf4ff; border: 1.5px solid #fed7aa; flex-wrap: wrap;">
+                        <div style="font-size: 12px; font-weight: 900; color: #b45309; min-width: 125px;">1. Bronze Explorer</div>
+                        <div style="font-size: 11px; font-weight: 800; color: #78350f; background: #ffffff; padding: 2px 7px; border-radius: 6px;">0 - 99 XP</div>
+                        <div style="font-size: 11.5px; color: #475569; flex: 1;">Eksplorasi awal logika & dasar coding.</div>
+                    </div>
+                    <!-- Tier 2 -->
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: #f8fafc; border: 1.5px solid #cbd5e1; flex-wrap: wrap;">
+                        <div style="font-size: 12px; font-weight: 900; color: #475569; min-width: 125px;">2. Silver Coder</div>
+                        <div style="font-size: 11px; font-weight: 800; color: #334155; background: #ffffff; padding: 2px 7px; border-radius: 6px;">100 - 299 XP</div>
+                        <div style="font-size: 11.5px; color: #475569; flex: 1;">Menguasai sintaks variabel, percabangan, & loop.</div>
+                    </div>
+                    <!-- Tier 3 -->
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: #fffbeb; border: 1.5px solid #fde68a; flex-wrap: wrap;">
+                        <div style="font-size: 12px; font-weight: 900; color: #d97706; min-width: 125px;">3. Gold Engineer</div>
+                        <div style="font-size: 11px; font-weight: 800; color: #b45309; background: #ffffff; padding: 2px 7px; border-radius: 6px;">300 - 699 XP</div>
+                        <div style="font-size: 11.5px; color: #475569; flex: 1;">Algoritma fungsi, array, dan logic lanjutan.</div>
+                    </div>
+                    <!-- Tier 4 -->
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: #f0fdfa; border: 1.5px solid #5eead4; flex-wrap: wrap;">
+                        <div style="font-size: 12px; font-weight: 900; color: #0d9488; min-width: 125px;">4. Platinum Architect</div>
+                        <div style="font-size: 11px; font-weight: 800; color: #115e59; background: #ffffff; padding: 2px 7px; border-radius: 6px;">700 - 1499 XP</div>
+                        <div style="font-size: 11.5px; color: #475569; flex: 1;">Arsitektur kode clean, terstruktur, & modular.</div>
+                    </div>
+                    <!-- Tier 5 -->
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: #f0f9ff; border: 1.5px solid #7dd3fc; flex-wrap: wrap;">
+                        <div style="font-size: 12px; font-weight: 900; color: #0284c7; min-width: 125px;">5. Diamond Hacker</div>
+                        <div style="font-size: 11px; font-weight: 800; color: #0369a1; background: #ffffff; padding: 2px 7px; border-radius: 6px;">1500 - 2999 XP</div>
+                        <div style="font-size: 11.5px; color: #475569; flex: 1;">Problem solving cepat dengan akurasi tinggi.</div>
+                    </div>
+                    <!-- Tier 6 -->
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: #faf5ff; border: 1.5px solid #d8b4fe; flex-wrap: wrap;">
+                        <div style="font-size: 12px; font-weight: 900; color: #9333ea; min-width: 125px;">6. Cyber Master</div>
+                        <div style="font-size: 11px; font-weight: 800; color: #7e22ce; background: #ffffff; padding: 2px 7px; border-radius: 6px;">3000+ XP</div>
+                        <div style="font-size: 11.5px; color: #475569; flex: 1;">Kasta tertinggi elit developer di EduSkill!</div>
+                    </div>
+                </div>
+
+                <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 16px; padding: 12px 14px;">
+                    <div style="font-size: 12px; font-weight: 800; color: var(--primary-blue); margin-bottom: 4px;">⚡ Fitur Gamifikasi Lainnya:</div>
+                    <ul style="padding-left: 16px; font-size: 11.5px; color: #334155; line-height: 1.45;">
+                        <li><strong>Quiz Combo Multiplier</strong>: Jawaban benar berturut-turut bakal melipatgandakan combo dan menaikkan nada synthesizer audio!</li>
+                        <li><strong>Streak Belajar</strong>: Jaga streak tiap hari agar tidak putus dan raih badge eksklusif.</li>
+                        <li><strong>Nyawa (Maks 5)</strong>: Regenerasi otomatis 1 nyawa per 30 menit atau isi instan pakai 20 Gems.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button type="button" onclick="closeLeagueInfoModal()" class="btn-3d btn-blue" style="width: 100%; padding: 12px; font-size: 13px;">
+                Paham & Siap Push Rank!
+            </button>
+        </div>
+    </div>
+
     <!-- Script to render smooth SVG connecting paths between consecutive roadmap nodes -->
     <script>
+        function openLeagueInfoModal() {
+            if (window.EduAudio) window.EduAudio.playPop();
+            const modal = document.getElementById('league-info-modal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeLeagueInfoModal() {
+            if (window.EduAudio) window.EduAudio.playTap();
+            const modal = document.getElementById('league-info-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
         function drawRoadmapConnectors() {
             document.querySelectorAll('.roadmap-path-wrapper').forEach(unit => {
                 const svg = unit.querySelector('.roadmap-svg-connector');

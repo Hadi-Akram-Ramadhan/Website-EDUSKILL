@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flowchart Terpadu Sistem EduSkill - Visual & Export Tool</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .header {
+      background: var(--card);
+      padding: 20px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--border);
+    }
+    .header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .header p {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    button, a.btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-success {
+      background: #10b981;
+      color: white;
+    }
+    .btn-success:hover {
+      background: #059669;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-secondary {
+      background: white;
+      color: #334155;
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: #f1f5f9;
+    }
+    .tip-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .viewer-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+      overflow: auto;
+      text-align: center;
+    }
+    .flowchart-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      background: white;
+    }
+    #notification {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    #notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>Flowchart Terpadu Sistem EduSkill</h1>
+        <p>File gambar siap pakai sudah di-generate di folder <code>docs/</code>.</p>
+      </div>
+      <div class="actions">
+        <button class="btn-success" onclick="copyImageToClipboard()">📋 Salin Gambar ke Clipboard</button>
+        <a href="flowchart_eduskill_terpadu.png" download="flowchart_eduskill_terpadu.png" class="btn btn-primary">📥 Download PNG (HD)</a>
+        <a href="flowchart_eduskill_terpadu.svg" download="flowchart_eduskill_terpadu.svg" class="btn btn-secondary">📥 Download SVG (Vektor)</a>
+      </div>
+    </div>
+
+    <div class="tip-banner">
+      💡 <strong>Tips Buat Word / Google Docs:</strong> Lo bisa langsung klik kanan gambar di bawah terus pilih <em>"Copy Image"</em> (Salin Gambar), lalu tekan <strong>Ctrl + V</strong> di Microsoft Word atau Google Docs lo! Atau bisa langsung drag & drop file <code>docs/flowchart_eduskill_terpadu.png</code> ke Word.
+    </div>
+
+    <div class="viewer-card">
+      <img src="flowchart_eduskill_terpadu.png" alt="Flowchart Terpadu EduSkill" class="flowchart-img" id="flowchart-img" />
+    </div>
+  </div>
+
+  <div id="notification">Pemberitahuan</div>
+
+  <script>
+    function showNotice(msg) {
+      const el = document.getElementById('notification');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    async function copyImageToClipboard() {
+      try {
+        const img = document.getElementById('flowchart-img');
+        const response = await fetch(img.src);
+        const blob = await response.blob();
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': blob })
+        ]);
+        showNotice('✅ Gambar berhasil disalin ke Clipboard! Tinggal Ctrl + V di Word.');
+      } catch (err) {
+        console.warn('Clipboard write failed, using canvas fallback...', err);
+        showNotice('⚠️ Silakan klik kanan gambar di bawah lalu pilih "Copy Image" / "Salin Gambar".');
+      }
+    }
+  </script>
+</body>
+</html>
