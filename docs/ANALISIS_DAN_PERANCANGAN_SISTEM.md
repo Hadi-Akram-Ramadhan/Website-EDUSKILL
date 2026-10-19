@@ -1,27 +1,26 @@
 # Dokumentasi Lengkap Analisis & Perancangan Sistem (ERD, DFD Level 0-2, Flowchart, & Kamus Data)
+
 **Platform Edukasi Pemrograman Interaktif & Visualisasi Spasial 3D — EduSkill**
 
 ---
 
 ## DAFTAR ISI
+
 1. [Status Penyelesaian Masalah Sebelumnya (Verification Report)](#1-status-penyelesaian-masalah-sebelumnya)
-2. [Notasi & Standar Bentuk Simbol (Akademis ANSI & Gane-Sarson)](#2-notasi--standar-bentuk-simbol)
-3. [Entity Relationship Diagram (ERD) & Kamus Data](#3-entity-relationship-diagram-erd--kamus-data)
-   - 3.1 Skema Relasi Fisik (Crow's Foot Notation)
-   - 3.2 Notasi Konseptual Chen
-   - 3.3 Kamus Data Lengkap (Data Dictionary)
+2. [Notasi &amp; Standar Bentuk Simbol (Akademis ANSI &amp; Gane-Sarson)](#2-notasi--standar-bentuk-simbol)
+3. [Entity Relationship Diagram (ERD) &amp; Kamus Data](#3-entity-relationship-diagram-erd--kamus-data)
+    - 3.1 Skema Relasi Fisik (Crow's Foot Notation)
+    - 3.2 Notasi Konseptual Chen
+    - 3.3 Kamus Data Lengkap (Data Dictionary)
 4. [Data Flow Diagram (DFD)](#4-data-flow-diagram-dfd)
-   - 4.1 DFD Level 0 (Diagram Konteks)
-   - 4.2 DFD Level 1 (Dekomposisi Sistem Utama)
-   - 4.3 DFD Level 2.1 (Sub-Proses Manajemen Kurikulum & Studio 3D)
-   - 4.4 DFD Level 2.2 (Sub-Proses Lesson Player & Evaluasi Gamifikasi)
-   - 4.5 DFD Level 2.3 (Sub-Proses Klaim & Verifikasi Sertifikat)
-5. [Flowchart Sistem (Diagram Alir Proses Lengkap)](#5-flowchart-sistem-diagram-alir-proses-lengkap)
-   - 5.1 Flowchart Autentikasi & Role Redirection
-   - 5.2 Flowchart Siswa (Belajar, Pengerjaan Kuis 3D, & Gamifikasi)
-   - 5.3 Flowchart Guru/Mentor (Manajemen Kurikulum, Studio 3D, & Import Excel)
-   - 5.4 Flowchart Super Admin (Manajemen User & Monitoring)
-   - 5.5 Flowchart Verifikasi Sertifikat Publik (QR & Hash SHA-256)
+    - 4.1 DFD Level 0 (Diagram Konteks)
+    - 4.2 DFD Level 1 (Dekomposisi Sistem Utama)
+    - 4.3 DFD Level 2.1 (Sub-Proses Manajemen Kurikulum & Studio 3D)
+    - 4.4 DFD Level 2.2 (Sub-Proses Lesson Player & Evaluasi Gamifikasi)
+    - 4.5 DFD Level 2.3 (Sub-Proses Klaim & Verifikasi Sertifikat)
+5. [Flowchart Sistem Terintegrasi (Master Unified Flowchart)](#5-flowchart-sistem-terintegrasi-master-unified-flowchart)
+    - 5.1 Diagram Alir Terpadu Sistem EduSkill (End-to-End Flowchart)
+    - 5.2 Penjelasan Alur Integrasi Antar-Modul (Swimlane Breakdown)
 
 ---
 
@@ -30,24 +29,25 @@
 Sebelum masuk ke diagram, berikut konfirmasi status teknis perbaikan yang telah diverifikasi:
 
 1. **Problem WebGL Context Exhaustion (`WARNING: Too many active WebGL contexts`)**:
-   - **Status**: **SOLVED & ZERO WARNINGS**.
-   - **Perbaikan**: Menggunakan *Singleton Pattern Session* pada Three.js preview canvas. Render ulang mesh/material hanya memodifikasi objek di memori (`_updateMentor3DScene`) tanpa membuat context `WebGLRenderer` baru. Saat berpindah tipe kuis, `renderer.forceContextLoss()` dipanggil untuk pelepasan memori GPU seketika.
+    - **Status**: **SOLVED & ZERO WARNINGS**.
+    - **Perbaikan**: Menggunakan _Singleton Pattern Session_ pada Three.js preview canvas. Render ulang mesh/material hanya memodifikasi objek di memori (`_updateMentor3DScene`) tanpa membuat context `WebGLRenderer` baru. Saat berpindah tipe kuis, `renderer.forceContextLoss()` dipanggil untuk pelepasan memori GPU seketika.
 2. **Problem Responsivitas Layar Mobile (Ukuran HP 375px–400px)**:
-   - **Status**: **SOLVED & 100% RESPONSIVE**.
-   - **Perbaikan**:
-     - Nested card padding disesuaikan proporsional (`12px` di mobile vs `24px` di desktop).
-     - Input pasangan menjodohkan (*Matching Pairs*) dibungkus dengan class responsif (`min-width: 0`, auto flex/grid).
-     - Radio button 3D yang sebelumnya bocor ke tipe soal lain akibat tag penutup div yang salah telah diperbaiki ke dalam `#section-3d`.
-     - Tombol Action Hub & Summary Auto-Fill dapat melipat rapi tanpa menyebabkan horizontal scroll.
+    - **Status**: **SOLVED & 100% RESPONSIVE**.
+    - **Perbaikan**:
+        - Nested card padding disesuaikan proporsional (`12px` di mobile vs `24px` di desktop).
+        - Input pasangan menjodohkan (_Matching Pairs_) dibungkus dengan class responsif (`min-width: 0`, auto flex/grid).
+        - Radio button 3D yang sebelumnya bocor ke tipe soal lain akibat tag penutup div yang salah telah diperbaiki ke dalam `#section-3d`.
+        - Tombol Action Hub & Summary Auto-Fill dapat melipat rapi tanpa menyebabkan horizontal scroll.
 3. **Automated Unit & Feature Testing**:
-   - **Hasil**: **68 tests PASSED (327 assertions)** (100% lolos via `php artisan test`).
-   - **Branch Git**: Tetap aman di branch `prototype`.
+    - **Hasil**: **68 tests PASSED (327 assertions)** (100% lolos via `php artisan test`).
+    - **Branch Git**: Tetap aman di branch `prototype`.
 
 ---
 
 ## 2. Notasi & Standar Bentuk Simbol
 
 ### A. Simbol Entity Relationship Diagram (ERD - Chen & Crow's Foot)
+
 ```
   ┌───────────────┐        ╭───────────────╮        ╱╲
   │    ENTITAS    │        │    ATRIBUT    │       ╱  ╲   RELASI
@@ -58,6 +58,7 @@ Sebelum masuk ke diagram, berikut konfirmasi status teknis perbaikan yang telah 
 ```
 
 ### B. Simbol Data Flow Diagram (DFD - Gane & Sarson / Yourdon)
+
 ```
   ┌───────────────┐           ╭───────────────╮           ┌──────────────┐
   │ENTITAS LUAR / │           │ PROSES SISTEM │          ═╡  DATA STORE  ╞═
@@ -68,6 +69,7 @@ Sebelum masuk ke diagram, berikut konfirmasi status teknis perbaikan yang telah 
 ```
 
 ### C. Simbol Flowchart (Standar ANSI)
+
 ```
         ╭──────────────╮                  ┌────────────────┐
        (   TERMINATOR   )                 │ PROSES / AKSI  │
@@ -236,62 +238,62 @@ erDiagram
 
 ### 3.2 Kamus Data Lengkap (Data Dictionary)
 
-| Nama Tabel | Atribut / Kolom | Tipe Data | Nullable | Keterangan & Aturan Bisnis |
-| :--- | :--- | :--- | :---: | :--- |
-| **users** | `id` | BIGINT (PK) | No | Auto increment primary key |
-| | `name` | VARCHAR(255) | No | Nama lengkap pengguna |
-| | `email` | VARCHAR(255) | No | Email akun unik (*Unique Index*) |
-| | `password` | VARCHAR(255) | No | Password terenkripsi Bcrypt |
-| | `role` | ENUM | No | Hak akses: `super_admin`, `guru`, `siswa` |
-| | `xp` | INT | No | Akumulasi poin pengalaman belajar (XP) |
-| | `level` | INT | No | Level siswa (dihitung otomatis per kelipatan XP) |
-| | `hearts` | INT | No | Nyawa siswa (maksimal 5, berkurang 1 jika salah) |
-| | `gems` | INT | No | Permata hadiah penyelesaian misi/refill |
-| | `streak_count` | INT | No | Jumlah hari berturut-turut aktif belajar |
-| | `last_active_date` | DATE | Yes | Tanggal terakhir login/berlatih |
-| **courses** | `id` | BIGINT (PK) | No | Primary key kursus |
-| | `mentor_id` | BIGINT (FK) | No | Relasi ke `users.id` pembuat kursus |
-| | `title` | VARCHAR(255) | No | Judul kursus materi |
-| | `slug` | VARCHAR(255) | No | Slug URL SEO-friendly (*Unique*) |
-| | `category` | VARCHAR(100) | No | Kategori pemrograman |
-| | `level` | ENUM | No | Tingkat kesulitan: `beginner`, `intermediate`, `advanced` |
-| | `is_published` | BOOLEAN | No | Status rilis (True = Aktif ke Siswa) |
-| | `is_upcoming` | BOOLEAN | No | Status roadmap mendatang (True = Teaser) |
-| **units** | `id` | BIGINT (PK) | No | Primary key bab |
-| | `course_id` | BIGINT (FK) | No | Relasi ke `courses.id` (*Cascade Delete*) |
-| | `title` | VARCHAR(255) | No | Nama bab/unit materi |
-| | `order_index` | INT | No | Nomor urut bab di kurikulum |
-| **lessons** | `id` | BIGINT (PK) | No | Primary key modul |
-| | `unit_id` | BIGINT (FK) | No | Relasi ke `units.id` (*Cascade Delete*) |
-| | `title` | VARCHAR(255) | No | Judul modul latihan |
-| | `type` | ENUM | No | Jenis: `theory`, `quiz`, `milestone`, `project` |
-| | `is_project` | BOOLEAN | No | Penanda tugas Mini Project akhir bab |
-| | `project_brief`| TEXT | Yes | Petunjuk skenario tugas proyek |
-| | `xp_reward` | INT | No | Hadiah XP saat modul diselesaikan |
-| **exercises** | `id` | BIGINT (PK) | No | Primary key butir soal |
-| | `lesson_id` | BIGINT (FK) | No | Relasi ke `lessons.id` (*Cascade Delete*) |
-| | `question_type`| ENUM | No | `multiple_choice`, `fill_blank`, `code_ordering`, `output_prediction`, `matching_pair`, `interactive_3d` |
-| | `prompt` | TEXT | No | Teks instruksi/pertanyaan soal |
-| | `code_snippet` | TEXT | Yes | Potongan baris kode (editor) |
-| | `options_json` | JSON | Yes | Opsi distraktor pilihan jawaban |
-| | `answer_json` | JSON | Yes | Kunci jawaban yang benar |
-| | `model_3d_json` | JSON | Yes | Konfigurasi objek 3D (preset, warna, animasi, matrix target XYZ, skala) |
-| | `explanation` | TEXT | Yes | Teks pembahasan solusi |
-| **user_progress**| `id` | BIGINT (PK) | No | Primary key riwayat progres |
-| | `user_id` | BIGINT (FK) | No | Relasi ke `users.id` siswa |
-| | `lesson_id` | BIGINT (FK) | No | Relasi ke `lessons.id` modul |
-| | `is_completed` | BOOLEAN | No | Status kelulusan modul |
-| | `score` | INT | No | Nilai pengerjaan soal (0-100) |
-| | `completed_at` | TIMESTAMP | Yes | Waktu tuntas modul |
-| **certificates**| `id` | BIGINT (PK) | No | Primary key sertifikat |
-| | `cert_code` | VARCHAR(50) | No | Kode unik sertifikat (*Unique*) |
-| | `cert_hash` | VARCHAR(64) | No | SHA-256 hash digital signature (*Unique*) |
-| | `user_id` | BIGINT (FK) | No | Relasi ke `users.id` peraih sertifikat |
-| | `course_id` | BIGINT (FK) | No | Relasi ke `courses.id` |
-| | `score_average`| DECIMAL(5,2)| No | Rata-rata nilai kuis seluruh modul |
-| | `issue_date` | DATE | No | Tanggal terbit sertifikat |
-| | `qr_code_url` | VARCHAR(255) | Yes | URL / Path QR Code verifikasi publik |
-| | `is_valid` | BOOLEAN | No | Status keaslian (True = Sah) |
+| Nama Tabel        | Atribut / Kolom    | Tipe Data    | Nullable | Keterangan & Aturan Bisnis                                                                               |
+| :---------------- | :----------------- | :----------- | :------: | :------------------------------------------------------------------------------------------------------- |
+| **users**         | `id`               | BIGINT (PK)  |    No    | Auto increment primary key                                                                               |
+|                   | `name`             | VARCHAR(255) |    No    | Nama lengkap pengguna                                                                                    |
+|                   | `email`            | VARCHAR(255) |    No    | Email akun unik (_Unique Index_)                                                                         |
+|                   | `password`         | VARCHAR(255) |    No    | Password terenkripsi Bcrypt                                                                              |
+|                   | `role`             | ENUM         |    No    | Hak akses:`super_admin`, `guru`, `siswa`                                                                 |
+|                   | `xp`               | INT          |    No    | Akumulasi poin pengalaman belajar (XP)                                                                   |
+|                   | `level`            | INT          |    No    | Level siswa (dihitung otomatis per kelipatan XP)                                                         |
+|                   | `hearts`           | INT          |    No    | Nyawa siswa (maksimal 5, berkurang 1 jika salah)                                                         |
+|                   | `gems`             | INT          |    No    | Permata hadiah penyelesaian misi/refill                                                                  |
+|                   | `streak_count`     | INT          |    No    | Jumlah hari berturut-turut aktif belajar                                                                 |
+|                   | `last_active_date` | DATE         |   Yes    | Tanggal terakhir login/berlatih                                                                          |
+| **courses**       | `id`               | BIGINT (PK)  |    No    | Primary key kursus                                                                                       |
+|                   | `mentor_id`        | BIGINT (FK)  |    No    | Relasi ke`users.id` pembuat kursus                                                                       |
+|                   | `title`            | VARCHAR(255) |    No    | Judul kursus materi                                                                                      |
+|                   | `slug`             | VARCHAR(255) |    No    | Slug URL SEO-friendly (_Unique_)                                                                         |
+|                   | `category`         | VARCHAR(100) |    No    | Kategori pemrograman                                                                                     |
+|                   | `level`            | ENUM         |    No    | Tingkat kesulitan:`beginner`, `intermediate`, `advanced`                                                 |
+|                   | `is_published`     | BOOLEAN      |    No    | Status rilis (True = Aktif ke Siswa)                                                                     |
+|                   | `is_upcoming`      | BOOLEAN      |    No    | Status roadmap mendatang (True = Teaser)                                                                 |
+| **units**         | `id`               | BIGINT (PK)  |    No    | Primary key bab                                                                                          |
+|                   | `course_id`        | BIGINT (FK)  |    No    | Relasi ke`courses.id` (_Cascade Delete_)                                                                 |
+|                   | `title`            | VARCHAR(255) |    No    | Nama bab/unit materi                                                                                     |
+|                   | `order_index`      | INT          |    No    | Nomor urut bab di kurikulum                                                                              |
+| **lessons**       | `id`               | BIGINT (PK)  |    No    | Primary key modul                                                                                        |
+|                   | `unit_id`          | BIGINT (FK)  |    No    | Relasi ke`units.id` (_Cascade Delete_)                                                                   |
+|                   | `title`            | VARCHAR(255) |    No    | Judul modul latihan                                                                                      |
+|                   | `type`             | ENUM         |    No    | Jenis:`theory`, `quiz`, `milestone`, `project`                                                           |
+|                   | `is_project`       | BOOLEAN      |    No    | Penanda tugas Mini Project akhir bab                                                                     |
+|                   | `project_brief`    | TEXT         |   Yes    | Petunjuk skenario tugas proyek                                                                           |
+|                   | `xp_reward`        | INT          |    No    | Hadiah XP saat modul diselesaikan                                                                        |
+| **exercises**     | `id`               | BIGINT (PK)  |    No    | Primary key butir soal                                                                                   |
+|                   | `lesson_id`        | BIGINT (FK)  |    No    | Relasi ke`lessons.id` (_Cascade Delete_)                                                                 |
+|                   | `question_type`    | ENUM         |    No    | `multiple_choice`, `fill_blank`, `code_ordering`, `output_prediction`, `matching_pair`, `interactive_3d` |
+|                   | `prompt`           | TEXT         |    No    | Teks instruksi/pertanyaan soal                                                                           |
+|                   | `code_snippet`     | TEXT         |   Yes    | Potongan baris kode (editor)                                                                             |
+|                   | `options_json`     | JSON         |   Yes    | Opsi distraktor pilihan jawaban                                                                          |
+|                   | `answer_json`      | JSON         |   Yes    | Kunci jawaban yang benar                                                                                 |
+|                   | `model_3d_json`    | JSON         |   Yes    | Konfigurasi objek 3D (preset, warna, animasi, matrix target XYZ, skala)                                  |
+|                   | `explanation`      | TEXT         |   Yes    | Teks pembahasan solusi                                                                                   |
+| **user_progress** | `id`               | BIGINT (PK)  |    No    | Primary key riwayat progres                                                                              |
+|                   | `user_id`          | BIGINT (FK)  |    No    | Relasi ke`users.id` siswa                                                                                |
+|                   | `lesson_id`        | BIGINT (FK)  |    No    | Relasi ke`lessons.id` modul                                                                              |
+|                   | `is_completed`     | BOOLEAN      |    No    | Status kelulusan modul                                                                                   |
+|                   | `score`            | INT          |    No    | Nilai pengerjaan soal (0-100)                                                                            |
+|                   | `completed_at`     | TIMESTAMP    |   Yes    | Waktu tuntas modul                                                                                       |
+| **certificates**  | `id`               | BIGINT (PK)  |    No    | Primary key sertifikat                                                                                   |
+|                   | `cert_code`        | VARCHAR(50)  |    No    | Kode unik sertifikat (_Unique_)                                                                          |
+|                   | `cert_hash`        | VARCHAR(64)  |    No    | SHA-256 hash digital signature (_Unique_)                                                                |
+|                   | `user_id`          | BIGINT (FK)  |    No    | Relasi ke`users.id` peraih sertifikat                                                                    |
+|                   | `course_id`        | BIGINT (FK)  |    No    | Relasi ke`courses.id`                                                                                    |
+|                   | `score_average`    | DECIMAL(5,2) |    No    | Rata-rata nilai kuis seluruh modul                                                                       |
+|                   | `issue_date`       | DATE         |    No    | Tanggal terbit sertifikat                                                                                |
+|                   | `qr_code_url`      | VARCHAR(255) |   Yes    | URL / Path QR Code verifikasi publik                                                                     |
+|                   | `is_valid`         | BOOLEAN      |    No    | Status keaslian (True = Sah)                                                                             |
 
 ---
 
@@ -403,7 +405,7 @@ flowchart TD
 ```mermaid
 flowchart TD
     GURU["👨‍🏫 Guru / Mentor"]
-    
+
     D2[("💾 D2: Courses & Units")]
     D3[("💾 D3: Lessons & Exercises")]
 
@@ -428,7 +430,7 @@ flowchart TD
 ```mermaid
 flowchart TD
     SISWA["👤 Siswa"]
-    
+
     D1[("💾 D1: Users")]
     D3[("💾 D3: Lessons & Exercises")]
     D4[("💾 D4: User Progress & Streaks")]
@@ -448,10 +450,10 @@ flowchart TD
     D3 --> P3_2 -- "Tampilkan Soal & 3D Model" --> SISWA
     SISWA -- "Submit Jawaban" --> P4_1
     D3 --> P4_1
-    
+
     P4_1 -- "Jawaban Salah" --> P4_2
     P4_2 -- "Hearts - 1" --> D1
-    
+
     P4_1 -- "Jawaban Benar" --> P4_2
     P4_2 -- "+XP, +Streak, Catat Lulus" --> D1 & D4
     P4_2 -- "Feedback Suara & UI" --> SISWA
@@ -489,173 +491,200 @@ flowchart TD
 
 ---
 
-## 5. Flowchart Sistem (Diagram Alir Proses Lengkap)
+## 5. Flowchart Sistem Terintegrasi (Master Unified Flowchart)
 
-### 5.1 Flowchart Autentikasi & Role Redirection
+Bagian ini menyajikan **Diagram Alir Terpadu (Unified End-to-End System Flowchart)** yang menggabungkan seluruh alur proses utama di platform EduSkill ke dalam satu bagan komprehensif. Diagram ini menyatukan 5 domain proses yang sebelumnya terpisah menjadi satu siklus alur yang saling terhubung:
+1. **Gerbang Akses & Autentikasi**: Percabangan login terdaftar vs verifikasi sertifikat publik, validasi kredensial, dan routing hak akses (*Role Redirection*).
+2. **Sub-Sistem Super Admin**: Monitoring platform, moderasi kursus/materi, dan tata kelola akun pengguna (*Role & Account Management*).
+3. **Sub-Sistem Guru/Mentor**: Manajemen kurikulum (unit & lesson), import soal massal via file Excel XLSX, Three.js 3D Studio editor, dan publikasi kursus.
+4. **Sub-Sistem Siswa**: Siklus belajar interaktif, engine gamifikasi (Hearts & Gems), simulasi kuis 3D WebGL, penambahan XP & streak, hingga kelulusan modul.
+5. **Sub-Sistem Penerbitan & Verifikasi Sertifikat**: Otomatisasi generate hash SHA-256 unik, pembuatan QR Code dinamis, dan verifikasi publik multi-kanal (scan QR maupun input kode).
+
+---
+
+### 5.1 Diagram Alir Terpadu Sistem EduSkill (End-to-End Flowchart)
 
 ```mermaid
 flowchart TD
-    Start(["Mulai: Buka Aplikasi EduSkill"]) --> OpenLogin[/"Akses Halaman Login"/]
-    OpenLogin --> InputCred[/"Input Email & Password"/]
-    InputCred --> CheckAuth{"Kredensial Valid?"}
-    
-    CheckAuth -- "Tidak" --> AlertErr[/"Tampilkan Pesan Error: Email atau Password Salah"/] --> OpenLogin
-    CheckAuth -- "Ya" --> CheckRole{"Cek Hak Akses (Role)"}
-    
-    CheckRole -- "super_admin" --> DashAdmin["Redirect ke Dashboard Super Admin"] --> EndAdmin(["Selesai"])
-    CheckRole -- "guru" --> DashMentor["Redirect ke Dashboard Guru / Mentor"] --> EndMentor(["Selesai"])
-    CheckRole -- "siswa" --> LearnRoadmap["Redirect ke Halaman Belajar Siswa"] --> EndSiswa(["Selesai"])
+    %% TITIK AWAL
+    Start(["Mulai: Akses Platform EduSkill"]) --> ChoiceEntry{"Akses Pengguna"}
+
+    %% ==========================================
+    %% 1. GERBANG AUTENTIKASI & AKSES
+    %% ==========================================
+    subgraph SG_AUTH ["🔐 1. Gerbang Akses & Autentikasi Sistem"]
+        ChoiceEntry -- "Akses Akun / Login" --> OpenLogin[/"Halaman Login: Input Email & Password"/]
+        OpenLogin --> CheckAuth{"Kredensial Valid?"}
+        CheckAuth -- "Tidak" --> AlertErr[/"Pesan Error: Akun / Password Tidak Cocok"/] --> OpenLogin
+        CheckAuth -- "Ya" --> CheckRole{"Cek Hak Akses (Role)"}
+    end
+
+    %% ==========================================
+    %% 2. SUB-SISTEM SUPER ADMIN
+    %% ==========================================
+    subgraph SG_ADMIN ["⚙️ 2. Sub-Sistem Super Admin (Control Panel)"]
+        CheckRole -- "Role: super_admin" --> DashAdmin["Dashboard Super Admin"]
+        DashAdmin --> ChooseAdminMenu{"Pilih Menu Kelola"}
+        
+        ChooseAdminMenu -- "Manajemen User" --> ViewUsers[/"Lihat Daftar Pengguna Platform"/]
+        ViewUsers --> UserAction{"Pilih Tindakan"}
+        UserAction -- "Ubah Role" --> ChangeRole["Ubah Role (Siswa / Guru / Admin)"] --> SaveUserDB[("Database: Update users")]
+        UserAction -- "Reset Password" --> ResetPass["Generate Ulang Password"] --> SaveUserDB
+        UserAction -- "Hapus Akun" --> DeleteUser["Hapus User & Relasi Data"] --> SaveUserDB
+        SaveUserDB --> ReturnAdminDash["Kembali ke Dashboard Admin"] --> DashAdmin
+
+        ChooseAdminMenu -- "Monitoring Kursus" --> ViewCourses[/"Review Seluruh Kursus & Modul"/]
+        ViewCourses --> CourseAction{"Pilih Status Kursus"}
+        CourseAction -- "Verifikasi & Publish" --> ApproveCourse["Set Published: Aktifkan untuk Siswa"] --> SaveCourseDB[("Database: Update courses")]
+        CourseAction -- "Hapus Kursus" --> DropCourse["Hapus Kursus Pelanggaran"] --> SaveCourseDB
+        SaveCourseDB --> ReturnAdminDash
+        
+        DashAdmin --> LogoutAdmin[/"Logout dari Sistem"/]
+    end
+
+    %% ==========================================
+    %% 3. SUB-SISTEM GURU / MENTOR
+    %% ==========================================
+    subgraph SG_MENTOR ["👨‍🏫 3. Sub-Sistem Guru & Mentor (Manajemen Konten)"]
+        CheckRole -- "Role: guru" --> DashMentor["Dashboard Guru / Mentor"]
+        DashMentor --> SelectAction{"Pilih Aksi Manajemen Kursus"}
+
+        %% Tambah Modul
+        SelectAction -- "Tambah Bab / Modul" --> FormUnitLesson[/"Input Judul Modul, Deskripsi, & Mini Project"/]
+        FormUnitLesson --> SaveUnitDB[("Database: Simpan units & lessons")] --> RefreshMentorUI["Refresh Struktur Kurikulum"]
+
+        %% Import Excel
+        SelectAction -- "Import Excel Soal" --> DownloadTemplate[/"Download Template XLSX Soal"/]
+        DownloadTemplate --> FillExcelData[/"Guru Mengisi Data Soal di Spreadsheet"/]
+        FillExcelData --> UploadExcel[/"Upload File XLSX ke Modul Target"/]
+        UploadExcel --> ParseExcel{"Validasi Kolom & Data?"}
+        ParseExcel -- "Tidak" --> ShowImportErr[/"Notifikasi Error Format Baris"/] --> UploadExcel
+        ParseExcel -- "Ya" --> BatchInsertDB[("Database: Batch Insert exercises")] --> RefreshMentorUI
+
+        %% Studio 3D & Soal Interaktif
+        SelectAction -- "Buat Soal Interaktif" --> ChooseExType[/"Pilih Tipe: 3D Interaktif / MCQ / Isian / Pasangan"/]
+        ChooseExType --> CheckIs3D{"Tipe == 3D Interaktif?"}
+        CheckIs3D -- "Ya" --> Set3DOptions[/"Atur Geometri, Animasi, Warna, & Koordinat Target"/]
+        Set3DOptions --> RealtimeRender["Three.js Engine Render Preview Interaktif"]
+        RealtimeRender --> InputQuestions[/"Input Pertanyaan, Pilihan, & Kunci Jawaban"/]
+        CheckIs3D -- "Tidak" --> InputQuestions
+        InputQuestions --> ClickSaveEx[/"Klik Simpan Soal"/]
+        ClickSaveEx --> SaveExDB[("Database: Simpan exercises")] --> RefreshMentorUI
+
+        %% Publish Roadmap
+        RefreshMentorUI --> WantRelease{"Publikasikan Kursus?"}
+        WantRelease -- "Ya" --> SetPublish["Update courses: is_published = true"] --> FinishMentorAction["Perubahan Tersimpan Aktif"]
+        WantRelease -- "Tidak" --> SetDraft["Simpan sebagai Draft"] --> FinishMentorAction
+        FinishMentorAction --> DashMentor
+        DashMentor --> LogoutMentor[/"Logout dari Sistem"/]
+    end
+
+    %% ==========================================
+    %% 4. SUB-SISTEM SISWA (BELAJAR & GAMIFIKASI)
+    %% ==========================================
+    subgraph SG_SISWA ["🎓 4. Sub-Sistem Siswa (Belajar, Kuis 3D, & Gamifikasi)"]
+        CheckRole -- "Role: siswa" --> LearnRoadmap["Buka Roadmap Belajar Kursus"]
+        LearnRoadmap --> SelectLesson[/"Pilih Modul / Level Pembelajaran"/]
+        
+        SelectLesson --> CheckHearts{"Nyawa (Hearts) > 0?"}
+        
+        %% Habis Nyawa & Refill Gems
+        CheckHearts -- "Tidak" --> CheckGems{"Gems >= 20?"}
+        CheckGems -- "Ya" --> ModalRefill[/"Opsi: Tukar 20 Gems untuk Full Hearts"/]
+        ModalRefill --> ConfirmRefill{"Setuju Tukar?"}
+        ConfirmRefill -- "Ya" --> DoRefill["Potong 20 Gems & Reset Hearts = 5"] --> CheckHearts
+        ConfirmRefill -- "Tidak" --> WaitRefill["Tunggu Timer Regenerasi Otomatis"] --> LogoutSiswa[/"Keluar Sesi Belajar"/]
+        CheckGems -- "Tidak" --> WaitRefill
+
+        %% Mulai Mengerjakan
+        CheckHearts -- "Ya" --> LoadLesson["Inisialisasi Lesson Runner & Objek 3D"]
+        LoadLesson --> ShowQuestion[/"Tampilkan Konten Teori, Soal, & Canvas 3D"/]
+        ShowQuestion --> UserAnswer[/"Siswa Mengisi / Menjawab / Manipulasi Objek 3D"/]
+        UserAnswer --> SubmitAnswer[/"Klik 'Periksa Jawaban'"/]
+        SubmitAnswer --> EvalAnswer{"Jawaban Benar?"}
+
+        %% Evaluasi Jawaban Salah
+        EvalAnswer -- "Tidak" --> DeductHeart["Hearts - 1 & Mainkan Audio Error"]
+        DeductHeart --> ShowExplanation[/"Tampilkan Pembahasan Kunci Jawaban"/]
+        ShowExplanation --> CheckHeartsLeft{"Sisa Hearts > 0?"}
+        CheckHeartsLeft -- "Ya" --> RetryQuestion[/"Ulangi / Coba Kembali Soal"/] --> ShowQuestion
+        CheckHeartsLeft -- "Tidak" --> ShowOutModal[/"Modal: Nyawa Habis!"/] --> ModalRefill
+
+        %% Evaluasi Jawaban Benar
+        EvalAnswer -- "Ya" --> RewardExp["Reward: +XP, +Streak Harian, & Audio Sukses"]
+        RewardExp --> SaveProgress[("Database: user_progress status = completed")]
+        SaveProgress --> CheckCourseDone{"Seluruh Modul Kursus Selesai (100%)?"}
+        
+        CheckCourseDone -- "Tidak" --> NextLessonBtn[/"Lanjut ke Level / Modul Berikutnya"/] --> LearnRoadmap
+        CheckCourseDone -- "Ya" --> UnlockCertClaim[/"Buka Kunci Tombol 'Klaim Sertifikat'"/]
+    end
+
+    %% ==========================================
+    %% 5. SUB-SISTEM SERTIFIKAT & VERIFIKASI PUBLIK
+    %% ==========================================
+    subgraph SG_CERT ["📜 5. Sub-Sistem Penerbitan & Verifikasi Sertifikat Digital"]
+        UnlockCertClaim --> RequestClaim[/"Siswa Klik 'Klaim Sertifikat'"/]
+        RequestClaim --> CalcScore["Hitung Skor Rata-rata & Generate Kode Sertifikat"]
+        CalcScore --> GenHashQR["Generate SHA-256 Hash Unik & Dynamic QR Code"]
+        GenHashQR --> SaveCertDB[("Database: Simpan ke tabel certificates")]
+        SaveCertDB --> DownloadCert[/"Siswa Mengunduh / Mencetak Sertifikat Ber-QR Code"/]
+        DownloadCert --> EndLearn(["Siswa Menyelesaikan Kursus"])
+
+        %% Verifikasi Publik
+        ChoiceEntry -- "Akses Publik (Verifikasi Sertifikat)" --> PublicVerify[/"Akses Halaman Verifikasi Sertifikat"/]
+        PublicVerify --> VerifyMethod{"Pilih Jalur Verifikasi"}
+        VerifyMethod -- "Scan QR Code" --> ScanQR[/"Scan QR Code pada Fisik/PDF Sertifikat"/] --> ExtractHash["Ekstrak Parameter Hash SHA-256"]
+        VerifyMethod -- "Input Manual" --> InputCode[/"Input Nomor / Kode Sertifikat di Form Web"/] --> ExtractHash
+        
+        ExtractHash --> QueryCertDB[("Database: Cari di certificates WHERE cert_hash / cert_code")]
+        QueryCertDB --> CheckCertValid{"Data Ditemukan & Status Valid?"}
+        
+        CheckCertValid -- "Ya" --> DisplayValid[/"Status: ASLI & RESMI TERVERIFIKASI<br/>Detail: Nama Siswa, Kursus, Nilai, Tanggal, & Guru"/]
+        CheckCertValid -- "Tidak" --> DisplayInvalid[/"Status: PERINGATAN! SERTIFIKAT TIDAK VALID ATAU TIDAK DITEMUKAN"/]
+    end
+
+    %% TERMINATOR SELESAI
+    LogoutAdmin --> EndSystem(["Selesai / Logout"])
+    LogoutMentor --> EndSystem
+    LogoutSiswa --> EndSystem
+    EndLearn --> EndSystem
+    DisplayValid --> EndVerify(["Selesai Verifikasi"])
+    DisplayInvalid --> EndVerify
 ```
 
 ---
 
-### 5.2 Flowchart Siswa (Belajar, Pengerjaan Kuis 3D, & Gamifikasi)
+### 5.2 Penjelasan Alur Integrasi Antar-Modul (Swimlane Breakdown)
 
-```mermaid
-flowchart TD
-    Start(["Mulai: Siswa Memilih Modul"]) --> CheckHearts{"Nyawa (Hearts) > 0?"}
-    
-    %% Alur Habis Nyawa
-    CheckHearts -- "Tidak" --> CheckGems{"Gems >= 20?"}
-    CheckGems -- "Ya" --> ModalRefill[/"Tampilkan Opsi: Tukar 20 Gems untuk Isi Penuh Nyawa"/]
-    ModalRefill --> ConfirmRefill{"Siswa Menyetujui?"}
-    ConfirmRefill -- "Ya" --> DoRefill["Potong 20 Gems, Reset Hearts = 5"] --> Start
-    ConfirmRefill -- "Tidak" --> WaitRefill["Tunggu Regenerasi Nyawa Otomatis"] --> EndFinish(["Selesai"])
-    CheckGems -- "Tidak" --> WaitRefill
-    
-    %% Alur Mulai Latihan
-    CheckHearts -- "Ya" --> LoadExercise["Inisialisasi Lesson Runner & Objek 3D"]
-    LoadExercise --> ShowQuestion[/"Tampilkan Soal, Editor Kode, & Model 3D Interaktif"/]
-    ShowQuestion --> UserAnswer[/"Siswa Memilih Jawaban / Mengatur Posisi 3D"/]
-    UserAnswer --> ClickSubmit[/"Klik Tombol 'Periksa Jawaban'"/]
-    
-    ClickSubmit --> EvaluateAnswer{"Jawaban Benar?"}
-    
-    %% Evaluasi Salah
-    EvaluateAnswer -- "Tidak" --> DeductHeart["Kurangi 1 Heart, Mainkan Suara Error"]
-    DeductHeart --> ShowExplain[/"Tampilkan Pembahasan Soal"/]
-    ShowExplain --> CheckHeartsLeft{"Sisa Hearts > 0?"}
-    CheckHeartsLeft -- "Ya" --> RetryQuestion[/"Coba Kerjakan Ulang Soal"/] --> ShowQuestion
-    CheckHeartsLeft -- "Tidak" --> ShowOutModal[/"Tampilkan Modal 'Nyawa Habis'"/] --> EndFinish
-    
-    %% Evaluasi Benar
-    EvaluateAnswer -- "Ya" --> PlaySuccess["Mainkan Efek Suara Sukses & Animasi Kemenangan"]
-    PlaySuccess --> AddRewards["Tambah XP, Catat Skor, Update Streak Harian"]
-    AddRewards --> SaveProgressDB[("Database: Simpan user_progress is_completed = true")]
-    SaveProgressDB --> CheckAllCompleted{"Seluruh Modul Kursus 100% Selesai?"}
-    
-    CheckAllCompleted -- "Ya" --> EnableCertClaim[/"Tombol 'Klaim Sertifikat' Aktif di Roadmap"/]
-    CheckAllCompleted -- "Tidak" --> NextModuleBtn[/"Lanjut ke Modul Berikutnya di Roadmap"/]
-    
-    EnableCertClaim --> EndFinish
-    NextModuleBtn --> EndFinish
-```
+Diagram alir terpadu di atas memetakan bagaimana data dan hak akses berpindah secara harmonis di antara berbagai subsistem:
 
----
+1. **Jalur Masuk & Autentikasi (Zone 1 - `SG_AUTH`)**:
+   - Pengunjung sistem dipilah sejak awal: jika ingin memeriksa legalitas sertifikat, langsung diarahkan ke modul verifikasi publik tanpa perlu login.
+   - Pengguna terdaftar melewati verifikasi kredensial terenkripsi (*Bcrypt*). Jika valid, sistem membaca kolom `role` pada tabel `users` untuk *Role-Based Redirection*.
 
-### 5.3 Flowchart Guru / Mentor (Kurikulum, Studio 3D, & Import Excel)
+2. **Tata Kelola Super Admin (Zone 2 - `SG_ADMIN`)**:
+   - Super Admin memiliki kontrol penuh atas integritas platform: memvalidasi materi yang diajukan mentor sebelum dipublikasikan, serta mengelola status akun (perubahan peran, reset kredensial, ataupun *soft delete*).
 
-```mermaid
-flowchart TD
-    StartM(["Mulai: Guru Buka Kelola Kurikulum"]) --> ViewManage["Buka Halaman Kursus"]
-    ViewManage --> SelectAction{"Pilih Aksi Guru"}
-    
-    %% Tambah Unit / Modul
-    SelectAction -- "Tambah Bab / Modul" --> FormUnitLesson[/"Input Judul Bab & Flag Mini Project"/]
-    FormUnitLesson --> SaveUnitDB[("Database: Simpan Unit & Lesson")] --> RefreshUI["Refresh Daftar Kurikulum"]
-    
-    %% Import Excel
-    SelectAction -- "Import Excel Soal" --> DownloadTemplate[/"Download File Template XLSX/CSV"/]
-    DownloadTemplate --> FillExcelData[/"Guru Mengisi Daftar Soal di Excel"/]
-    FillExcelData --> UploadExcel[/"Upload File XLSX ke Modul Target"/]
-    UploadExcel --> ParseExcel{"Format & Header Valid?"}
-    ParseExcel -- "Tidak" --> ShowImportError[/"Tampilkan Notifikasi Baris yang Salah"/] --> UploadExcel
-    ParseExcel -- "Ya" --> BatchInsertDB[("Database: Batch Insert Seluruh Soal")] --> RefreshUI
-    
-    %% Buat Soal Manual & 3D Studio
-    SelectAction -- "Buat Soal Interaktif" --> ChooseType[/"Pilih Tipe: 3D Interaktif / MCQ / Isian / Susun / Pasangan"/]
-    ChooseType --> CheckIs3D{"Tipe == 3D Interaktif?"}
-    
-    CheckIs3D -- "Ya" --> Set3DOptions[/"Pilih Preset Geometri, Animasi, Warna, Target X/Y/Z"/]
-    Set3DOptions --> RealtimeRender["Three.js Engine Render Preview Real-Time"]
-    RealtimeRender --> InputQuestions[/"Isi Pertanyaan, Pilihan A-D, & Kunci"/]
-    
-    CheckIs3D -- "Tidak" --> InputStandard[/"Isi Pertanyaan & Pilihan Jawaban Standar"/]
-    
-    InputQuestions --> ClickSaveEx[/"Klik Simpan Soal"/]
-    InputStandard --> ClickSaveEx
-    ClickSaveEx --> SaveExDB[("Database: Simpan exercises")] --> RefreshUI
-    
-    %% Rilis Roadmap
-    RefreshUI --> WantRelease{"Rilis Kursus ke Siswa?"}
-    WantRelease -- "Ya" --> SetPublish["Update courses: is_published = true, is_upcoming = false"]
-    WantRelease -- "Tidak" --> SetDraft["Update courses: is_upcoming = true / Draft"]
-    
-    SetPublish --> EndM(["Selesai"])
-    SetDraft --> EndM
-```
+3. **Manajemen Kurikulum & Studio 3D Guru (Zone 3 - `SG_MENTOR`)**:
+   - Guru merancang silabus pembelajaran secara bertingkat (*Unit -> Lesson -> Exercise*).
+   - Mendukung dua metode pembuatan soal: **Import Excel massal** (diproses secara batch insert ke database) dan **Studio Soal Interaktif 3D** yang ditenagai oleh WebGL Three.js untuk visualisasi koordinat, geometri, dan mesh real-time.
 
----
+4. **Siklus Belajar & Gamifikasi Siswa (Zone 4 - `SG_SISWA`)**:
+   - Siswa belajar mengikuti jalur roadmap. Sistem menerapkan mekanisme *Duolingo-style Gamification*: setiap modul membutuhkan *Hearts* (nyawa).
+   - Jawaban salah memicu umpan balik penjelasan dan pengurangan nyawa. Jika nyawa habis, siswa dapat menukarkan *Gems* hasil belajarnya atau menunggu regenerasi otomatis.
+   - Jawaban benar memberikan reward *XP*, penambahan *daily streak*, dan pencatatan riwayat progres pada database `user_progress`.
 
-### 5.4 Flowchart Super Admin (Manajemen User & Monitoring)
-
-```mermaid
-flowchart TD
-    StartA(["Mulai: Super Admin Login"]) --> AdminDash["Buka Admin Control Panel"]
-    AdminDash --> ChooseAdminMenu{"Pilih Menu Kelola"}
-    
-    ChooseAdminMenu -- "Manajemen Pengguna" --> ViewUsers[/"Lihat Daftar Seluruh User"/]
-    ViewUsers --> UserAction{"Aksi User"}
-    UserAction -- "Ubah Role" --> ChangeRole["Ubah Role Siswa/Guru/Admin"] --> SaveUserDB[("Update Database Users")]
-    UserAction -- "Reset Password" --> ResetPass["Generate Password Baru"] --> SaveUserDB
-    UserAction -- "Hapus Akun" --> DeleteUser["Hapus User Beserta Relasi"] --> SaveUserDB
-    
-    ChooseAdminMenu -- "Monitoring Kursus" --> ViewCourses[/"Lihat Seluruh Kursus Platform"/]
-    ViewCourses --> CourseAction{"Aksi Kursus"}
-    CourseAction -- "Verifikasi Kelayakan" --> ApproveCourse["Setujui / Publikasikan Kursus"] --> SaveCourseDB[("Update Database Courses")]
-    CourseAction -- "Hapus Kursus Tidak Sesuai" --> DropCourse["Hapus Kursus"] --> SaveCourseDB
-    
-    SaveUserDB --> AdminDash
-    SaveCourseDB --> AdminDash
-```
-
----
-
-### 5.5 Flowchart Verifikasi Sertifikat Publik (QR & SHA-256 Hash)
-
-```mermaid
-flowchart TD
-    StartV(["Mulai: Pihak Ketiga Ingin Memverifikasi Sertifikat"]) --> ChooseMethod{"Metode Pengecekan"}
-    
-    %% Melalui QR
-    ChooseMethod -- "Scan QR Code" --> ScanQR[/"Scan QR Code di Sertifikat Cetak/PDF"/]
-    ScanQR --> ExtractHash["Ambil URL /certificate/verify/{hash}"]
-    
-    %% Melalui Input Manual
-    ChooseMethod -- "Input Kode / Hash" --> OpenVerifyPage[/"Buka Halaman Web Verifikasi Sertifikat"/]
-    OpenVerifyPage --> InputHashOrCode[/"Masukkan Kode Sertifikat / Hash SHA-256"/]
-    InputHashOrCode --> ExtractHash
-    
-    ExtractHash --> QueryCert[("Database: Cari di Tabel certificates berdasarkan cert_hash / cert_code")]
-    QueryCert --> FoundCert{"Data Ditemukan & is_valid == true?"}
-    
-    %% Hasil Valid
-    FoundCert -- "Ya" --> DisplayValidBadge[/"Tampilkan Badge Hijau: RESMI & TERVERIFIKASI"/]
-    DisplayValidBadge --> RenderDetails[/"Tampilkan: Nama Siswa, Judul Kursus, Nilai Rata-rata, Tanggal Terbit, & Nama Guru"/]
-    
-    %% Hasil Tidak Valid
-    FoundCert -- "Tidak" --> DisplayInvalidBadge[/"Tampilkan Badge Merah: SERTIFIKAT TIDAK DITEMUKAN / TIDAK VALID"/]
-    
-    RenderDetails --> EndV(["Selesai"])
-    DisplayInvalidBadge --> EndV
-```
+5. **Penerbitan & Validasi Sertifikat Digital (Zone 5 - `SG_CERT`)**:
+   - Saat seluruh modul kursus tercatat 100% tuntas, sistem membuka hak klaim sertifikat.
+   - Nilai rata-rata dievaluasi, kemudian algoritma kriptografi membentuk hash unik **SHA-256** dan *QR Code* vektor yang tertanam langsung pada dokumen sertifikat.
+   - Pihak luar/industri dapat memverifikasi keabsahan sertifikat tersebut secara instan melalui pemindaian kamera QR atau input manual kode verifikasi pada portal publik EduSkill.
 
 ---
 
 ## 6. Kesimpulan & Penjelasan untuk Dosen
 
 1. **Integritas Relasional & Normalisasi 3NF**:
-   - Struktur database telah dinormalisasi hingga tahap **Third Normal Form (3NF)**.
-   - Menggunakan *Foreign Key Constraints* dengan `onDelete('cascade')` untuk mencegah *orphan records*.
+    - Struktur database telah dinormalisasi hingga tahap **Third Normal Form (3NF)**.
+    - Menggunakan _Foreign Key Constraints_ dengan `onDelete('cascade')` untuk mencegah _orphan records_.
 2. **Kesesuaian dengan Implementasi Nyata**:
-   - Diagram ini mencerminkan 100% kode implementasi Laravel yang aktif di repository `Hadi-Akram-Ramadhan/Website-EDUSKILL`, termasuk fitur kuis 3D Three.js, gamifikasi Hearts & Gems, import XLSX SheetJS/Laravel-Excel, serta validasi QR hash digital certificate.
+    - Diagram ini mencerminkan 100% kode implementasi Laravel yang aktif di repository `Hadi-Akram-Ramadhan/Website-EDUSKILL`, termasuk fitur kuis 3D Three.js, gamifikasi Hearts & Gems, import XLSX SheetJS/Laravel-Excel, serta validasi QR hash digital certificate.

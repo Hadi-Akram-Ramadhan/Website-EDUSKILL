@@ -27,7 +27,7 @@ class WebLeaderboardAndProfileTest extends TestCase
         $response = $this->actingAs($user)->get('/leaderboard');
 
         $response->assertStatus(200)
-            ->assertSee('Liga Berlian')
+            ->assertSee('Liga Pengembang')
             ->assertSee('Total XP')
             ->assertSee('Hari Streak');
     }
