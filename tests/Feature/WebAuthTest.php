@@ -4,13 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class WebAuthTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected function setUp(): void
     {

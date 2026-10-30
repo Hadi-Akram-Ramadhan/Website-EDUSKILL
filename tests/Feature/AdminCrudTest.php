@@ -4,12 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\Course;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AdminCrudTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected User $admin;
 

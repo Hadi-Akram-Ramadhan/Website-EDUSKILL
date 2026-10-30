@@ -23,18 +23,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Truncate tables for clean, idempotent seeding
-        Schema::disableForeignKeyConstraints();
-        Certificate::truncate();
-        UserProgress::truncate();
-        UserStreak::truncate();
-        UserBadge::truncate();
-        Exercise::truncate();
-        Lesson::truncate();
-        Unit::truncate();
-        Course::truncate();
-        User::truncate();
-        Schema::enableForeignKeyConstraints();
+        // Safe idempotent seeding without truncating/resetting database
+        if (User::where('email', 'admin@kodein.id')->exists()) {
+            return;
+        }
 
         // 1. Users (Super Admin, Mentors/Teachers, Students)
         $admin = User::create([

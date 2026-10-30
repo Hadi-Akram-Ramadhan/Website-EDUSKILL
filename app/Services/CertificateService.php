@@ -75,7 +75,10 @@ class CertificateService
         $categoryPrefix = strtoupper(substr(preg_replace('/[^A-Za-z0-9]/', '', $course->slug), 0, 6));
         $certCode = "CERT-{$categoryPrefix}-{$dateSlug}-{$randomCode}";
 
-        $secretKey = config('app.key') ?: 'secret-signing-key';
+        $secretKey = config('app.key');
+        if (empty($secretKey)) {
+            throw new \RuntimeException('APP_KEY must be configured before generating cryptographic certificate signatures.');
+        }
         $certHash = hash_hmac('sha256', "{$user->id}|{$course->id}|{$certCode}|{$now->timestamp}", $secretKey);
 
         $verificationUrl = url("/verify/{$certCode}");

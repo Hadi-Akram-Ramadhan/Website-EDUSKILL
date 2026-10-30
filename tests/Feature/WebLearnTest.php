@@ -5,12 +5,10 @@ namespace Tests\Feature;
 use App\Models\Lesson;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class WebLearnTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected function setUp(): void
     {

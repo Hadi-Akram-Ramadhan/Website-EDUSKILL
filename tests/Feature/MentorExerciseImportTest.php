@@ -8,13 +8,11 @@ use App\Models\Lesson;
 use App\Models\Unit;
 use App\Models\User;
 use App\Services\ExerciseImportService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class MentorExerciseImportTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected User $mentor;
 

@@ -16,7 +16,7 @@ class CourseController extends BaseApiController
     {
         $user = $request->user();
 
-        $courses = Course::with(['mentor:id,name,avatar'])
+        $courses = Course::with(['mentor:id,name,avatar', 'units.lessons:id,unit_id'])
             ->where('is_published', true)
             ->get();
 

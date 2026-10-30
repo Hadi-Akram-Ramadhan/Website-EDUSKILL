@@ -79,6 +79,10 @@ class WebAuthController extends Controller
      */
     public function quickLogin(int $userId): RedirectResponse
     {
+        if (app()->environment('production')) {
+            abort(403, 'Akses demo login dinonaktifkan pada lingkungan produksi.');
+        }
+
         $user = User::findOrFail($userId);
         Auth::login($user);
         request()->session()->regenerate();

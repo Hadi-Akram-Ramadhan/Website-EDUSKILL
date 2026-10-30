@@ -9,12 +9,10 @@ use App\Models\Unit;
 use App\Models\User;
 use App\Services\ExerciseImportService;
 use App\Services\GamificationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class Interactive3DQuizTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected User $mentor;
 
