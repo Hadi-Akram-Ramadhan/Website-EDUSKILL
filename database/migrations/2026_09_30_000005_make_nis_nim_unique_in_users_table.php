@@ -14,11 +14,11 @@ return new class extends Migration
     {
         // Clean up any duplicate nis_nim values in existing data before creating unique constraint
         $duplicates = DB::table('users')
-            ->select('nis_nim', DB::raw('COUNT(*) as count'))
+            ->select('nis_nim')
             ->whereNotNull('nis_nim')
             ->where('nis_nim', '!=', '')
             ->groupBy('nis_nim')
-            ->having('count', '>', 1)
+            ->havingRaw('COUNT(*) > 1')
             ->get();
 
         foreach ($duplicates as $dup) {
