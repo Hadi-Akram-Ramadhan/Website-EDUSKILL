@@ -9,6 +9,7 @@ use App\Models\Unit;
 use App\Models\User;
 use App\Services\ExerciseImportService;
 use App\Services\GamificationService;
+use Database\Seeders\Interactive3DQuizSeeder;
 use Tests\TestCase;
 
 class Interactive3DQuizTest extends TestCase
@@ -262,5 +263,15 @@ class Interactive3DQuizTest extends TestCase
         $this->assertEquals(1.5, $exercise->model_3d_json['scale']);
         $this->assertEquals('fast', $exercise->model_3d_json['speed']);
         $this->assertEquals('glow', $exercise->model_3d_json['material']);
+    }
+
+    public function test_interactive_3d_quiz_seeder_runs_successfully(): void
+    {
+        $this->seed(Interactive3DQuizSeeder::class);
+
+        $this->assertDatabaseHas('exercises', [
+            'question_type' => 'interactive_3d',
+            'prompt' => 'Perhatikan model 3D Matrix Grid berikut. Elemen hijau neon berada di koordinat X=1, Y=0, Z=1. Tentukan sintaks akses array 3D yang tepat:',
+        ]);
     }
 }
