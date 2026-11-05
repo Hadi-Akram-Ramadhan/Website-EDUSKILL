@@ -7,13 +7,10 @@ use App\Models\Lesson;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\UserProgress;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class MultiCourseLearnTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected User $student;
 
     protected User $mentor;

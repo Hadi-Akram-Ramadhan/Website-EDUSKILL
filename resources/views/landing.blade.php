@@ -1132,9 +1132,7 @@
     <header class="navbar-wrapper" id="navbar">
         <div class="navbar-inner">
             <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-                <div style="width: 38px; height: 38px; min-width: 38px; min-height: 38px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 3px 0 #1e40af;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                </div>
+                <img src="{{ asset('images/logo.svg') }}" alt="EduSkill" width="38" height="38" style="display: block; flex-shrink: 0; border-radius: 10px;">
                 <div>
                     <span style="font-size: 20px; font-weight: 900; color: #2563eb; letter-spacing: -0.5px;">EDUSKILL</span>
                     <span style="font-size: 8px; font-weight: 800; display: block; color: #64748b; letter-spacing: 1px;">LEARNING PLATFORM</span>

@@ -4,14 +4,12 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class WebAuthTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,6 +44,38 @@ class WebAuthTest extends TestCase
         $this->assertAuthenticated();
     }
 
+    public function test_production_hides_demo_users_and_rejects_quick_login(): void
+    {
+        app()->detectEnvironment(fn () => 'production');
+
+        try {
+            $this->get('/login')->assertOk()->assertDontSee('Demo Akun Uji Coba');
+            $this->get('/auth/quick-login/1')->assertForbidden();
+        } finally {
+            app()->detectEnvironment(fn () => 'testing');
+        }
+    }
+
+    public function test_production_rejects_public_mentor_registration(): void
+    {
+        app()->detectEnvironment(fn () => 'production');
+
+        try {
+            $this->get('/register')->assertOk()->assertDontSee('Guru / Mentor');
+            $this->withoutMiddleware(ValidateCsrfToken::class);
+            $this->post('/register', [
+                'name' => 'Mentor Baru',
+                'email' => 'mentorbaru@example.com',
+                'role' => 'guru',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ])->assertSessionHasErrors('role');
+            $this->assertDatabaseMissing('users', ['email' => 'mentorbaru@example.com']);
+        } finally {
+            app()->detectEnvironment(fn () => 'testing');
+        }
+    }
+
     public function test_can_use_one_click_demo_login(): void
     {
         $user = User::where('email', 'budi@smp.sch.id')->first();
@@ -69,6 +99,64 @@ class WebAuthTest extends TestCase
         $response->assertRedirect('/learn');
         $this->assertAuthenticated();
         $this->assertDatabaseHas('users', ['email' => 'doni@smp.sch.id']);
+    }
+
+    public function test_can_register_new_student_with_nis(): void
+    {
+        $response = $this->post('/register', [
+            'name' => 'Doni Siswa Baru',
+            'nis_nim' => '202409999',
+            'email' => 'doni2@smp.sch.id',
+            'role' => 'siswa',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertRedirect('/learn');
+        $this->assertAuthenticated();
+        $this->assertDatabaseHas('users', ['email' => 'doni2@smp.sch.id', 'nis_nim' => '202409999']);
+    }
+
+    public function test_cannot_register_with_duplicate_nis(): void
+    {
+        User::where('email', 'budi@smp.sch.id')->update(['nis_nim' => '202409001']);
+
+        $response = $this->from('/register')->post('/register', [
+            'name' => 'Doni Duplikat NIS',
+            'nis_nim' => '202409001',
+            'email' => 'doninis@smp.sch.id',
+            'role' => 'siswa',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertRedirect('/register');
+        $response->assertSessionHasErrors(['nis_nim']);
+    }
+
+    public function test_cannot_register_with_existing_email(): void
+    {
+        $response = $this->from('/register')->post('/register', [
+            'name' => 'Budi Duplikat',
+            'email' => 'budi@smp.sch.id', // Already seeded
+            'role' => 'siswa',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertRedirect('/register');
+        $response->assertSessionHasErrors(['email']);
+    }
+
+    public function test_cannot_login_with_non_existent_email(): void
+    {
+        $response = $this->from('/login')->post('/login', [
+            'email' => 'tidak_ada@smp.sch.id',
+            'password' => 'password123',
+        ]);
+
+        $response->assertRedirect('/login');
+        $response->assertSessionHasErrors(['email']);
     }
 
     public function test_can_logout_via_web(): void

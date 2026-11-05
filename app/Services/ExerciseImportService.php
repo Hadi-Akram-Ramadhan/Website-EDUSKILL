@@ -379,6 +379,12 @@ class ExerciseImportService
                 continue;
             }
 
+            if ($lesson->exercises()->where('prompt', $prompt)->exists()) {
+                $errors[] = "Baris #{$rowNum}: Soal '{$prompt}' sudah ada dalam modul ini.";
+
+                continue;
+            }
+
             $questionType = $this->normalizeQuestionType($rawType);
             if (! $questionType) {
                 $errors[] = "Baris #{$rowNum}: Tipe soal '{$rawType}' tidak dikenali.";

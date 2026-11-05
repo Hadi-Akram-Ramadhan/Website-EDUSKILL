@@ -3,13 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AuthApiTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_user_can_register_via_api(): void
     {
         $response = $this->postJson('/api/v1/auth/register', [
@@ -36,6 +33,28 @@ class AuthApiTest extends TestCase
             'email' => 'ahmad@smp.sch.id',
             'role' => 'siswa',
         ]);
+    }
+
+    public function test_api_production_rejects_mentor_registration(): void
+    {
+        app()->detectEnvironment(fn () => 'production');
+
+        try {
+            $response = $this->postJson('/api/v1/auth/register', [
+                'name' => 'Pak Guru Api',
+                'email' => 'guruapi@smp.sch.id',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+                'role' => 'guru',
+            ]);
+
+            $response->assertStatus(422)
+                ->assertJsonPath('success', false)
+                ->assertJsonValidationErrors('role');
+            $this->assertDatabaseMissing('users', ['email' => 'guruapi@smp.sch.id']);
+        } finally {
+            app()->detectEnvironment(fn () => 'testing');
+        }
     }
 
     public function test_user_can_login_and_get_sanctum_token(): void

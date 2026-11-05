@@ -86,6 +86,9 @@
                                         <div>
                                             <div style="font-size: 14px; font-weight: 800; color: #0f172a;">{{ $u->name }}</div>
                                             <div style="font-size: 12px; color: #64748b;">{{ $u->email }}</div>
+                                            @if ($u->nis_nim)
+                                                <div style="font-size: 11px; font-weight: 700; color: #0284c7;">NIS: {{ $u->nis_nim }}</div>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>

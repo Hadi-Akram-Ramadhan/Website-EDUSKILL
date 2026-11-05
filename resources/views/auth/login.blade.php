@@ -198,6 +198,7 @@
         </div>
 
         <!-- 1-Click Quick Demo Login -->
+        @unless (app()->environment('production'))
         <div class="quick-accounts">
             <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
                 <span>Demo Akun Uji Coba:</span>
@@ -217,6 +218,7 @@
                 </a>
             @endforeach
         </div>
+        @endunless
     </div>
 </body>
 </html>

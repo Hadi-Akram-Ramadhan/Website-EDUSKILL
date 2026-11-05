@@ -174,7 +174,31 @@ class GamificationService
                 }
                 $expected = $correctAnswer['order'] ?? $correctAnswer;
 
-                return array_values($userAnswer) == array_values($expected);
+                // Direct index/ID match
+                if (array_values($userAnswer) == array_values($expected)) {
+                    return true;
+                }
+
+                // If user sent full text instead of IDs, resolve via options_json
+                $options = $exercise->options_json;
+                if (is_array($options)) {
+                    $idToText = [];
+                    foreach ($options as $opt) {
+                        if (is_array($opt) && isset($opt['id'], $opt['text'])) {
+                            $idToText[$opt['id']] = trim($opt['text']);
+                        }
+                    }
+                    if (! empty($idToText)) {
+                        $expectedTexts = array_map(fn ($id) => $idToText[$id] ?? $id, array_values($expected));
+                        $userTexts = array_map(fn ($item) => is_array($item) ? trim($item['text'] ?? '') : trim((string) $item), array_values($userAnswer));
+
+                        if ($userTexts == $expectedTexts) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
 
             case 'matching_pair':
                 // $correctAnswer should be key-value pairs: e.g. {"int": "Angka Bulat", "str": "Teks"}

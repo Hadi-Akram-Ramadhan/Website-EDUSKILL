@@ -7,13 +7,10 @@ use App\Models\Lesson;
 use App\Models\User;
 use App\Models\UserProgress;
 use Database\Seeders\DatabaseSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CertificateApiTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();
