@@ -73,19 +73,12 @@ jobs:
       - name: Install Dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
-      - name: Prepare Environment & SQLite DB
+      - name: Prepare Test Environment
         run: |
           cp .env.example .env
           php artisan key:generate
-          touch database/database.sqlite
 
-      - name: Run Database Migrations & Seeders
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
-        run: php artisan migrate:fresh --seed
-
-      - name: Run Test Suite (PHPUnit / Pest)
+      - name: Run Test Suite (SQLite in memory only)
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'

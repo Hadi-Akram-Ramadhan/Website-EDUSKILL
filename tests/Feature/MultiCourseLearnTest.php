@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 class MultiCourseLearnTest extends TestCase
 {
-
     protected User $student;
 
     protected User $mentor;

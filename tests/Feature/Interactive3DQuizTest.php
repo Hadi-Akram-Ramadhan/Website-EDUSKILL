@@ -13,7 +13,6 @@ use Tests\TestCase;
 
 class Interactive3DQuizTest extends TestCase
 {
-
     protected User $mentor;
 
     protected User $student;

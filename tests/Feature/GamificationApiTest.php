@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class GamificationApiTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();

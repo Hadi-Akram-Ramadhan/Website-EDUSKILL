@@ -182,11 +182,13 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
                         <div style="font-weight: 800; font-size: 12px;">Siswa SMP / SMA</div>
                     </label>
+                    @unless (app()->environment('production'))
                     <label class="role-option">
                         <input type="radio" name="role" value="guru">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
                         <div style="font-weight: 800; font-size: 12px;">Guru / Mentor</div>
                     </label>
+                    @endunless
                 </div>
             </div>
 

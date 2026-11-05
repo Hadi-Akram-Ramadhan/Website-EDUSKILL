@@ -41,7 +41,7 @@ class WebAuthController extends Controller
             return redirect($this->redirectPathForUser(Auth::user()));
         }
 
-        $demoUsers = User::orderBy('id')->get();
+        $demoUsers = app()->environment('production') ? collect() : User::orderBy('id')->get();
 
         return view('auth.login', compact('demoUsers'));
     }
@@ -113,7 +113,7 @@ class WebAuthController extends Controller
             'nis_nim' => ['nullable', 'string', 'regex:/^[0-9A-Za-z\/\-\.]+$/', 'max:30', 'unique:users,nis_nim'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'role' => ['required', 'string', 'in:siswa,guru'],
+            'role' => ['required', 'string', app()->environment('production') ? 'in:siswa' : 'in:siswa,guru'],
         ], [
             'name.regex' => 'Nama pengguna hanya boleh berisi huruf dan spasi (tidak boleh mengandung angka atau simbol).',
             'nis_nim.regex' => 'Format NIS tidak valid.',

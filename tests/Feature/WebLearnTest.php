@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 class WebLearnTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();

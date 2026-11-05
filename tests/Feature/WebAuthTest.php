@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class WebAuthTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,6 +42,38 @@ class WebAuthTest extends TestCase
 
         $response->assertRedirect('/learn');
         $this->assertAuthenticated();
+    }
+
+    public function test_production_hides_demo_users_and_rejects_quick_login(): void
+    {
+        app()->detectEnvironment(fn () => 'production');
+
+        try {
+            $this->get('/login')->assertOk()->assertDontSee('Demo Akun Uji Coba');
+            $this->get('/auth/quick-login/1')->assertForbidden();
+        } finally {
+            app()->detectEnvironment(fn () => 'testing');
+        }
+    }
+
+    public function test_production_rejects_public_mentor_registration(): void
+    {
+        app()->detectEnvironment(fn () => 'production');
+
+        try {
+            $this->get('/register')->assertOk()->assertDontSee('Guru / Mentor');
+            $this->withoutMiddleware(ValidateCsrfToken::class);
+            $this->post('/register', [
+                'name' => 'Mentor Baru',
+                'email' => 'mentorbaru@example.com',
+                'role' => 'guru',
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ])->assertSessionHasErrors('role');
+            $this->assertDatabaseMissing('users', ['email' => 'mentorbaru@example.com']);
+        } finally {
+            app()->detectEnvironment(fn () => 'testing');
+        }
     }
 
     public function test_can_use_one_click_demo_login(): void

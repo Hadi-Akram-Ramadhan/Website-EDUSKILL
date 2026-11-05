@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 class MentorCrudTest extends TestCase
 {
-
     protected User $mentor;
 
     protected User $otherMentor;

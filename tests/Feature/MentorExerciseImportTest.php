@@ -13,7 +13,6 @@ use Tests\TestCase;
 
 class MentorExerciseImportTest extends TestCase
 {
-
     protected User $mentor;
 
     protected Course $course;

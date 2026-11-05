@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class AdminCrudTest extends TestCase
 {
-
     protected User $admin;
 
     protected User $mentor;

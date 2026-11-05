@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class RoleDashboardTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();

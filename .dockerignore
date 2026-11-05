@@ -6,8 +6,8 @@ node_modules
 vendor
 *.log
 .env
-.env.backup
-.env.production
+.env.*
+!.env.example
 storage/*.key
 storage/framework/cache/*
 storage/framework/sessions/*
@@ -15,3 +15,11 @@ storage/framework/views/*
 storage/logs/*
 tests
 docker-compose*.yml
+db_eduskill
+ngrok.exe
+.phpunit.result.cache
+public/hot
+public/build
+README.md
+docs
+sdg

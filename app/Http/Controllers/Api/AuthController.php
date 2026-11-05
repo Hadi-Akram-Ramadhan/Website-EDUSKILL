@@ -28,7 +28,7 @@ class AuthController extends BaseApiController
             'nis_nim' => 'nullable|string|regex:/^[0-9A-Za-z\/\-\.]+$/|max:30|unique:users,nis_nim',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'sometimes|string|in:siswa,guru',
+            'role' => app()->environment('production') ? 'sometimes|string|in:siswa' : 'sometimes|string|in:siswa,guru',
         ], [
             'name.regex' => 'Nama pengguna hanya boleh berisi huruf dan spasi (tidak boleh mengandung angka atau simbol).',
             'nis_nim.regex' => 'Format NIS tidak valid.',
